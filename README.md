@@ -14,3 +14,7 @@ wyświetlanie list, obsługa dowolnej ilości wyników, właściwe ikony).
 7. Wykorzystanie języka Swift i środowiska xcode lub wybranego narzędzia wieloplatformowego (React Native) ale ze szczególnym
 uwzględnieniem wymagań pkt. 4!
 8. Projekt zakłada opracowanie własnego API i części serwerowej.
+
+# Przygotowanie środowiska deweloperskiego
+
+Jeśli przy uruchamianiu występuje błąd *Failed to capture fingerprint of output files*, rozwiązanie tego problemu jest [na stack overflow](https://github.com/wix/react-native-navigation/issues/4858).
