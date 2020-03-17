@@ -2,9 +2,7 @@ import React, { Component } from 'react';
 import DetailsComponent from './DetailsComponent';
 
 interface Props {
-  navigation: {
-    goBack: () => {},
-  },
+
 }
 
 interface State {
@@ -19,13 +17,9 @@ class DetailsContainer extends Component<Props, State> {
     };
   }
 
-  onGoBack = () => this.props.navigation.goBack();
-
   render() {
     return (
-      <DetailsComponent
-        onReject={this.onGoBack}
-      />
+      <DetailsComponent />
     );
   }
 }
