@@ -3,7 +3,6 @@ import { ScrollView, StyleSheet, Text, View } from 'react-native';
 
 interface Props {
   themeMode: 'light' | 'dark',
-  autoThemeChoose: boolean,
 }
 
 const SettingsComponent = (props: Props) => {

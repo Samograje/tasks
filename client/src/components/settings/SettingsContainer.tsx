@@ -14,7 +14,6 @@ class SettingsContainer extends Component<Props, State> {
     return (
       <SettingsComponent
         themeMode="dark"
-        autoThemeChoose={false}
       />
     );
   }
