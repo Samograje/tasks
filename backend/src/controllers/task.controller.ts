@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
-import task from "../models/task";
+import TaskModel from "../models/task";
 
 export const allTasks = (req: Request, res: Response) => {
-    const tasks = task.find((err: any, tasks: any) => {
+    TaskModel.find((err: any, tasks: any) => {
         if (err) {
             res.send(err);
         } else {
@@ -12,7 +12,7 @@ export const allTasks = (req: Request, res: Response) => {
 };
 
 export const showTask = (req: Request, res: Response) => {
-    const task = task.findById(req.params.id, (err: any, task: any) => {
+    TaskModel.findById(req.params.id, (err: any, task: any) => {
         if (err) {
             res.send(err);
         } else {
@@ -22,7 +22,7 @@ export const showTask = (req: Request, res: Response) => {
 };
 
 export const addTask = (req: Request, res: Response) => {
-    const task = new task(req.body);
+    const task = new TaskModel(req.body);
     task.save((err: any) => {
         if (err) {
             res.send(err);
@@ -33,7 +33,7 @@ export const addTask = (req: Request, res: Response) => {
 };
 
 export const updateTask = (req: Request, res: Response) => {
-    let task = task.findByIdAndUpdate(
+    TaskModel.findByIdAndUpdate(
         req.params.id,
         req.body,
         (err: any, task: any) => {
@@ -47,7 +47,7 @@ export const updateTask = (req: Request, res: Response) => {
 };
 
 export const deleteTask = (req: Request, res: Response) => {
-    const task = task.deleteOne({ _id: req.params.id }, (err: any) => {
+    TaskModel.deleteOne({ _id: req.params.id }, (err: any) => {
         if (err) {
             res.send(err);
         } else {
