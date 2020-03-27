@@ -1,8 +1,9 @@
 import express, { Application } from "express";
 import bodyParser from "body-parser";
 
-import connect from "./connect";
+// @ts-ignore TODO: hide db string in a different way
 import { db } from "./config/config";
+import connect from "./connect";
 import * as TaskController from "./controllers/task.controller";
 
 const app: Application = express();
