@@ -4,7 +4,7 @@ export interface TaskInterface extends Document {
     deviceId: string;
     title: string;
     contents: string;
-    status: string;
+    inProgress: boolean;
     priority: string;
     category: string;
     creationDate: Date;
@@ -15,7 +15,7 @@ const TaskSchema: Schema = new Schema({
     deviceId: {type: String, required: true, unique: true},
     title: {type: String, required: true},
     contents: {type: String, required: true},
-    status: {type: String, required: true},
+    inProgress: {type: Boolean, required: true},
     priority: {type: String, required: true},
     category: {type: String, required: false},
     creationDate: {type: Date, default: Date.now()},
