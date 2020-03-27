@@ -1,57 +1,60 @@
-import { Request, Response } from "express";
-import TaskModel from "../models/task";
+import { Request, Response } from 'express';
+import TaskModel, { TaskInterface } from '../models/task';
 
-export const allTasks = (req: Request, res: Response) => {
-    TaskModel.find((err: any, tasks: any) => {
+export const getAllTasks = (req: Request, res: Response) => {
+    TaskModel.find((err: any, tasks: TaskInterface[]) => {
         if (err) {
-            res.send(err);
+            res.status(500).send(err.message);
         } else {
             res.send(tasks);
         }
     });
 };
 
-export const showTask = (req: Request, res: Response) => {
-    TaskModel.findById(req.params.id, (err: any, task: any) => {
+export const getTask = (req: Request, res: Response) => {
+    TaskModel.findById(req.params.id, ((err: any, task: TaskInterface | null) => {
         if (err) {
-            res.send(err);
+            res.status(500).send(err.message);
+        } else if (!task) {
+            res.status(404).send('Task not found');
         } else {
             res.send(task);
         }
-    });
+    }));
 };
 
 export const addTask = (req: Request, res: Response) => {
-    const task = new TaskModel(req.body);
-    task.save((err: any) => {
+    new TaskModel(req.body).save((err: any) => {
         if (err) {
-            res.send(err);
+            // TODO: status 400 when validation not passed
+            res.status(500).send(err.message);
         } else {
-            res.send(task);
+            res.send('Task added');
         }
     });
 };
 
 export const updateTask = (req: Request, res: Response) => {
-    TaskModel.findByIdAndUpdate(
-        req.params.id,
-        req.body,
-        (err: any, task: any) => {
-            if (err) {
-                res.send(err);
-            } else {
-                res.send(task);
-            }
+    TaskModel.findByIdAndUpdate(req.params.id, req.body, (err: any, task: TaskInterface | null) => {
+        if (err) {
+            // TODO: status 400 when validation not passed
+            res.status(500).send(err.message);
+        } else if(!task) {
+            res.status(404).send('Task not found');
+        } else {
+            res.send('Task updated');
         }
-    );
+    });
 };
 
 export const deleteTask = (req: Request, res: Response) => {
-    TaskModel.deleteOne({ _id: req.params.id }, (err: any) => {
+    TaskModel.findByIdAndDelete(req.params.id, (err: any, task: TaskInterface | null) => {
         if (err) {
-            res.send(err);
+            res.status(500).send(err.message);
+        } else if(!task) {
+            res.status(404).send('Task not found');
         } else {
-            res.send("task deleted from database");
+            res.send('Task deleted');
         }
     });
 };

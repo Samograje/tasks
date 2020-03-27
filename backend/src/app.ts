@@ -13,9 +13,9 @@ connect(db);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.get("/tasks", TaskController.allTasks);
+app.get("/tasks", TaskController.getAllTasks);
 
-app.get("/tasks/:id", TaskController.showTask);
+app.get("/tasks/:id", TaskController.getTask);
 
 app.post("/tasks", TaskController.addTask);
 
