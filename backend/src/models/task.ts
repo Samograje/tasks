@@ -1,7 +1,6 @@
 import mongoose, { Schema, Document } from "mongoose";
 
 export interface TaskInterface extends Document {
-    deviceId: string;
     title: string;
     contents: string;
     inProgress: boolean;
@@ -12,7 +11,6 @@ export interface TaskInterface extends Document {
 }
 
 const TaskSchema: Schema = new Schema({
-    deviceId: {type: String, required: true, unique: true},
     title: {type: String, required: true},
     contents: {type: String, required: true},
     inProgress: {type: Boolean, required: true},
