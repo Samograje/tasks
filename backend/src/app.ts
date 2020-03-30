@@ -14,15 +14,15 @@ connect(db);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.get("/tasks", TaskController.getAllTasks);
+app.get("/devices/:deviceId/tasks", TaskController.getAllTasks);
 
-app.get("/tasks/:id", TaskController.getTask);
+app.get("/devices/:deviceId/tasks/:taskId", TaskController.getTask);
 
-app.post("/tasks", TaskController.addTask);
+app.post("/devices/:deviceId/tasks", TaskController.addTask);
 
-app.patch("/tasks/:id", TaskController.updateTask);
+app.patch("/devices/:deviceId/tasks/:taskId", TaskController.updateTask);
 
-app.delete("/tasks/:id", TaskController.deleteTask);
+app.delete("/devices/:deviceId/tasks/:taskId", TaskController.deleteTask);
 
 app.listen(port, () => {
     console.log(`Server running on ${port}`);
