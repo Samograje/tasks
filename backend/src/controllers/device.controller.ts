@@ -1,5 +1,5 @@
-import {Request, Response} from 'express';
-import DeviceModel, {DeviceInterface} from '../models/device';
+import { Request, Response } from 'express';
+import DeviceModel, { DeviceInterface } from '../models/device';
 
 // export const getAllTasks = (req: Request, res: Response) => {
 //     TaskModel.find((err: any, tasks: TaskInterface[]) => {
@@ -24,24 +24,43 @@ import DeviceModel, {DeviceInterface} from '../models/device';
 // };
 
 export const addTask = (req: Request, res: Response) => {
+    const conditions = {
+        deviceId: req.params.deviceId,
+    };
 
-    // ?????????????????????????????????????????????????????
-
-    const device = DeviceModel.findById(req.params.deviceId);
-    // if () {
-    //     //dodaj tylko zadanko
-    // } else {
-    //
-    // }
-
-    new DeviceModel(req.body).save((err: any) => {
+    const callback = (err: any, device: DeviceInterface) => {
         if (err) {
-            // TODO: status 400 when validation not passed
             res.status(500).send(err.message);
+        } else if (!device) {
+            // creates new device with the task given
+            const newDeviceData = {
+                deviceId: req.params.deviceId,
+                tasks: [req.body],
+            };
+
+            new DeviceModel(newDeviceData).save((err: any) => {
+                if (err) {
+                    // TODO: status 400 when validation not passed
+                    res.status(500).send(err.message);
+                } else {
+                    res.send('Both device and task added');
+                }
+            });
         } else {
-            res.send('Device and task added');
+            // adds the task to the existing device
+            device.tasks.push(req.body);
+            device.save((err: any) => {
+                if (err) {
+                    // TODO: status 400 when validation not passed
+                    res.status(500).send(err.message);
+                } else {
+                    res.send('Task added to the device');
+                }
+            });
         }
-    });
+    };
+
+    DeviceModel.findOne(conditions, callback);
 };
 
 // export const updateTask = (req: Request, res: Response) => {
