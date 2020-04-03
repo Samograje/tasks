@@ -14,9 +14,9 @@ connect(db);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-//app.get("/devices/:deviceId/tasks", TaskController.getAllTasks);
+app.get("/devices/:deviceId/tasks", DeviceController.getAllTasks);
 
-//app.get("/devices/:deviceId/tasks/:taskId", TaskController.getTask);
+app.get("/devices/:deviceId/tasks/:taskId", DeviceController.getTask);
 
 app.post("/devices/:deviceId/tasks", DeviceController.addTask);
 
