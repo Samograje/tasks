@@ -43,7 +43,7 @@ export const getTask = (req: Request, res: Response) => {
             res.status(400).send('Device ID not found');
         } else {
             // get all the task of existing device and filter by given taskId
-            const result = device.tasks.filter(tasks => tasks._id == req.params.taskId);
+            const result = device.tasks.filter(task => task._id == req.params.taskId);
 
             if (result.length === 0) {
                 // if given task ID does not exist
