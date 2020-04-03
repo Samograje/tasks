@@ -2,11 +2,6 @@ import { Request, Response } from 'express';
 import DeviceModel, { DeviceInterface } from '../models/device';
 import { TaskInterface } from '../models/task';
 
-/**
- *
- * @param req
- * @param res
- */
 export const getAllTasks = (req: Request, res: Response) => {
     const conditions = {
         deviceId: req.params.deviceId,
@@ -26,11 +21,6 @@ export const getAllTasks = (req: Request, res: Response) => {
     DeviceModel.findOne(conditions, callback);
 };
 
-/**
- *
- * @param req
- * @param res
- */
 export const getTask = (req: Request, res: Response) => {
     const conditions = {
         deviceId: req.params.deviceId,
@@ -57,11 +47,6 @@ export const getTask = (req: Request, res: Response) => {
     DeviceModel.findOne(conditions, callback);
 };
 
-/**
- *
- * @param req
- * @param res
- */
 export const addTask = (req: Request, res: Response) => {
     const conditions = {
         deviceId: req.params.deviceId,
