@@ -22,7 +22,7 @@ app.post("/devices/:deviceId/tasks", DeviceController.addTask);
 
 app.patch("/devices/:deviceId/tasks/:taskId", DeviceController.updateTask);
 
-//app.delete("/devices/:deviceId/tasks/:taskId", TaskController.deleteTask);
+app.delete("/devices/:deviceId/tasks/:taskId", TaskController.deleteTask);
 
 app.listen(port, () => {
     console.log(`Server running on ${port}`);

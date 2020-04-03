@@ -120,7 +120,8 @@ export const updateTask = (req: Request, res: Response) => {
     DeviceModel.findOne(conditions, callback);
 };
 
-// export const deleteTask = (req: Request, res: Response) => {
+export const deleteTask = (req: Request, res: Response) => {
+//     TODO: consider deviceId
 //     TaskModel.findByIdAndDelete(req.params.taskId, (err: any, task: TaskInterface | null) => {
 //         if (err) {
 //             res.status(500).send(err.message);
@@ -130,4 +131,4 @@ export const updateTask = (req: Request, res: Response) => {
 //             res.send('Task deleted');
 //         }
 //     });
-// };
+};
