@@ -16,7 +16,7 @@ export const getAllTasks = (req: Request, res: Response) => {
         if (err) {
             res.status(500).send(err.message);
         } else if (!device) {
-            res.status(400).send('Device ID not found');
+            res.status(404).send('Device ID not found');
         } else {
             // get all the task of existing device
             res.send(device.tasks);
@@ -40,7 +40,7 @@ export const getTask = (req: Request, res: Response) => {
         if (err) {
             res.status(500).send(err.message);
         } else if (!device) {
-            res.status(400).send('Device ID not found');
+            res.status(404).send('Device ID not found');
         } else {
             // get all the task of existing device and filter by given taskId
             const task = device.tasks.find(task => task._id == req.params.taskId);
