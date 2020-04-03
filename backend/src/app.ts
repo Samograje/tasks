@@ -20,7 +20,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.post("/devices/:deviceId/tasks", DeviceController.addTask);
 
-//app.patch("/devices/:deviceId/tasks/:taskId", TaskController.updateTask);
+app.patch("/devices/:deviceId/tasks/:taskId", DeviceController.updateTask);
 
 //app.delete("/devices/:deviceId/tasks/:taskId", TaskController.deleteTask);
 
