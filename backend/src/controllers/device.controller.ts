@@ -92,6 +92,8 @@ export const updateTask = (req: Request, res: Response) => {
         deviceId: req.params.deviceId,
     };
 
+    // TODO: task update shouldn't change the id
+
     const callback = (err: any, device: DeviceInterface) => {
         if (err) {
             res.status(500).send(err.message);
