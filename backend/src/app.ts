@@ -22,6 +22,8 @@ app.post("/api/devices/:deviceId/tasks", DeviceController.addTask);
 
 app.patch("/api/devices/:deviceId/tasks/:taskId", DeviceController.updateTask);
 
+app.patch("/api/devices/:deviceId/tasks/:taskId/finished", DeviceController.updateTaskInProgress);
+
 app.delete("/api/devices/:deviceId/tasks/:taskId", DeviceController.deleteTask);
 
 app.listen(port, () => {
