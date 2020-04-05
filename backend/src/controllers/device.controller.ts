@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import DeviceModel, { DeviceInterface } from '../models/device';
 import { TaskInterface } from '../models/task';
+import { getValidationErrorMessage } from '../config/validation';
 
 export const getAllTasks = (req: Request, res: Response) => {
     const conditions = {
@@ -63,9 +64,10 @@ export const addTask = (req: Request, res: Response) => {
             };
 
             new DeviceModel(newDeviceData).save((err: any) => {
-                if (err) {
-                    // TODO: status 400 when validation not passed
-                    res.status(500).send(err.message);
+                if (err && err.name === 'ValidationError') {
+                    res.status(400).send(getValidationErrorMessage(err));
+                } else if (err) {
+                    res.status(500).send(err);
                 } else {
                     res.send('Both device and task added');
                 }
@@ -74,8 +76,9 @@ export const addTask = (req: Request, res: Response) => {
             // adds the task to the existing device
             device.tasks.push(req.body);
             device.save((err: any) => {
-                if (err) {
-                    // TODO: status 400 when validation not passed
+                if (err && err.name === 'ValidationError') {
+                    res.status(400).send(getValidationErrorMessage(err));
+                } else if (err) {
                     res.status(500).send(err.message);
                 } else {
                     res.send('Task added to the device');
@@ -108,8 +111,9 @@ export const updateTask = (req: Request, res: Response) => {
                 // updates the task and saves changes
                 device.tasks[taskIndex] = req.body;
                 device.save((err: any) => {
-                    if (err) {
-                        // TODO: status 400 when validation not passed
+                    if (err && err.name === 'ValidationError') {
+                        res.status(400).send(getValidationErrorMessage(err));
+                    } else if (err) {
                         res.status(500).send(err.message);
                     } else {
                         res.send('Task updated');
