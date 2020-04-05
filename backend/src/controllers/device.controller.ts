@@ -131,8 +131,6 @@ export const updateTaskInProgress = (req: Request, res: Response) => {
         deviceId: req.params.deviceId,
     };
 
-    // TODO: task update shouldn't change the id
-
     const callback = (err: any, device: DeviceInterface) => {
         if (err) {
             res.status(500).send(err.message);
@@ -147,10 +145,8 @@ export const updateTaskInProgress = (req: Request, res: Response) => {
                 if(typeof req.body.inProgress !== "boolean"){
                     res.status(400).send('Value of inProgress is not a boolean')
                 } else {
-                    // updates the task and saves changes
-                    let tempTask = device.tasks[taskIndex];
-                    tempTask.inProgress = req.body.inProgress;
-                    device.tasks[taskIndex] = tempTask;
+                    // updates the task's inProgress and saves changes
+                    device.tasks[taskIndex].inProgress = req.body.inProgress;
                     device.save((err: any) => {
                         if (err && err.name === 'ValidationError') {
                             res.status(400).send(getValidationErrorMessage(err));
