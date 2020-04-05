@@ -13,7 +13,7 @@ export interface TaskInterface extends Document {
 export const TaskSchema: Schema = new Schema({
     title: {type: String, required: true},
     details: {type: String, required: false},
-    progressStatus: {type: Boolean, required: true},
+    inProgress: {type: Boolean, required: true},
     priority: {type: String, required: true},
     // TODO: disable custom creation date (use default always)
     creationDate: {type: Date, default: () => Date.now()},

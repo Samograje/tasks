@@ -126,6 +126,48 @@ export const updateTask = (req: Request, res: Response) => {
     DeviceModel.findOne(conditions, callback);
 };
 
+export const updateTaskInProgress = (req: Request, res: Response) => {
+    const conditions = {
+        deviceId: req.params.deviceId,
+    };
+
+    // TODO: task update shouldn't change the id
+
+    const callback = (err: any, device: DeviceInterface) => {
+        if (err) {
+            res.status(500).send(err.message);
+        } else if (!device) {
+            res.status(404).send('Device not found');
+        } else {
+            // finds the task in the device's tasks
+            const taskIndex = device.tasks.findIndex((task: TaskInterface) => task._id == req.params.taskId);
+            if (taskIndex === -1) {
+                res.status(404).send('Task not found');
+            } else {
+                if(typeof req.body.inProgress !== "boolean"){
+                    res.status(400).send('Value of inProgress is not a boolean')
+                } else {
+                    // updates the task and saves changes
+                    let tempTask = device.tasks[taskIndex];
+                    tempTask.inProgress = req.body.inProgress;
+                    device.tasks[taskIndex] = tempTask;
+                    device.save((err: any) => {
+                        if (err && err.name === 'ValidationError') {
+                            res.status(400).send(getValidationErrorMessage(err));
+                        } else if (err) {
+                            res.status(500).send(err.message);
+                        } else {
+                            res.send('Task updated');
+                        }
+                    });
+                }
+            }
+        }
+    };
+
+    DeviceModel.findOne(conditions, callback);
+};
+
 export const deleteTask = (req: Request, res: Response) => {
 //     TODO: consider deviceId
 //     TaskModel.findByIdAndDelete(req.params.taskId, (err: any, task: TaskInterface | null) => {
