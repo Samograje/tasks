@@ -141,22 +141,20 @@ export const updateTaskInProgress = (req: Request, res: Response) => {
             const taskIndex = device.tasks.findIndex((task: TaskInterface) => task._id == req.params.taskId);
             if (taskIndex === -1) {
                 res.status(404).send('Task not found');
+            } else if (typeof req.body.inProgress !== "boolean") {
+                res.status(400).send('Value of inProgress is not a boolean')
             } else {
-                if(typeof req.body.inProgress !== "boolean"){
-                    res.status(400).send('Value of inProgress is not a boolean')
-                } else {
-                    // updates the task's inProgress and saves changes
-                    device.tasks[taskIndex].inProgress = req.body.inProgress;
-                    device.save((err: any) => {
-                        if (err && err.name === 'ValidationError') {
-                            res.status(400).send(getValidationErrorMessage(err));
-                        } else if (err) {
-                            res.status(500).send(err.message);
-                        } else {
-                            res.send('Task updated');
-                        }
-                    });
-                }
+                // updates the task's inProgress and saves changes
+                device.tasks[taskIndex].inProgress = req.body.inProgress;
+                device.save((err: any) => {
+                if (err && err.name === 'ValidationError') {
+                        res.status(400).send(getValidationErrorMessage(err));
+                    } else if (err) {
+                        res.status(500).send(err.message);
+                    } else {
+                        res.send('Task updated');
+                    }
+                });
             }
         }
     };
