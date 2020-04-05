@@ -36,7 +36,7 @@ Dostępne endpointy:
 
 1. Instalacja *node.js* na komputerze
 2. Wykonanie polecenia `npm install` w tym katalogu
-3. Skopiowanie pliku `src/config/config.ts` do tego samego katalogu, nadając mu nazwę `config.ts`
+3. Skopiowanie pliku `src/config/config.example.ts` do tego samego katalogu, nadając mu nazwę `config.ts` (oba pliki powinny być w tym samym katalogu)
 4. W nowo utworzonym pliku `src/config/config.ts` podmiana `<password>` na klucz dostępu do bazy danych, przekazany innym kanałem
 
 ## Uruchamianie 
