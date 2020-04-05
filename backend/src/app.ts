@@ -14,15 +14,15 @@ connect(db);
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.get("/devices/:deviceId/tasks", DeviceController.getAllTasks);
+app.get("/api/devices/:deviceId/tasks", DeviceController.getAllTasks);
 
-app.get("/devices/:deviceId/tasks/:taskId", DeviceController.getTask);
+app.get("/api/devices/:deviceId/tasks/:taskId", DeviceController.getTask);
 
-app.post("/devices/:deviceId/tasks", DeviceController.addTask);
+app.post("/api/devices/:deviceId/tasks", DeviceController.addTask);
 
-app.patch("/devices/:deviceId/tasks/:taskId", DeviceController.updateTask);
+app.patch("/api/devices/:deviceId/tasks/:taskId", DeviceController.updateTask);
 
-app.delete("/devices/:deviceId/tasks/:taskId", DeviceController.deleteTask);
+app.delete("/api/devices/:deviceId/tasks/:taskId", DeviceController.deleteTask);
 
 app.listen(port, () => {
     console.log(`Server running on ${port}`);
