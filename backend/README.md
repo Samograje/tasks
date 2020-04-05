@@ -25,12 +25,12 @@ Parametry zadania:
 
 Dostępne endpointy:
 
-- Zapytanie metodą *GET* na adres `/api/:deviceId/tasks` zwraca listę zadań dla urządzenia o podanym `deviceId`.
-- Zapytanie metodą *GET* na adres `/api/:deviceId/tasks/:taskId` zwraca dane zadania o podanym `taskId` dla urządzenia o podanym `deviceId`.
-- Zapytanie metodą *POST* na adres `/api/:deviceId/tasks` tworzy zadanie o parametrach podanych w ciele zapytania dla urządzenia o podanym `deviceId`.
-- Zapytanie metodą *PATCH* na adres `/api/:deviceId}/tasks/:taskId` aktualizuje parametry zadania, wartościami przekazanymi w ciele zapytania, dla urządzenia o podanym `deviceId`.
-- Zapytanie metodą *PATCH* na adres `/api/:deviceId/tasks/:taskId/finished` aktualizuje parametr `progressStatus` zadania o podanym `taskId` dla urządzenia o podanym `deviceId` wartością przekazaną pod kluczem `isFinished` w ciele zapytania.
-- Zapytanie metodą *DELETE* na adres `/api/:deviceId/tasks/:taskId` usuwa zadanie o podanym `taskId` z urządzenia o podanym `deviceId`.
+- Zapytanie metodą *GET* na adres `/api/devices/:deviceId/tasks` zwraca listę zadań dla urządzenia o podanym `deviceId`.
+- Zapytanie metodą *GET* na adres `/api/devices/:deviceId/tasks/:taskId` zwraca dane zadania o podanym `taskId` dla urządzenia o podanym `deviceId`.
+- Zapytanie metodą *POST* na adres `/api/devices/:deviceId/tasks` tworzy zadanie o parametrach podanych w ciele zapytania dla urządzenia o podanym `deviceId`.
+- Zapytanie metodą *PATCH* na adres `/api/devices/:deviceId}/tasks/:taskId` aktualizuje parametry zadania, wartościami przekazanymi w ciele zapytania, dla urządzenia o podanym `deviceId`.
+- Zapytanie metodą *PATCH* na adres `/api/devices/:deviceId/tasks/:taskId/finished` aktualizuje parametr `progressStatus` zadania o podanym `taskId` dla urządzenia o podanym `deviceId` wartością przekazaną pod kluczem `isFinished` w ciele zapytania.
+- Zapytanie metodą *DELETE* na adres `/api/devices/:deviceId/tasks/:taskId` usuwa zadanie o podanym `taskId` z urządzenia o podanym `deviceId`.
 
 ## Przygotowanie środowiska deweloperskiego
 
