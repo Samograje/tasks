@@ -1,5 +1,8 @@
 import React from 'react';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ScrollView, StyleSheet, View } from 'react-native';
+import { TextInput } from 'react-native-paper';
+import DateTimePickerModal from 'react-native-modal-datetime-picker';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 interface Props {
 
@@ -13,8 +16,37 @@ const DetailsComponent = (props: Props) => {
   return (
     <ScrollView>
       <View style={styles.container}>
-        <Text>Task details</Text>
+        <TextInput
+            style={styles.textInput}
+            mode='outlined'
+            label='Title'
+        />
+        <TextInput
+            style={styles.textInput}
+            mode='outlined'
+            label='Description'
+            multiline={true}
+        />
       </View>
+      <TextInput disabled={true} label='End date' mode='outlined' style={styles.textInput} value={'01/01/2020 11:00:00'}/>
+      <View style={styles.row}>
+        <MaterialCommunityIcons
+            size={36}
+            name={'calendar'}
+            color={'#000000'}
+        />
+        <MaterialCommunityIcons
+            size={36}
+            name={'timer'}
+            color={'#000000'}
+        />
+      </View>
+      <DateTimePickerModal
+          isVisible={false}
+          mode='date'
+          onConfirm={() => {}}
+          onCancel={() => {}}
+      />
     </ScrollView>
   );
 };
@@ -22,6 +54,16 @@ const DetailsComponent = (props: Props) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  textInput: {
+    margin: 10,
+  },
+  row: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignContent: 'space-around',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
 
