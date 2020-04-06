@@ -15,8 +15,6 @@ export const TaskSchema: Schema = new Schema({
     details: {type: String, required: false},
     inProgress: {type: Boolean, required: true},
     priority: {type: String, required: true},
-    // TODO: disable custom creation date (use default always)
-    creationDate: {type: Date, default: () => Date.now()},
     deadlineDate: {type: Date, required: false},
 });
 
