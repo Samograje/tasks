@@ -1,16 +1,22 @@
 import React from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import {ScrollView, StyleSheet, TouchableOpacity, View} from 'react-native';
 import { TextInput } from 'react-native-paper';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 interface Props {
-
+    modalMode,
+    isModalVisible,
+    onIconClick,
+    onCancelClick,
 }
 
 const DetailsComponent = (props: Props) => {
   const {
-
+      modalMode,
+      isModalVisible,
+      onIconClick,
+      onCancelClick,
   } = props;
 
   return (
@@ -30,22 +36,26 @@ const DetailsComponent = (props: Props) => {
       </View>
       <TextInput disabled={true} label='End date' mode='outlined' style={styles.textInput} value={'01/01/2020 11:00:00'}/>
       <View style={styles.row}>
-        <MaterialCommunityIcons
-            size={36}
-            name={'calendar'}
-            color={'#000000'}
-        />
-        <MaterialCommunityIcons
-            size={36}
-            name={'timer'}
-            color={'#000000'}
-        />
+          <TouchableOpacity onPress={()=>onIconClick('date')}>
+              <MaterialCommunityIcons
+                  size={36}
+                  name={'calendar'}
+                  color={'#000000'}
+              />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={()=>onIconClick('time')}>
+              <MaterialCommunityIcons
+                  size={36}
+                  name={'timer'}
+                  color={'#000000'}
+              />
+          </TouchableOpacity>
       </View>
       <DateTimePickerModal
-          isVisible={false}
-          mode='date'
+          isVisible={isModalVisible}
+          mode={modalMode}
           onConfirm={() => {}}
-          onCancel={() => {}}
+          onCancel={onCancelClick}
       />
     </ScrollView>
   );
