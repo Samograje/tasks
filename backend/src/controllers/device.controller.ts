@@ -181,9 +181,7 @@ export const deleteTask = (req: Request, res: Response) => {
                 // delete the task and saves changes
                 device.tasks.splice(taskIndex, 1);
                 device.save((err: any) => {
-                    if (err && err.name === 'ValidationError') {
-                        res.status(400).send(getValidationErrorMessage(err));
-                    } else if (err) {
+                    if (err) {
                         res.status(500).send(err.message);
                     } else {
                         res.send('Task deleted');
