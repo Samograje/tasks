@@ -163,14 +163,32 @@ export const updateTaskInProgress = (req: Request, res: Response) => {
 };
 
 export const deleteTask = (req: Request, res: Response) => {
-//     TODO: consider deviceId
-//     TaskModel.findByIdAndDelete(req.params.taskId, (err: any, task: TaskInterface | null) => {
-//         if (err) {
-//             res.status(500).send(err.message);
-//         } else if(!task) {
-//             res.status(404).send('Task not found');
-//         } else {
-//             res.send('Task deleted');
-//         }
-//     });
+    const conditions = {
+        deviceId: req.params.deviceId,
+    };
+
+    const callback = (err: any, device: DeviceInterface) => {
+        if(err){
+            res.status(500).send(err.message);
+        } else if(!device){
+            res.status(404).send('Device not found');
+        } else {
+            // finds the task in the device's tasks
+            const taskIndex = device.tasks.findIndex((task: TaskInterface) => task._id == req.params.taskId);
+            if (taskIndex === -1) {
+                res.status(404).send('Task not found');
+            } else{
+                // delete the task and saves changes
+                device.tasks.splice(taskIndex, 1);
+                device.save((err: any) => {
+                    if (err) {
+                        res.status(500).send(err.message);
+                    } else {
+                        res.send('Task deleted');
+                    }
+                });
+            }
+        }
+    };
+    DeviceModel.findOne(conditions, callback);
 };
