@@ -109,7 +109,10 @@ export const updateTask = (req: Request, res: Response) => {
                 res.status(404).send('Task not found');
             } else {
                 // updates the task and saves changes
-                device.tasks[taskIndex] = req.body;
+                device.tasks[taskIndex] = {
+                    ...req.body,
+                    _id: device.tasks[taskIndex]._id,
+                };
                 device.save((err: any) => {
                     if (err && err.name === 'ValidationError') {
                         res.status(400).send(getValidationErrorMessage(err));
