@@ -9,6 +9,9 @@ interface Props {
     isModalVisible,
     onIconClick,
     onCancelClick,
+    handleConfirm,
+    date,
+    time,
 }
 
 const DetailsComponent = (props: Props) => {
@@ -17,6 +20,9 @@ const DetailsComponent = (props: Props) => {
       isModalVisible,
       onIconClick,
       onCancelClick,
+      handleConfirm,
+      date,
+      time,
   } = props;
 
   return (
@@ -34,7 +40,7 @@ const DetailsComponent = (props: Props) => {
             multiline={true}
         />
       </View>
-      <TextInput disabled={true} label='End date' mode='outlined' style={styles.textInput} value={'01/01/2020 11:00:00'}/>
+      <TextInput disabled={true} label='End date' mode='outlined' style={styles.textInput} value={`${date} ${time}`}/>
       <View style={styles.row}>
           <TouchableOpacity onPress={()=>onIconClick('date')}>
               <MaterialCommunityIcons
@@ -54,7 +60,7 @@ const DetailsComponent = (props: Props) => {
       <DateTimePickerModal
           isVisible={isModalVisible}
           mode={modalMode}
-          onConfirm={() => {}}
+          onConfirm={(data) => handleConfirm(data, modalMode)}
           onCancel={onCancelClick}
       />
     </ScrollView>
