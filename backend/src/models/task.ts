@@ -11,12 +11,15 @@ export interface TaskInterface extends Document {
 }
 
 export const TaskSchema: Schema = new Schema({
-    title: {type: String, required: true},
-    details: {type: String, required: false},
-    inProgress: {type: Boolean, required: true},
-    priority: {type: String, required: true},
-    deadlineDate: {type: Date, required: false},
-});
+        title: {type: String, required: true},
+        details: {type: String, required: false},
+        inProgress: {type: Boolean, required: true},
+        priority: {type: String, required: true},
+        deadlineDate: {type: Date, required: false},
+    },
+    {
+        timestamps: {createdAt: true, updatedAt: false}
+    });
 
 const Task = mongoose.model<TaskInterface>("Task", TaskSchema);
 export default Task;
