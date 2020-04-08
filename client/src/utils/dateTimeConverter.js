@@ -7,7 +7,7 @@ export const timeConverter = (time) => {
 
 export const dateConverter = (date) => {
   const year = date.getUTCFullYear();
-  const month = date.getUTCMonth()+1 < 10 ? '0' + (1+date.getUTCMonth()) : date.getUTCMonth();
+  const month = date.getUTCMonth() + 1 < 10 ? '0' + (1 + date.getUTCMonth()) : date.getUTCMonth();
   const day = date.getUTCDate() < 10 ? '0' + date.getUTCDate() : date.getUTCDate();
   return day + '/' + month + '/' + year;
 };
