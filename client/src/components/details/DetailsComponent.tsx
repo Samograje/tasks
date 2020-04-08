@@ -3,26 +3,23 @@ import {ScrollView, StyleSheet, TouchableOpacity, View} from 'react-native';
 import { TextInput } from 'react-native-paper';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import { timeConverter, dateConverter } from '../../utils/dateTimeConverter';
 
 interface Props {
-    modalMode,
     isModalVisible,
     onIconClick,
     onCancelClick,
     handleConfirm,
-    date,
-    time,
+    dateTime,
 }
 
 const DetailsComponent = (props: Props) => {
   const {
-      modalMode,
       isModalVisible,
       onIconClick,
       onCancelClick,
       handleConfirm,
-      date,
-      time,
+      dateTime
   } = props;
 
   return (
@@ -40,16 +37,22 @@ const DetailsComponent = (props: Props) => {
             multiline={true}
         />
       </View>
-      <TextInput disabled={true} label='End date' mode='outlined' style={styles.textInput} value={`${date} ${time}`}/>
+      <TextInput
+          disabled={true}
+          label='End date'
+          mode='outlined'
+          style={styles.textInput}
+          value={`${dateConverter(dateTime)} ${timeConverter(dateTime)}`}
+      />
       <View style={styles.row}>
-          <TouchableOpacity onPress={()=>onIconClick('date')}>
+          <TouchableOpacity onPress={onIconClick}>
               <MaterialCommunityIcons
                   size={36}
                   name={'calendar'}
                   color={'#000000'}
               />
           </TouchableOpacity>
-          <TouchableOpacity onPress={()=>onIconClick('time')}>
+          <TouchableOpacity onPress={onIconClick}>
               <MaterialCommunityIcons
                   size={36}
                   name={'timer'}
@@ -58,9 +61,10 @@ const DetailsComponent = (props: Props) => {
           </TouchableOpacity>
       </View>
       <DateTimePickerModal
+          date={dateTime}
           isVisible={isModalVisible}
-          mode={modalMode}
-          onConfirm={(data) => handleConfirm(data, modalMode)}
+          mode={'datetime'}
+          onConfirm={(data) => handleConfirm(data)}
           onCancel={onCancelClick}
       />
     </ScrollView>
