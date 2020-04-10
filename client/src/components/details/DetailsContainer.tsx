@@ -20,7 +20,7 @@ class DetailsContainer extends Component<Props, State> {
         super(props);
         this.state = {
             isLoading: false,
-            mode: 'create',
+            mode: 'edit',
             isModalVisible: false,
             deadlineDate: new Date(),
             title: '',
@@ -39,17 +39,18 @@ class DetailsContainer extends Component<Props, State> {
         this.setState({
             isLoading: true,
         });
-        fetch(`/api/devices/kamil'sDeviceId/tasks/1`)
+        fetch(`http://172.31.44.202:5000/api/devices/bartek'sDeviceId/tasks/5e8cb38707b58336ec63f4b8`)
             .then((response) => response.json())
             .then((response) => {
                 this.setState({
                     title: response.title,
-                    description: response.details,
-                    deadlineDate: response.deadlineDate,
+                    description: response.details ? response.details : '',
+                    deadlineDate: response.deadlineDate ? response.deadlineDate : null,
                     isLoading: false,
                 });
             })
-            .catch(() => {
+            .catch((error) => {
+                console.log(error);
                 this.setState({
                     isLoading: false,
                     error: true,

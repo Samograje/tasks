@@ -51,7 +51,7 @@ const DetailsComponent = (props: Props) => {
                         label='End date'
                         mode='outlined'
                         style={styles.textInput}
-                        value={`${dateConverter(dateTime)} ${timeConverter(dateTime)}`}
+                        value={dateTime ? `${dateConverter(dateTime)} ${timeConverter(dateTime)}` : 'Choose a date'}
                     />
                     <View style={styles.row}>
                         <TouchableOpacity onPress={onIconClick}>
@@ -70,7 +70,7 @@ const DetailsComponent = (props: Props) => {
                         </TouchableOpacity>
                     </View>
                     <DateTimePickerModal
-                        date={dateTime}
+                        date={dateTime ? dateTime : new Date()}
                         isVisible={isModalVisible}
                         mode={'datetime'}
                         onConfirm={(data) => handleConfirm(data)}

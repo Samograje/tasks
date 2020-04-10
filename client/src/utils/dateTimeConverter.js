@@ -1,18 +1,18 @@
 export const timeConverter = (time) => {
-  const hour = time.getUTCHours();
-  const min = time.getUTCMinutes() < 10 ? '0' + time.getUTCMinutes() : time.getUTCMinutes();
-  const sec = time.getUTCSeconds() < 10 ? '0' + time.getUTCSeconds() : time.getUTCSeconds();
+  const hour = time.getHours() < 10 ? '0' + time.getHours() : time.getHours();
+  const min = time.getMinutes() < 10 ? '0' + time.getMinutes() : time.getMinutes();
+  const sec = time.getSeconds() < 10 ? '0' + time.getSeconds() : time.getSeconds();
   return hour + ':' + min + ':' + sec;
 };
 
 export const dateConverter = (date) => {
-  const year = date.getUTCFullYear();
-  const month = date.getUTCMonth() + 1 < 10 ? '0' + (1 + date.getUTCMonth()) : date.getUTCMonth();
-  const day = date.getUTCDate() < 10 ? '0' + date.getUTCDate() : date.getUTCDate();
+  const year = date.getFullYear();
+  const month = date.getMonth() + 1 < 10 ? '0' + (1 + date.getMonth()) : date.getMonth();
+  const day = date.getDate() < 10 ? '0' + date.getDate() : date.getDate();
   return day + '/' + month + '/' + year;
 };
 
 export const mergeDateTime = (date, time) => {
-  return new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate(),
-    time.getUTCHours(), time.getUTCMinutes(), time.getUTCSeconds());
+  return new Date(date.getFullYear(), date.getMonth(), date.getDate(),
+    time.getHours(), time.getMinutes(), time.getSeconds());
 };
