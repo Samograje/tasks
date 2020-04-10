@@ -43,7 +43,7 @@ class DetailsContainer extends Component<Props, State> {
         this.setState({
             isLoading: true,
         });
-        fetch(`http://172.31.44.202:5000/api/devices/bartek'sDeviceId/tasks/5e8cb38707b58336ec63f4b8`)
+        fetch(`http://172.31.44.202:5000/api/devices/bartek'sDeviceId/tasks/5e90bf47dd65763ac422b6fd`)
             .then((response) => response.json())
             .then((response) => {
                 this.setState({
@@ -72,33 +72,38 @@ class DetailsContainer extends Component<Props, State> {
 
         let url;
         let method;
-        if (mode === 'create') {
-            url = `http://172.31.44.202:5000/api/devices/bartek'sDeviceId/tasks`;
-            method = 'POST';
-        }
-        if (mode === 'edit') {
-            url = `http://172.31.44.202:5000/api//devices/bartek'sDeviceId/tasks/5e8cb38707b58336ec63f4b8`;
-            method = 'PATCH';
-        }
+        // if (mode === 'create') {
+        //     url = `http://172.31.44.202:5000/api/devices/bartek'sDeviceId/tasks`;
+        //     method = 'POST';
+        // }
+        // if (mode === 'edit') {
+        //     url = `http://172.31.44.202:5000/api//devices/bartek'sDeviceId/tasks/5e8cb38707b58336ec63f4b8`;
+        //     method = 'PATCH';
+        // }
 
         this.setState({
             isSubmitting: true,
         });
-        fetch(url, {
-            method: method,
+        fetch(`http://172.31.44.202:5000/api/devices/bartek'sDeviceId/tasks/5e90bf47dd65763ac422b6fd`, {
+            method: 'PATCH',
+            headers: {
+                Accept: 'application/json',
+                'Content-Type': 'application/json',
+            },
             body: JSON.stringify(this.state.task),
         })
-            .then((response) => response.json())
             .then((response) => {
+                console.log(response);
                 !response &&
                 this.setState({
                     error: true,
                 });
-            }).catch(() => {
-            this.setState({
-                error: true,
-            });
-        }).finally(() => {
+            })
+            .catch((error) => {
+                this.setState({
+                    error: true,
+                });
+            }).finally(() => {
             this.setState({
                 isSubmitting: false,
             });
@@ -112,7 +117,7 @@ class DetailsContainer extends Component<Props, State> {
     };
 
     onRadioButtonClick = (value) => {
-        this.setState({isModalVisible: false, task: {...this.state.task, priority: value}});
+        this.setState({task: {...this.state.task, priority: value}});
     };
 
     onCancelClick = () => {
@@ -123,6 +128,14 @@ class DetailsContainer extends Component<Props, State> {
         this.setState({isModalVisible: false, task: {...this.state.task, deadlineDate: value}});
     };
 
+    onTitleChange = (value) => {
+        this.setState({task: {...this.state.task, title: value}});
+    };
+
+    onDetailsChange = (value) => {
+        this.setState({task: {...this.state.task, details: value}});
+    };
+
     render() {
         return (
             <DetailsComponent
@@ -131,6 +144,8 @@ class DetailsContainer extends Component<Props, State> {
                 isLoading={this.state.isLoading}
                 onIconClick={this.onIconClick}
                 onCancelClick={this.onCancelClick}
+                onTitleChange={this.onTitleChange}
+                onDetailsChange={this.onDetailsChange}
                 onRadioButtonClick={this.onRadioButtonClick}
                 handleConfirm={this.handleConfirm}
                 navigation={this.props.navigation}

@@ -15,6 +15,8 @@ interface Props {
     task,
     navigation,
     saveTask,
+    onTitleChange,
+    onDetailsChange,
 }
 
 const DetailsComponent = (props: Props) => {
@@ -28,6 +30,8 @@ const DetailsComponent = (props: Props) => {
         isLoading,
         navigation,
         saveTask,
+        onTitleChange,
+        onDetailsChange,
     } = props;
 
     React.useLayoutEffect(() => {
@@ -48,12 +52,14 @@ const DetailsComponent = (props: Props) => {
                 <ScrollView>
                     <View style={styles.container}>
                         <TextInput
+                            onChangeText={onTitleChange}
                             style={styles.textInput}
                             mode='outlined'
                             value={task.title}
                             label='Title'
                         />
                         <TextInput
+                            onChangeText={onDetailsChange}
                             style={styles.textInput}
                             mode='outlined'
                             value={task.details}
