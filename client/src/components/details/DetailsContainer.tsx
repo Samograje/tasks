@@ -111,12 +111,16 @@ class DetailsContainer extends Component<Props, State> {
         });
     };
 
+    onRadioButtonClick = (value) => {
+        this.setState({isModalVisible: false, task: {...this.state.task, priority: value}});
+    };
+
     onCancelClick = () => {
         this.setState({isModalVisible: false});
     };
 
     handleConfirm = (value) => {
-        this.setState({isModalVisible: false, task: {deadlineDate: value}});
+        this.setState({isModalVisible: false, task: {...this.state.task, deadlineDate: value}});
     };
 
     render() {
@@ -127,6 +131,7 @@ class DetailsContainer extends Component<Props, State> {
                 isLoading={this.state.isLoading}
                 onIconClick={this.onIconClick}
                 onCancelClick={this.onCancelClick}
+                onRadioButtonClick={this.onRadioButtonClick}
                 handleConfirm={this.handleConfirm}
                 navigation={this.props.navigation}
                 saveTask={this.saveTask}

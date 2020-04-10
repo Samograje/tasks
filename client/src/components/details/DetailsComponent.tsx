@@ -1,6 +1,6 @@
 import React from 'react';
 import {ScrollView, StyleSheet, TouchableOpacity, View} from 'react-native';
-import {ActivityIndicator, TextInput, Text} from 'react-native-paper';
+import {ActivityIndicator, TextInput, Text, RadioButton} from 'react-native-paper';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {timeConverter, dateConverter} from '../../utils/dateTimeConverter';
@@ -9,6 +9,7 @@ interface Props {
     isModalVisible,
     onIconClick,
     onCancelClick,
+    onRadioButtonClick,
     handleConfirm,
     isLoading,
     task,
@@ -21,6 +22,7 @@ const DetailsComponent = (props: Props) => {
         isModalVisible,
         onIconClick,
         onCancelClick,
+        onRadioButtonClick,
         handleConfirm,
         task,
         isLoading,
@@ -74,10 +76,10 @@ const DetailsComponent = (props: Props) => {
                                 color={'#000000'}
                             />
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={onIconClick}>
+                        <TouchableOpacity onPress={() => console.warn('Clear date')}>
                             <MaterialCommunityIcons
                                 size={36}
-                                name={'timer'}
+                                name={'close-outline'}
                                 color={'#000000'}
                             />
                         </TouchableOpacity>
@@ -89,6 +91,26 @@ const DetailsComponent = (props: Props) => {
                         onConfirm={(data) => handleConfirm(data)}
                         onCancel={onCancelClick}
                     />
+
+                    <View style={styles.radioButtonsContainer}>
+                        <RadioButton.Group
+                            onValueChange={onRadioButtonClick}
+                            value={task.priority}
+                        >
+                            <View style={styles.radioButtonLabel}>
+                                <Text>Low</Text>
+                                <RadioButton value="low"/>
+                            </View>
+                            <View style={styles.radioButtonLabel}>
+                                <Text>Normal</Text>
+                                <RadioButton value="normal"/>
+                            </View>
+                            <View style={styles.radioButtonLabel}>
+                                <Text>High</Text>
+                                <RadioButton value="high"/>
+                            </View>
+                        </RadioButton.Group>
+                    </View>
                 </ScrollView>
             ) :
             <ActivityIndicator size='large' style={styles.activityIndicator}/>
@@ -116,6 +138,20 @@ const styles = StyleSheet.create({
     },
     saveButtonContainer: {
         margin: 20,
+    },
+    radioButtonsContainer: {
+        display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        margin: 10,
+    },
+    radioButtonLabel: {
+        alignContent: 'space-around',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginRight: 10,
+        marginLeft: 10,
     },
 });
 
