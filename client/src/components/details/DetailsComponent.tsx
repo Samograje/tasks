@@ -1,6 +1,6 @@
 import React from 'react';
 import {ScrollView, StyleSheet, TouchableOpacity, View} from 'react-native';
-import {ActivityIndicator, TextInput} from 'react-native-paper';
+import {ActivityIndicator, TextInput, Text} from 'react-native-paper';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {timeConverter, dateConverter} from '../../utils/dateTimeConverter';
@@ -14,6 +14,8 @@ interface Props {
     isLoading,
     title,
     description,
+    navigation,
+    saveTask,
 }
 
 const DetailsComponent = (props: Props) => {
@@ -26,7 +28,22 @@ const DetailsComponent = (props: Props) => {
         title,
         description,
         isLoading,
+        navigation,
+        saveTask,
     } = props;
+
+    React.useLayoutEffect(() => {
+        navigation.setOptions({
+            headerRight: () => (
+                <TouchableOpacity
+                    style={styles.saveButtonContainer}
+                    onPress={saveTask}
+                >
+                    <Text>SAVE</Text>
+                </TouchableOpacity>
+            ),
+        });
+    }, [navigation]);
 
     return (
         !isLoading ? (
@@ -100,6 +117,9 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
+    },
+    saveButtonContainer: {
+      margin: 20,
     },
 });
 

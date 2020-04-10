@@ -2,17 +2,19 @@ import React, {Component} from 'react';
 import DetailsComponent from './DetailsComponent';
 
 interface Props {
-    navigation
+    navigation,
+    mode,
+    taskId,
 }
 
 interface State {
     isModalVisible,
     deadlineDate,
-    mode,
     isLoading,
     title,
     description,
     error,
+    isSubmitting,
 }
 
 class DetailsContainer extends Component<Props, State> {
@@ -20,19 +22,19 @@ class DetailsContainer extends Component<Props, State> {
         super(props);
         this.state = {
             isLoading: false,
-            mode: 'edit',
             isModalVisible: false,
             deadlineDate: new Date(),
             title: '',
             description: '',
             error: false,
+            isSubmitting: false,
         };
     }
 
     componentDidMount(): void {
-        if (this.state.mode === 'edit') {
-            this.loadTask();
-        }
+        // if (this.props.mode === 'edit') {
+        this.loadTask();
+        // }
     }
 
     loadTask = () => {
@@ -56,6 +58,45 @@ class DetailsContainer extends Component<Props, State> {
                     error: true,
                 });
             });
+    };
+
+    saveTask = () => {
+        const {taskId, mode} = this.props;
+
+        let url;
+        let method;
+        if (mode === 'create') {
+            url = `http://172.31.44.202:5000/api/devices/bartek'sDeviceId/tasks`;
+            method = 'POST';
+        }
+        if (mode === 'edit') {
+            url = `http://172.31.44.202:5000/api//devices/bartek'sDeviceId/tasks/5e8cb38707b58336ec63f4b8`;
+            method = 'PATCH';
+        }
+
+        this.setState({
+            isSubmitting: true,
+        });
+        fetch(url, {
+            method: method,
+            body: JSON.stringify({}),
+            //TODO: stringify uzupełnić
+        })
+            .then((response) => response.json())
+            .then((response) => {
+                !response &&
+                this.setState({
+                    error: true,
+                });
+            }).catch(() => {
+                this.setState({
+                    error: true,
+                });
+            }).finally(() => {
+            this.setState({
+                isSubmitting: false,
+            });
+        });
     };
 
     onIconClick = () => {
@@ -83,6 +124,8 @@ class DetailsContainer extends Component<Props, State> {
                 onIconClick={this.onIconClick}
                 onCancelClick={this.onCancelClick}
                 handleConfirm={this.handleConfirm}
+                navigation={this.props.navigation}
+                saveTask={this.saveTask}
             />
         );
     }
