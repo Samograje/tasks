@@ -10,10 +10,8 @@ interface Props {
     onIconClick,
     onCancelClick,
     handleConfirm,
-    dateTime,
     isLoading,
-    title,
-    description,
+    task,
     navigation,
     saveTask,
 }
@@ -24,9 +22,7 @@ const DetailsComponent = (props: Props) => {
         onIconClick,
         onCancelClick,
         handleConfirm,
-        dateTime,
-        title,
-        description,
+        task,
         isLoading,
         navigation,
         saveTask,
@@ -52,23 +48,23 @@ const DetailsComponent = (props: Props) => {
                         <TextInput
                             style={styles.textInput}
                             mode='outlined'
-                            value={title}
+                            value={task.title}
                             label='Title'
                         />
                         <TextInput
                             style={styles.textInput}
                             mode='outlined'
-                            value={description}
-                            label='Description'
+                            value={task.details}
+                            label='Details'
                             multiline={true}
                         />
                     </View>
                     <TextInput
                         disabled={true}
-                        label='End date'
+                        label='Deadline date'
                         mode='outlined'
                         style={styles.textInput}
-                        value={dateTime ? `${dateConverter(dateTime)} ${timeConverter(dateTime)}` : 'Choose a date'}
+                        value={task.deadlineDate ? `${dateConverter(task.deadlineDate)} ${timeConverter(task.deadlineDate)}` : 'Choose below'}
                     />
                     <View style={styles.row}>
                         <TouchableOpacity onPress={onIconClick}>
@@ -87,7 +83,7 @@ const DetailsComponent = (props: Props) => {
                         </TouchableOpacity>
                     </View>
                     <DateTimePickerModal
-                        date={dateTime ? dateTime : new Date()}
+                        date={task.deadlineDate ? task.deadlineDate : new Date()}
                         isVisible={isModalVisible}
                         mode={'datetime'}
                         onConfirm={(data) => handleConfirm(data)}
@@ -119,7 +115,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     saveButtonContainer: {
-      margin: 20,
+        margin: 20,
     },
 });
 

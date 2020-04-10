@@ -9,25 +9,27 @@ interface Props {
 
 interface State {
     isModalVisible,
-    deadlineDate,
     isLoading,
-    title,
-    description,
     error,
     isSubmitting,
+    task,
 }
 
 class DetailsContainer extends Component<Props, State> {
     constructor(props) {
         super(props);
         this.state = {
+            task: {
+                title: '',
+                details: '',
+                inProgress: true,
+                priority: '',
+                deadlineDate: '',
+            },
             isLoading: false,
             isModalVisible: false,
-            deadlineDate: new Date(),
-            title: '',
-            description: '',
-            error: false,
             isSubmitting: false,
+            error: false,
         };
     }
 
@@ -45,19 +47,24 @@ class DetailsContainer extends Component<Props, State> {
             .then((response) => response.json())
             .then((response) => {
                 this.setState({
-                    title: response.title,
-                    description: response.details ? response.details : '',
-                    deadlineDate: response.deadlineDate ? response.deadlineDate : null,
-                    isLoading: false,
+                    task: {
+                        title: response.title,
+                        details: response.details ? response.details : '',
+                        inProgress: response.inProgress,
+                        priority: response.priority,
+                        deadlineDate: response.deadlineDate ? response.deadlineDate : '',
+                    }
                 });
             })
             .catch((error) => {
                 console.log(error);
                 this.setState({
-                    isLoading: false,
                     error: true,
                 });
-            });
+            })
+            .finally(() => this.setState({
+                isLoading: false,
+            }));
     };
 
     saveTask = () => {
@@ -79,8 +86,7 @@ class DetailsContainer extends Component<Props, State> {
         });
         fetch(url, {
             method: method,
-            body: JSON.stringify({}),
-            //TODO: stringify uzupełnić
+            body: JSON.stringify(this.state.task),
         })
             .then((response) => response.json())
             .then((response) => {
@@ -89,10 +95,10 @@ class DetailsContainer extends Component<Props, State> {
                     error: true,
                 });
             }).catch(() => {
-                this.setState({
-                    error: true,
-                });
-            }).finally(() => {
+            this.setState({
+                error: true,
+            });
+        }).finally(() => {
             this.setState({
                 isSubmitting: false,
             });
@@ -110,17 +116,15 @@ class DetailsContainer extends Component<Props, State> {
     };
 
     handleConfirm = (value) => {
-        this.setState({isModalVisible: false, deadlineDate: value});
+        this.setState({isModalVisible: false, task: {deadlineDate: value}});
     };
 
     render() {
         return (
             <DetailsComponent
                 isModalVisible={this.state.isModalVisible}
-                dateTime={this.state.deadlineDate}
+                task={this.state.task}
                 isLoading={this.state.isLoading}
-                title={this.state.title}
-                description={this.state.description}
                 onIconClick={this.onIconClick}
                 onCancelClick={this.onCancelClick}
                 handleConfirm={this.handleConfirm}
