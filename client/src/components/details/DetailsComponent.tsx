@@ -1,6 +1,6 @@
 import React from 'react';
 import {ScrollView, StyleSheet, TouchableOpacity, View} from 'react-native';
-import {ActivityIndicator, TextInput, Text, RadioButton} from 'react-native-paper';
+import {ActivityIndicator, TextInput, Text, RadioButton, Snackbar} from 'react-native-paper';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {timeConverter, dateConverter} from '../../utils/dateTimeConverter';
@@ -12,11 +12,16 @@ interface Props {
     onRadioButtonClick,
     handleConfirm,
     isLoading,
+    isSubmitting,
     task,
     navigation,
     saveTask,
     onTitleChange,
     onDetailsChange,
+    onDismissSnackbar,
+    onClearIconClick,
+    isSnackbarVisible,
+    snackbarText,
 }
 
 const DetailsComponent = (props: Props) => {
@@ -25,6 +30,7 @@ const DetailsComponent = (props: Props) => {
         onIconClick,
         onCancelClick,
         onRadioButtonClick,
+        onClearIconClick,
         handleConfirm,
         task,
         isLoading,
@@ -32,12 +38,17 @@ const DetailsComponent = (props: Props) => {
         saveTask,
         onTitleChange,
         onDetailsChange,
+        onDismissSnackbar,
+        isSubmitting,
+        isSnackbarVisible,
+        snackbarText,
     } = props;
 
     React.useLayoutEffect(() => {
         navigation.setOptions({
             headerRight: () => (
                 <TouchableOpacity
+                    disabled={isSubmitting || isLoading}
                     style={styles.saveButtonContainer}
                     onPress={saveTask}
                 >
@@ -49,6 +60,7 @@ const DetailsComponent = (props: Props) => {
 
     return (
         !isLoading ? (
+            <>
                 <ScrollView>
                     <View style={styles.container}>
                         <TextInput
@@ -82,7 +94,7 @@ const DetailsComponent = (props: Props) => {
                                 color={'#000000'}
                             />
                         </TouchableOpacity>
-                        <TouchableOpacity onPress={() => console.warn('Clear date')}>
+                        <TouchableOpacity onPress={onClearIconClick}>
                             <MaterialCommunityIcons
                                 size={36}
                                 name={'close-outline'}
@@ -117,7 +129,16 @@ const DetailsComponent = (props: Props) => {
                             </View>
                         </RadioButton.Group>
                     </View>
+
                 </ScrollView>
+                <Snackbar
+                    style={styles.snackbar}
+                    visible={isSnackbarVisible}
+                    onDismiss={onDismissSnackbar}
+                >
+                    {snackbarText}
+                </Snackbar>
+                </>
             ) :
             <ActivityIndicator size='large' style={styles.activityIndicator}/>
     )
@@ -158,6 +179,10 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         marginRight: 10,
         marginLeft: 10,
+    },
+    snackbar: {
+        position: 'absolute',
+        bottom: 0,
     },
 });
 
