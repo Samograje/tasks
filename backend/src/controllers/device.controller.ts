@@ -12,7 +12,7 @@ export const getAllTasks = (req: Request, res: Response) => {
         if (err) {
             res.status(500).send(err.message);
         } else if (!device) {
-            res.status(404).send('Device not found');
+            res.send([]);
         } else {
             // get all the task of existing device
             res.send(device.tasks);
