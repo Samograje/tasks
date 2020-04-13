@@ -1,9 +1,9 @@
 import React from 'react';
-import {Button, Dimensions, FlatList, ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import { RadioButton } from 'react-native-paper';
+import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import {IconButton} from 'react-native-paper';
 
 interface Props {
-  id,
+  _id,
   title,
   inProgress,
     onEdit,
@@ -11,7 +11,7 @@ interface Props {
 
 const ListElement = (props: Props) => {
   const {
-    id,
+    _id,
     title,
     inProgress,
     onEdit,
@@ -19,13 +19,17 @@ const ListElement = (props: Props) => {
 
   return(
       <View style={styles.rowContainer}>
-        <RadioButton
-            value="first"
-            onPress={() => { console.log("Dodaje zadanie do zakończonych")}}
+        <IconButton
+            icon={inProgress ? "circle-outline" : "check"}
+            size={30}
+            onPress={() => {
+                inProgress ? console.log("inProgress") : console.log("not inp");
+            }}
         />
+
         <TouchableOpacity style={styles.content}
-                          onPress={() => {onEdit(id)}}>
-            <Text style={{width: '100%'}}>{title}</Text>
+                          onPress={() => {onEdit(_id)}}>
+            <Text style={[!inProgress ? styles.crossOver : styles.text]}>{title}</Text>
         </TouchableOpacity>
       </View>
   );
@@ -44,6 +48,12 @@ const styles = StyleSheet.create({
         width: '100%',
         justifyContent: 'center',
         // backgroundColor: 'red',
+    },
+    crossOver:{
+        textDecorationLine: 'line-through',
+    },
+    text:{
+
     }
 });
 

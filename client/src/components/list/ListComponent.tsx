@@ -1,27 +1,40 @@
 import React from 'react';
-import {Button, FlatList, ScrollView, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import {FlatList, Text, ScrollView, StyleSheet, TouchableHighlight, View} from 'react-native';
 import {IconButton, List, FAB, ActivityIndicator} from 'react-native-paper';
 import ListElement from './ListElement';
+import Swipeable from 'react-native-swipeable-row';
+
 
 interface Props {
   onCreate: () => {},
   onEdit: (taskId: number) => {},
   onSettings: () => {},
+  onDelete: (taskId: number) => any,
   navigation,
-  tasksToDo,
-  tasksDone
+  tasks:{
+    toDo:{
+      _id: number,
+      title: string,
+      inProgress: boolean,
+    }[],
+    done:{
+      _id: number,
+      title: string,
+      inProgress: boolean,
+    }[]
+  },
   isLoading,
 }
+
 
 const ListComponent = (props: Props) => {
   const {
     onCreate,
     onEdit,
     onSettings,
+    onDelete,
     navigation,
-    tasksToDo,
-    tasksDone,
+    tasks,
     isLoading,
   } = props;
 
@@ -38,6 +51,12 @@ const ListComponent = (props: Props) => {
     });
   }, [navigation]);
 
+  const leftContent = [
+      <View style={styles.leftSwipeContener}>
+        <Text style={styles.leftSwipeItemText}>Delete</Text>
+      </View>
+  ];
+
   return (
     isLoading ? ( <ActivityIndicator size='large' style={styles.activityIndicator}/>) :
     (
@@ -45,33 +64,36 @@ const ListComponent = (props: Props) => {
         <ScrollView style={styles.scrollView}>
           <View style={styles.container}>
             <FlatList
-                data={tasksToDo}
-                renderItem={({ item }) => (
-                    <ListElement id={item._id}
-                                 title={item.title}
-                                 inProgress={true}
-                                 onEdit={onEdit}
-                    />
+              data={tasks.toDo}
+              renderItem={({ item }) => (
+                <ListElement _id={item._id}
+                             title={item.title}
+                             inProgress={item.inProgress}
+                             onEdit={() => onEdit(5)}
+                />
                 )}
-                keyExtractor={item => item._id}
             />
-            {tasksDone.length > 0 &&
+            {tasks.done.length > 0 &&
             (
               <List.Section>
                 <List.Accordion
-                    title="Done"
+                    title={`Done (${tasks.done.length})`}
                 >
                   <FlatList
-                      data={tasksDone}
-                      renderItem={({ item }) => (
-                          <ListElement id={item._id}
-                                       title={item.title}
-                                       inProgress={true}
-                                       onEdit={onEdit}
-                          />
+                    data={tasks.done}
+                    renderItem={({ item}) => (
+                      <Swipeable leftContent={leftContent}
+                                 leftActionActivationDistance={200}
+                                 onLeftActionComplete={() => onDelete(item._id)}
+                      >
+                        <ListElement _id={item._id}
+                                     title={item.title}
+                                     inProgress={item.inProgress}
+                                     onEdit={() => onEdit(item._id)}
+                        />
+                      </Swipeable>
                       )}
-                      keyExtractor={item => item._id}
-                  />
+                    />
                 </List.Accordion>
               </List.Section>
             )}
@@ -96,7 +118,6 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   scrollView:{
-
   },
   container: {
     flex: 1,
@@ -119,6 +140,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  leftSwipeContener: {
+    height: 50,
+    alignItems: 'flex-end',
+    justifyContent: 'center',
+    backgroundColor: '#ff3232',
+  },
+  leftSwipeItemText:{
+    paddingRight: 20,
+  }
 });
 
 export default ListComponent;

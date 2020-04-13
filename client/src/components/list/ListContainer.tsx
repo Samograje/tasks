@@ -9,16 +9,18 @@ interface Props {
 }
 
 interface State {
-  tasksToDo: {
-      id: number,
+  tasks:{
+    toDo:{
+      _id: number,
       title: string,
       inProgress: boolean,
     }[],
-  tasksDone: {
-    id: number,
-    title: string,
-    inProgress: boolean,
-  }[],
+    done:{
+      _id: number,
+      title: string,
+      inProgress: boolean,
+    }[]
+  },
   isLoading,
 }
 
@@ -26,8 +28,10 @@ class ListContainer extends Component<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
-      tasksToDo: [],
-      tasksDone: [],
+      tasks: {
+        toDo: [],
+        done: [],
+      },
       isLoading: false,
     };
   }
@@ -35,13 +39,12 @@ class ListContainer extends Component<Props, State> {
   //#region Navigation
   onCreate = () => this.props.navigation.navigate('Details', { mode: 'create' });
 
-  onEdit = (id: number) => this.props.navigation.navigate('Details', {
-    id,
+  onEdit = (_id: number) => this.props.navigation.navigate('Details', {
+    _id,
     mode: 'edit'
   });
 
   onSettings = () => this.props.navigation.navigate('Settings');
-
   //#endregion
 
   //#region Fetching Data
@@ -62,9 +65,27 @@ class ListContainer extends Component<Props, State> {
           isLoading: false,
         }));
   };
+
+  onDelete = (_id: number) => {
+    fetch(`http://192.168.1.105:5000/api/devices/ProszeMiPoRazKolejnyTegoNieUsuwac/tasks/${_id}`, ({
+      method: 'DELETE',
+    }))
+        .then((response) => {
+          if(response.status === 200){
+            let allDoneTasks = [...this.state.tasks.done];
+            let filteredDoneTasks = allDoneTasks.filter(function(value){return value._id != _id});
+            this.setState({ tasks: { ...this.state.tasks, done: filteredDoneTasks} });
+          } else {
+            console.log("NIE UDAŁO SIĘ USUNĄĆ ZADADANIA");
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+  };
   //#endregion
 
-  //Other
+  //#region Other
   componentDidMount(): void {
     this.loadTasks();
   }
@@ -81,16 +102,15 @@ class ListContainer extends Component<Props, State> {
       }
     });
 
-    this.setState({
-      tasksToDo: tasksToDo,
-      tasksDone: tasksDone
-    });
+    this.setState({ tasks: { ...this.state.tasks, toDo: tasksToDo} });
+    this.setState({ tasks: { ...this.state.tasks, done: tasksDone} });
   };
+
+  //#endregion
 
   render() {
     const{
-      tasksToDo,
-      tasksDone,
+      tasks,
       isLoading,
     } = this.state;
 
@@ -99,9 +119,9 @@ class ListContainer extends Component<Props, State> {
         onCreate={this.onCreate}
         onEdit={this.onEdit}
         onSettings={this.onSettings}
+        onDelete={this.onDelete}
         navigation={this.props.navigation}
-        tasksToDo={tasksToDo}
-        tasksDone={tasksDone}
+        tasks={tasks}
         isLoading={isLoading}
       />
     );
