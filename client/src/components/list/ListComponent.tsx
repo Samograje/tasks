@@ -2,8 +2,6 @@ import React from 'react';
 import {FlatList, Text, ScrollView, StyleSheet, View, SafeAreaView} from 'react-native';
 import {IconButton, List, FAB, ActivityIndicator, Snackbar} from 'react-native-paper';
 import ListElement from './ListElement';
-import Swipeable from 'react-native-swipeable-row';
-
 
 interface Props {
   onCreate: () => {},
@@ -60,12 +58,6 @@ const ListComponent = (props: Props) => {
     });
   }, [navigation]);
 
-  const leftContent = [
-      <View style={styles.leftSwipeContener}>
-        <Text style={styles.leftSwipeItemText}>Delete</Text>
-      </View>
-  ];
-
   return (
     isLoading ? ( <ActivityIndicator size='large' style={styles.activityIndicator}/>) :
     (
@@ -79,6 +71,7 @@ const ListComponent = (props: Props) => {
                              title={item.title}
                              inProgress={item.inProgress}
                              onEdit={() => onEdit(item._id)}
+                             onDelete={() => onDelete(item._id)}
                              changeProgress={() => changeProgress(item._id, item.inProgress)}
                 />
                 )}
@@ -90,30 +83,23 @@ const ListComponent = (props: Props) => {
                 <List.Accordion
                     title={`Done (${tasks.done.length})`}
                 >
-
-                    <FlatList
-                      data={tasks.done}
-                      refreshing={true}
-                      renderItem={({ item, index}) => (
-                        <Swipeable leftContent={leftContent}
-                                   leftActionActivationDistance={200}
-                                   onLeftActionComplete={() => onDelete(item._id)}
-                        >
-                          <ListElement _id={item._id}
-                                       title={item.title}
-                                       inProgress={item.inProgress}
-                                       onEdit={() => onEdit(item._id)}
-                                       changeProgress={() => changeProgress(item._id, item.inProgress)}
-                          />
-                        </Swipeable>
-                        )}
-                      keyExtractor={(item, index) => index.toString()}
-                      />
-
+                  <FlatList
+                    data={tasks.done}
+                    refreshing={true}
+                    renderItem={({ item, index}) => (
+                        <ListElement _id={item._id}
+                                     title={item.title}
+                                     inProgress={item.inProgress}
+                                     onEdit={() => onEdit(item._id)}
+                                     changeProgress={() => changeProgress(item._id, item.inProgress)}
+                                     onDelete={() => onDelete(item._id)}
+                        />
+                      )}
+                    keyExtractor={(item, index) => index.toString()}
+                    />
                 </List.Accordion>
               </List.Section>
             )}
-
           </View>
         </ScrollView>
         <Snackbar
@@ -140,6 +126,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   scrollView:{
+
   },
   container: {
     flex: 1,
@@ -161,15 +148,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  leftSwipeContener: {
-    height: 50,
-    alignItems: 'flex-end',
-    justifyContent: 'center',
-    backgroundColor: '#ff3232',
-  },
-  leftSwipeItemText:{
-    paddingRight: 20,
   },
   snackbar: {
     position: 'absolute',
