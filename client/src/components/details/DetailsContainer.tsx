@@ -2,8 +2,8 @@ import React, {Component} from 'react';
 import DetailsComponent from './DetailsComponent';
 
 interface Props {
-    navigation,
     mode,
+    navigation,
     taskId,
 }
 
@@ -24,7 +24,7 @@ class DetailsContainer extends Component<Props, State> {
                 title: '',
                 details: '',
                 inProgress: true,
-                priority: '',
+                priority: 'low',
                 deadlineDate: '',
             },
             isLoading: false,
@@ -164,22 +164,22 @@ class DetailsContainer extends Component<Props, State> {
     render() {
         return (
             <DetailsComponent
-                isModalVisible={this.state.isModalVisible}
-                task={this.state.task}
-                isLoading={this.state.isLoading}
-                isSubmitting={this.state.isSubmitting}
-                onIconClick={this.onIconClick}
-                onCancelClick={this.onCancelClick}
-                onTitleChange={this.onTitleChange}
-                onDetailsChange={this.onDetailsChange}
-                onRadioButtonClick={this.onRadioButtonClick}
-                onClearIconClick={this.onClearIconClick}
                 handleConfirm={this.handleConfirm}
+                isLoading={this.state.isLoading}
+                isModalVisible={this.state.isModalVisible}
+                isSnackbarVisible={this.state.isSnackbarVisible}
+                isSubmitting={this.state.isSubmitting}
+                onCancelClick={this.onCancelClick}
+                onClearIconClick={this.onClearIconClick}
+                onDetailsChange={this.onDetailsChange}
+                onDismissSnackbar={this.onDismissSnackbar}
+                onIconClick={this.onIconClick}
+                onRadioButtonClick={this.onRadioButtonClick}
+                onTitleChange={this.onTitleChange}
                 navigation={this.props.navigation}
                 saveTask={this.saveTask}
-                onDismissSnackbar={this.onDismissSnackbar}
-                isSnackbarVisible={this.state.isSnackbarVisible}
                 snackbarText={this.state.snackbarText}
+                task={this.state.task}
             />
         );
     }

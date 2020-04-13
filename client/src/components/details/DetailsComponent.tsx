@@ -6,42 +6,42 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import {timeConverter, dateConverter} from '../../utils/dateTimeConverter';
 
 interface Props {
-    isModalVisible,
-    onIconClick,
-    onCancelClick,
-    onRadioButtonClick,
     handleConfirm,
     isLoading,
+    isModalVisible,
+    isSnackbarVisible,
     isSubmitting,
-    task,
-    navigation,
-    saveTask,
-    onTitleChange,
+    onCancelClick,
+    onClearIconClick,
     onDetailsChange,
     onDismissSnackbar,
-    onClearIconClick,
-    isSnackbarVisible,
+    onIconClick,
+    onRadioButtonClick,
+    onTitleChange,
+    navigation,
+    saveTask,
     snackbarText,
+    task,
 }
 
 const DetailsComponent = (props: Props) => {
     const {
-        isModalVisible,
-        onIconClick,
-        onCancelClick,
-        onRadioButtonClick,
-        onClearIconClick,
         handleConfirm,
-        task,
         isLoading,
-        navigation,
-        saveTask,
-        onTitleChange,
+        isModalVisible,
+        isSnackbarVisible,
+        isSubmitting,
+        onCancelClick,
+        onClearIconClick,
         onDetailsChange,
         onDismissSnackbar,
-        isSubmitting,
-        isSnackbarVisible,
+        onIconClick,
+        onRadioButtonClick,
+        onTitleChange,
+        navigation,
+        saveTask,
         snackbarText,
+        task,
     } = props;
 
     React.useLayoutEffect(() => {
@@ -145,26 +145,13 @@ const DetailsComponent = (props: Props) => {
 };
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-    },
-    textInput: {
-        margin: 10,
-    },
-    row: {
-        display: 'flex',
-        flexDirection: 'row',
-        alignContent: 'space-around',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
     activityIndicator: {
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
     },
-    saveButtonContainer: {
-        margin: 20,
+    container: {
+        flex: 1,
     },
     radioButtonsContainer: {
         display: 'flex',
@@ -180,9 +167,22 @@ const styles = StyleSheet.create({
         marginRight: 10,
         marginLeft: 10,
     },
+    row: {
+        display: 'flex',
+        flexDirection: 'row',
+        alignContent: 'space-around',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    saveButtonContainer: {
+        margin: 20,
+    },
     snackbar: {
         position: 'absolute',
         bottom: 0,
+    },
+    textInput: {
+        margin: 10,
     },
 });
 
