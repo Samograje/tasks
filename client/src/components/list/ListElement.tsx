@@ -3,9 +3,9 @@ import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {IconButton} from 'react-native-paper';
 
 interface Props {
-  _id,
-  title,
-  inProgress,
+    _id,
+    title,
+    inProgress,
     onEdit,
     changeProgress,
 }
@@ -20,19 +20,19 @@ const ListElement = (props: Props) => {
   } = props;
 
   return(
-      <View style={styles.rowContainer}>
-        <IconButton
-            icon={inProgress ? "circle-outline" : "check"}
-            size={30}
-            onPress={() => {changeProgress(_id, inProgress)}}
-        />
+  <View style={styles.rowContainer}>
+    <IconButton
+        icon={inProgress ? "circle-outline" : "check"}
+        size={30}
+        onPress={() => {changeProgress(_id, inProgress)}}
+    />
 
-        <TouchableOpacity style={styles.content}
-                          onPress={() => {onEdit(_id)}}
-        >
-            <Text style={[!inProgress ? styles.crossOver : styles.text]}>{title}</Text>
-        </TouchableOpacity>
-      </View>
+    <TouchableOpacity style={styles.content}
+                      onPress={() => {onEdit(_id)}}
+    >
+        <Text style={[!inProgress ? styles.crossOver : styles.text]}>{title}</Text>
+    </TouchableOpacity>
+  </View>
   );
 };
 

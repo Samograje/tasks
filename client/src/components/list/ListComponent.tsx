@@ -1,6 +1,6 @@
 import React from 'react';
-import {FlatList, Text, ScrollView, StyleSheet, TouchableHighlight, View} from 'react-native';
-import {IconButton, List, FAB, ActivityIndicator} from 'react-native-paper';
+import {FlatList, Text, ScrollView, StyleSheet, View, SafeAreaView} from 'react-native';
+import {IconButton, List, FAB, ActivityIndicator, Snackbar} from 'react-native-paper';
 import ListElement from './ListElement';
 import Swipeable from 'react-native-swipeable-row';
 
@@ -10,6 +10,7 @@ interface Props {
   onEdit: (taskId: number) => {},
   onSettings: () => {},
   onDelete: (taskId: number) => any,
+  onDismissSnackbar,
   changeProgress: (taskId: number, inProgress: boolean) => any,
   navigation,
   tasks:{
@@ -25,6 +26,10 @@ interface Props {
     }[]
   },
   isLoading,
+  snackbar:{
+    isViable: false,
+    message: "",
+  }
 }
 
 
@@ -34,10 +39,12 @@ const ListComponent = (props: Props) => {
     onEdit,
     onSettings,
     onDelete,
+    onDismissSnackbar,
     changeProgress,
     navigation,
     tasks,
     isLoading,
+    snackbar,
   } = props;
 
   React.useLayoutEffect(() => {
@@ -67,7 +74,7 @@ const ListComponent = (props: Props) => {
           <View style={styles.container}>
             <FlatList
               data={tasks.toDo}
-              renderItem={({ item }) => (
+              renderItem={({ item, index}) => (
                 <ListElement _id={item._id}
                              title={item.title}
                              inProgress={item.inProgress}
@@ -75,6 +82,7 @@ const ListComponent = (props: Props) => {
                              changeProgress={() => changeProgress(item._id, item.inProgress)}
                 />
                 )}
+              keyExtractor={(item, index) => index.toString()}
             />
             {tasks.done.length > 0 &&
             (
@@ -82,30 +90,39 @@ const ListComponent = (props: Props) => {
                 <List.Accordion
                     title={`Done (${tasks.done.length})`}
                 >
-                  <FlatList
-                    data={tasks.done}
-                    refreshing={true}
-                    renderItem={({ item}) => (
-                      <Swipeable leftContent={leftContent}
-                                 leftActionActivationDistance={200}
-                                 onLeftActionComplete={() => onDelete(item._id)}
-                      >
-                        <ListElement _id={item._id}
-                                     title={item.title}
-                                     inProgress={item.inProgress}
-                                     onEdit={() => onEdit(item._id)}
-                                     changeProgress={() => changeProgress(item._id, item.inProgress)}
-                        />
-                      </Swipeable>
-                      )}
-                    />
+
+                    <FlatList
+                      data={tasks.done}
+                      refreshing={true}
+                      renderItem={({ item, index}) => (
+                        <Swipeable leftContent={leftContent}
+                                   leftActionActivationDistance={200}
+                                   onLeftActionComplete={() => onDelete(item._id)}
+                        >
+                          <ListElement _id={item._id}
+                                       title={item.title}
+                                       inProgress={item.inProgress}
+                                       onEdit={() => onEdit(item._id)}
+                                       changeProgress={() => changeProgress(item._id, item.inProgress)}
+                          />
+                        </Swipeable>
+                        )}
+                      keyExtractor={(item, index) => index.toString()}
+                      />
+
                 </List.Accordion>
               </List.Section>
             )}
 
           </View>
         </ScrollView>
-
+        <Snackbar
+            style={styles.snackbar}
+            visible={snackbar.isViable}
+            onDismiss={onDismissSnackbar}
+        >
+          {snackbar.message}
+        </Snackbar>
         <View style={styles.fixedView}>
           <FAB
               style={styles.fab}
@@ -153,7 +170,11 @@ const styles = StyleSheet.create({
   },
   leftSwipeItemText:{
     paddingRight: 20,
-  }
+  },
+  snackbar: {
+    position: 'absolute',
+    bottom: 0,
+  },
 });
 
 export default ListComponent;

@@ -22,6 +22,10 @@ interface State {
     }[]
   },
   isLoading,
+  snackbar:{
+    isViable,
+    message,
+  }
 }
 
 class ListContainer extends Component<Props, State> {
@@ -33,10 +37,17 @@ class ListContainer extends Component<Props, State> {
         done: [],
       },
       isLoading: false,
+      snackbar:{
+        isViable: false,
+        message: "",
+      }
     };
   }
 
-  //#region Navigation
+  componentDidMount(): void {
+    this.loadTasks();
+  }
+
   onCreate = () => this.props.navigation.navigate('Details', { mode: 'create' });
 
   onEdit = (_id: number) => this.props.navigation.navigate('Details', {
@@ -45,9 +56,17 @@ class ListContainer extends Component<Props, State> {
   });
 
   onSettings = () => this.props.navigation.navigate('Settings');
-  //#endregion
 
-  //#region Fetching Data
+  showSnackbar = (text) => {
+    this.setState({
+      snackbar: { ...this.state.snackbar, isViable: true, message: text}
+    });
+  };
+
+  onDismissSnackbar = () => this.setState({
+    snackbar: { ...this.state.snackbar, isViable: false, message: ""}
+  });
+
   loadTasks = () => {
     this.setState({
       isLoading: true,
@@ -59,84 +78,11 @@ class ListContainer extends Component<Props, State> {
         })
         .catch((error) => {
           console.log(error);
-          // this.showSnackbar('Error while fetching task.');
+          this.showSnackbar('Error while fetching tasks.');
         })
         .finally(() => this.setState({
           isLoading: false,
         }));
-  };
-
-  onDelete = (_id: number) => {
-    fetch(`http://192.168.1.105:5000/api/devices/ProszeMiPoRazKolejnyTegoNieUsuwac/tasks/${_id}`, ({
-      method: 'DELETE',
-    }))
-        .then((response) => {
-          if(response.status === 200){
-            let allDoneTasks = [...this.state.tasks.done];
-            let filteredDoneTasks = allDoneTasks.filter(function(value){return value._id != _id});
-            this.setState({ tasks: { ...this.state.tasks, done: filteredDoneTasks} });
-          } else {
-            console.log("NIE UDAŁO SIĘ USUNĄĆ ZADADANIA");
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        })
-  };
-
-  changeProgress = (_id: number, inProgress: boolean) => {
-    fetch(`http://192.168.1.105:5000/api/devices/ProszeMiPoRazKolejnyTegoNieUsuwac/tasks/${_id}/finished`, ({
-      method: 'PATCH',
-      body: JSON.stringify({inProgress: !inProgress}),
-      headers:{
-        "Content-type": "application/json"
-      }
-    }))
-        .then((response) => {
-          if(response.status === 200){
-            this.changeStatusStatus200Logic(_id, inProgress);
-            console.log("ZAKTUALIZOWALO SIE");
-          } else {
-            console.log("NIE UDAŁO SIĘ ZAKTUALIZOWA STATUSU");
-          }
-        })
-        .catch((error) => {
-          console.log(error);
-        })
-  };
-  //#endregion
-
-  //#region Other
-  componentDidMount(): void {
-    this.loadTasks();
-  }
-
-  changeStatusStatus200Logic = (_id: number, inProgress) => {
-    let tasksToDo = [...this.state.tasks.toDo];
-    let tasksDone = [...this.state.tasks.done];
-    let newTasksToDo = []; let newTasksDone = [];
-    if(inProgress){ //To_do -> Done
-      tasksToDo.forEach(function(item){
-        if(item._id != _id){
-          newTasksToDo.push(item);
-        } else{
-          item.inProgress = !inProgress;
-          tasksDone.unshift(item);
-        }
-      });
-      this.setState({ tasks: { ...this.state.tasks, toDo: newTasksToDo, done: tasksDone}});
-    } else{ //Done -> to_do
-      tasksDone.forEach(function(item){
-        if(item._id != _id){
-          newTasksDone.push(item);
-        } else{
-          item.inProgress = !inProgress;
-          tasksToDo.unshift(item);
-        }
-      });
-      this.setState({ tasks: { ...this.state.tasks, toDo: tasksToDo, done: newTasksDone}});
-    }
-
   };
 
   separateTasksAndSetState = (response) => {
@@ -150,28 +96,113 @@ class ListContainer extends Component<Props, State> {
         tasksDone.push(item);
       }
     });
-    this.setState({ tasks: { ...this.state.tasks, toDo: tasksToDo} });
-    this.setState({ tasks: { ...this.state.tasks, done: tasksDone} });
+    this.setState({
+      tasks: { ...this.state.tasks, toDo: tasksToDo, done: tasksDone}
+    });
+
   };
 
-  //#endregion
+  onDelete = (_id: number) => {
+    fetch(`http://192.168.1.105:5000/api/devices/ProszeMiPoRazKolejnyTegoNieUsuwac/tasks/${_id}`, ({
+      method: 'DELETE',
+    }))
+        .then((response) => {
+          if(response.status === 200){
+            let tasksDone = [...this.state.tasks.done];
+            let newTasksDone = tasksDone.filter(function(value){return value._id != _id});
+            this.showSnackbar('Task deleted.');
+            this.setState({ tasks: { ...this.state.tasks, done: newTasksDone} });
+          } else {
+            this.showSnackbar('Error while deleting task.');
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          this.showSnackbar('Error while deleting task.');
+        })
+  };
+
+  changeProgress = (_id: number, inProgress: boolean) => {
+    fetch(`http://192.168.1.105:5000/api/devices/ProszeMiPoRazKolejnyTegoNieUsuwac/tasks/${_id}/finished`, ({
+      method: 'PATCH',
+      body: JSON.stringify({inProgress: !inProgress}),
+      headers:{
+        "Content-type": "application/json"
+      }
+    }))
+        .then((response) => {
+          if(response.status === 200){
+            this.changeStatusLogic(_id, inProgress);
+          } else {
+            this.showSnackbar('Error while changing status.');
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+          this.showSnackbar('Error while changing status.');
+        })
+  };
+
+  changeStatusLogic = (_id: number, inProgress) => {
+    let tasksToDo = [...this.state.tasks.toDo];
+    let tasksDone = [...this.state.tasks.done];
+    if(inProgress){ //To_do -> Done
+      let newTasksToDo = [];
+      tasksToDo.forEach(function(item){
+        if(item._id != _id){
+          newTasksToDo.push(item);
+        } else{
+          item.inProgress = !inProgress;
+          tasksDone.unshift(item);
+        }
+      });
+      this.setState({ tasks: { ...this.state.tasks, toDo: newTasksToDo, done: tasksDone}});
+    } else{ //Done -> to_do
+      let newTasksDone = [];
+      tasksDone.forEach(function(item){
+        if(item._id != _id){
+          newTasksDone.push(item);
+        } else{
+          item.inProgress = !inProgress;
+          tasksToDo.push(item);
+        }
+      });
+      this.setState({ tasks: { ...this.state.tasks, toDo: tasksToDo, done: newTasksDone}});
+    }
+  };
 
   render() {
     const{
+      onCreate,
+      onEdit,
+      onSettings,
+      onDelete,
+      onDismissSnackbar,
+      changeProgress,
+    } = this;
+
+    const{
       tasks,
       isLoading,
+      snackbar,
     } = this.state;
+
+    const{
+      navigation
+    } = this.props;
 
     return (
       <ListComponent
-        onCreate={this.onCreate}
-        onEdit={this.onEdit}
-        onSettings={this.onSettings}
-        onDelete={this.onDelete}
-        navigation={this.props.navigation}
+        onCreate={onCreate}
+        onEdit={onEdit}
+        onSettings={onSettings}
+        onDelete={onDelete}
+        changeProgress={changeProgress}
+        onDismissSnackbar={onDismissSnackbar}
+        navigation={navigation}
         tasks={tasks}
         isLoading={isLoading}
-        changeProgress={this.changeProgress}
+        snackbar={snackbar}
       />
     );
   }
