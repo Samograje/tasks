@@ -7,6 +7,7 @@ interface Props {
   title,
   inProgress,
     onEdit,
+    changeProgress,
 }
 
 const ListElement = (props: Props) => {
@@ -15,6 +16,7 @@ const ListElement = (props: Props) => {
     title,
     inProgress,
     onEdit,
+    changeProgress,
   } = props;
 
   return(
@@ -22,13 +24,12 @@ const ListElement = (props: Props) => {
         <IconButton
             icon={inProgress ? "circle-outline" : "check"}
             size={30}
-            onPress={() => {
-                inProgress ? console.log("inProgress") : console.log("not inp");
-            }}
+            onPress={() => {changeProgress(_id, inProgress)}}
         />
 
         <TouchableOpacity style={styles.content}
-                          onPress={() => {onEdit(_id)}}>
+                          onPress={() => {onEdit(_id)}}
+        >
             <Text style={[!inProgress ? styles.crossOver : styles.text]}>{title}</Text>
         </TouchableOpacity>
       </View>
@@ -37,7 +38,6 @@ const ListElement = (props: Props) => {
 
 const styles = StyleSheet.create({
     rowContainer:{
-        // backgroundColor: 'yellow',
         flexDirection: 'row',
         height: 50,
         marginBottom: 5,
@@ -47,7 +47,6 @@ const styles = StyleSheet.create({
         height: '100%',
         width: '100%',
         justifyContent: 'center',
-        // backgroundColor: 'red',
     },
     crossOver:{
         textDecorationLine: 'line-through',

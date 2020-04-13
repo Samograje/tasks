@@ -10,6 +10,7 @@ interface Props {
   onEdit: (taskId: number) => {},
   onSettings: () => {},
   onDelete: (taskId: number) => any,
+  changeProgress: (taskId: number, inProgress: boolean) => any,
   navigation,
   tasks:{
     toDo:{
@@ -33,6 +34,7 @@ const ListComponent = (props: Props) => {
     onEdit,
     onSettings,
     onDelete,
+    changeProgress,
     navigation,
     tasks,
     isLoading,
@@ -69,7 +71,8 @@ const ListComponent = (props: Props) => {
                 <ListElement _id={item._id}
                              title={item.title}
                              inProgress={item.inProgress}
-                             onEdit={() => onEdit(5)}
+                             onEdit={() => onEdit(item._id)}
+                             changeProgress={() => changeProgress(item._id, item.inProgress)}
                 />
                 )}
             />
@@ -81,6 +84,7 @@ const ListComponent = (props: Props) => {
                 >
                   <FlatList
                     data={tasks.done}
+                    refreshing={true}
                     renderItem={({ item}) => (
                       <Swipeable leftContent={leftContent}
                                  leftActionActivationDistance={200}
@@ -90,6 +94,7 @@ const ListComponent = (props: Props) => {
                                      title={item.title}
                                      inProgress={item.inProgress}
                                      onEdit={() => onEdit(item._id)}
+                                     changeProgress={() => changeProgress(item._id, item.inProgress)}
                         />
                       </Swipeable>
                       )}

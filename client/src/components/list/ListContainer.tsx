@@ -83,12 +83,61 @@ class ListContainer extends Component<Props, State> {
           console.log(error);
         })
   };
+
+  changeProgress = (_id: number, inProgress: boolean) => {
+    fetch(`http://192.168.1.105:5000/api/devices/ProszeMiPoRazKolejnyTegoNieUsuwac/tasks/${_id}/finished`, ({
+      method: 'PATCH',
+      body: JSON.stringify({inProgress: !inProgress}),
+      headers:{
+        "Content-type": "application/json"
+      }
+    }))
+        .then((response) => {
+          if(response.status === 200){
+            this.changeStatusStatus200Logic(_id, inProgress);
+            console.log("ZAKTUALIZOWALO SIE");
+          } else {
+            console.log("NIE UDAŁO SIĘ ZAKTUALIZOWA STATUSU");
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+  };
   //#endregion
 
   //#region Other
   componentDidMount(): void {
     this.loadTasks();
   }
+
+  changeStatusStatus200Logic = (_id: number, inProgress) => {
+    let tasksToDo = [...this.state.tasks.toDo];
+    let tasksDone = [...this.state.tasks.done];
+    let newTasksToDo = []; let newTasksDone = [];
+    if(inProgress){ //To_do -> Done
+      tasksToDo.forEach(function(item){
+        if(item._id != _id){
+          newTasksToDo.push(item);
+        } else{
+          item.inProgress = !inProgress;
+          tasksDone.unshift(item);
+        }
+      });
+      this.setState({ tasks: { ...this.state.tasks, toDo: newTasksToDo, done: tasksDone}});
+    } else{ //Done -> to_do
+      tasksDone.forEach(function(item){
+        if(item._id != _id){
+          newTasksDone.push(item);
+        } else{
+          item.inProgress = !inProgress;
+          tasksToDo.unshift(item);
+        }
+      });
+      this.setState({ tasks: { ...this.state.tasks, toDo: tasksToDo, done: newTasksDone}});
+    }
+
+  };
 
   separateTasksAndSetState = (response) => {
     const tasksToDo = [];
@@ -101,7 +150,6 @@ class ListContainer extends Component<Props, State> {
         tasksDone.push(item);
       }
     });
-
     this.setState({ tasks: { ...this.state.tasks, toDo: tasksToDo} });
     this.setState({ tasks: { ...this.state.tasks, done: tasksDone} });
   };
@@ -123,6 +171,7 @@ class ListContainer extends Component<Props, State> {
         navigation={this.props.navigation}
         tasks={tasks}
         isLoading={isLoading}
+        changeProgress={this.changeProgress}
       />
     );
   }
