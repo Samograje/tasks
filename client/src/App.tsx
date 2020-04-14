@@ -10,7 +10,7 @@ const Stack = createStackNavigator();
 const App = () => (
   <NavigationContainer>
     <Stack.Navigator
-      initialRouteName="Details"
+      initialRouteName="List"
       screenOptions={{
         headerStyle: {
           backgroundColor: '2E8B57',

@@ -2,18 +2,24 @@ import React, {Component} from 'react';
 import DetailsComponent from './DetailsComponent';
 
 interface Props {
-    mode,
+    mode: string,
     navigation,
-    taskId,
+    taskId: string,
 }
 
 interface State {
-    isLoading,
-    isModalVisible,
-    isSnackbarVisible,
-    isSubmitting,
-    snackbarText,
-    task,
+    isLoading: boolean,
+    isModalVisible: boolean,
+    isSnackbarVisible: boolean,
+    isSubmitting: boolean,
+    snackbarText: string,
+    task: {
+        title: string,
+        details: string,
+        inProgress: boolean,
+        priority: string,
+        deadlineDate: Date,
+    },
 }
 
 class DetailsContainer extends Component<Props, State> {
@@ -25,7 +31,7 @@ class DetailsContainer extends Component<Props, State> {
                 details: '',
                 inProgress: true,
                 priority: 'low',
-                deadlineDate: '',
+                deadlineDate: null,
             },
             isLoading: false,
             isModalVisible: false,
@@ -36,9 +42,9 @@ class DetailsContainer extends Component<Props, State> {
     }
 
     componentDidMount(): void {
-        // if (this.props.mode === 'edit') {
-        this.loadTask();
-        // }
+        if (this.props.mode === 'edit') {
+            this.loadTask();
+        }
     }
 
     loadTask = () => {
@@ -72,20 +78,20 @@ class DetailsContainer extends Component<Props, State> {
 
         let url;
         let method;
-        // if (mode === 'create') {
-        //     url = `http://172.31.44.202:5000/api/devices/bartek'sDeviceId/tasks`;
-        //     method = 'POST';
-        // }
-        // if (mode === 'edit') {
-        //     url = `http://172.31.44.202:5000/api//devices/bartek'sDeviceId/tasks/5e8cb38707b58336ec63f4b8`;
-        //     method = 'PATCH';
-        // }
+        if (mode === 'create') {
+            url = `http://172.31.44.202:5000/api/devices/bartek'sDeviceId/tasks`;
+            method = 'POST';
+        }
+        if (mode === 'edit') {
+            url = `http://172.31.44.202:5000/api/devices/bartek'sDeviceId/tasks/${taskId}`;
+            method = 'PATCH';
+        }
 
         this.setState({
             isSubmitting: true,
         });
-        fetch(`http://172.31.44.202:5000/api/devices/bartek'sDeviceId/tasks/5e90c2c0dd65763ac422b6fe`, {
-            method: 'PATCH',
+        fetch(url, {
+            method: method,
             headers: {
                 Accept: 'application/json',
                 'Content-Type': 'application/json',
@@ -107,7 +113,7 @@ class DetailsContainer extends Component<Props, State> {
         });
     };
 
-    showSnackbar = (text) => {
+    showSnackbar = (text: string) => {
         this.setState({
             snackbarText: text,
             isSnackbarVisible: true,
@@ -128,11 +134,11 @@ class DetailsContainer extends Component<Props, State> {
 
     onClearIconClick = () => {
         this.setState({
-            task: {...this.state.task, deadlineDate: ''}
+            task: {...this.state.task, deadlineDate: null}
         });
     };
 
-    onRadioButtonClick = (value) => {
+    onRadioButtonClick = (value: string) => {
         this.setState({
             task: {...this.state.task, priority: value}
         });
@@ -144,18 +150,18 @@ class DetailsContainer extends Component<Props, State> {
         });
     };
 
-    handleConfirm = (value) => {
+    handleConfirm = (value: Date) => {
         this.setState({
             isModalVisible: false,
             task: {...this.state.task, deadlineDate: value}
         });
     };
 
-    onTitleChange = (value) => {
+    onTitleChange = (value: string) => {
         this.setState({task: {...this.state.task, title: value}});
     };
 
-    onDetailsChange = (value) => {
+    onDetailsChange = (value: string) => {
         this.setState({
             task: {...this.state.task, details: value}
         });

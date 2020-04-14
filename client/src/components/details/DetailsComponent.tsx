@@ -6,22 +6,28 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import {timeConverter, dateConverter} from '../../utils/dateTimeConverter';
 
 interface Props {
-    handleConfirm,
-    isLoading,
-    isModalVisible,
-    isSnackbarVisible,
-    isSubmitting,
-    onCancelClick,
-    onClearIconClick,
-    onDetailsChange,
-    onDismissSnackbar,
-    onIconClick,
-    onRadioButtonClick,
-    onTitleChange,
+    handleConfirm: (data: Date)=> void,
+    isLoading: boolean,
+    isModalVisible: boolean,
+    isSnackbarVisible: boolean,
+    isSubmitting: boolean,
+    onCancelClick: () => void,
+    onClearIconClick: () => void,
+    onDetailsChange: (text: string) => void,
+    onDismissSnackbar: () => void,
+    onIconClick: () => void,
+    onRadioButtonClick: (value: string) => void,
+    onTitleChange: (text: string) => void,
     navigation,
-    saveTask,
-    snackbarText,
-    task,
+    saveTask: () => void,
+    snackbarText: string,
+    task: {
+        title: string,
+        details: string,
+        inProgress: boolean,
+        priority: string,
+        deadlineDate: Date,
+    },
 }
 
 const DetailsComponent = (props: Props) => {
@@ -90,14 +96,14 @@ const DetailsComponent = (props: Props) => {
                         <TouchableOpacity onPress={onIconClick}>
                             <MaterialCommunityIcons
                                 size={36}
-                                name={'calendar'}
+                                name={'timetable'}
                                 color={'#000000'}
                             />
                         </TouchableOpacity>
                         <TouchableOpacity onPress={onClearIconClick}>
                             <MaterialCommunityIcons
                                 size={36}
-                                name={'close-outline'}
+                                name={'close-box-outline'}
                                 color={'#000000'}
                             />
                         </TouchableOpacity>
