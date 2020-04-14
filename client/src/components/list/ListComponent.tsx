@@ -1,5 +1,5 @@
 import React from 'react';
-import {FlatList, Text, ScrollView, StyleSheet, View, SafeAreaView} from 'react-native';
+import {FlatList, ScrollView, StyleSheet, View} from 'react-native';
 import {IconButton, List, FAB, ActivityIndicator, Snackbar} from 'react-native-paper';
 import ListElement from './ListElement';
 
@@ -25,7 +25,7 @@ interface Props {
   },
   isLoading,
   snackbar:{
-    isViable: false,
+    isVisible: false,
     message: "",
   }
 }
@@ -104,7 +104,7 @@ const ListComponent = (props: Props) => {
         </ScrollView>
         <Snackbar
             style={styles.snackbar}
-            visible={snackbar.isViable}
+            visible={snackbar.isVisible}
             onDismiss={onDismissSnackbar}
         >
           {snackbar.message}

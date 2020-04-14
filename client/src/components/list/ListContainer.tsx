@@ -23,7 +23,7 @@ interface State {
   },
   isLoading,
   snackbar:{
-    isViable,
+    isVisible,
     message,
   }
 }
@@ -38,7 +38,7 @@ class ListContainer extends Component<Props, State> {
       },
       isLoading: false,
       snackbar:{
-        isViable: false,
+        isVisible: false,
         message: "",
       }
     };
@@ -59,12 +59,12 @@ class ListContainer extends Component<Props, State> {
 
   showSnackbar = (text) => {
     this.setState({
-      snackbar: { ...this.state.snackbar, isViable: true, message: text}
+      snackbar: { ...this.state.snackbar, isVisible: true, message: text}
     });
   };
 
   onDismissSnackbar = () => this.setState({
-    snackbar: { ...this.state.snackbar, isViable: false, message: ""}
+    snackbar: { ...this.state.snackbar, isVisible: false, message: ""}
   });
 
   loadTasks = () => {
@@ -89,7 +89,7 @@ class ListContainer extends Component<Props, State> {
     const tasksToDo = [];
     const tasksDone = [];
 
-    response.forEach(function(item){
+    response.forEach((item) => {
       if(item.inProgress){
         tasksToDo.push(item);
       } else{
@@ -109,7 +109,7 @@ class ListContainer extends Component<Props, State> {
         .then((response) => {
           if(response.status === 200){
             let tasksDone = [...this.state.tasks.done];
-            let newTasksDone = tasksDone.filter(function(value){return value._id != _id});
+            let newTasksDone = tasksDone.filter((value) => {return value._id != _id});
             this.showSnackbar('Task deleted.');
             this.setState({ tasks: { ...this.state.tasks, done: newTasksDone} });
           } else {
@@ -159,7 +159,7 @@ class ListContainer extends Component<Props, State> {
       this.setState({ tasks: { ...this.state.tasks, toDo: newTasksToDo, done: tasksDone}});
     } else{ //Done -> to_do
       let newTasksDone = [];
-      tasksDone.forEach(function(item){
+      tasksDone.forEach((item) => {
         if(item._id != _id){
           newTasksDone.push(item);
         } else{

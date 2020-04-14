@@ -4,12 +4,12 @@ import {IconButton} from 'react-native-paper';
 import Swipeable from 'react-native-swipeable-row';
 
 interface Props {
-    _id,
-    title,
-    inProgress,
-    onEdit,
-    onDelete,
-    changeProgress,
+    _id: number,
+    title: string,
+    inProgress: boolean,
+    onEdit: (taskId: number) => {},
+    onDelete: (taskId: number) => any,
+    changeProgress: (taskId: number, inProgress: boolean) => any,
 }
 
 const ListElement = (props: Props) => {
@@ -23,7 +23,7 @@ const ListElement = (props: Props) => {
   } = props;
 
     const leftContent = [
-        <View style={styles.leftSwipeContener} key={_id}>
+        <View style={styles.leftSwipeContainer} key={_id}>
             <Text style={styles.leftSwipeItemText}>Delete</Text>
         </View>
     ];
@@ -40,7 +40,7 @@ const ListElement = (props: Props) => {
               <TouchableOpacity style={styles.content}
                                 onPress={() => {onEdit(_id)}}
               >
-                  <Text style={[!inProgress ? styles.crossOver : styles.text]}>{title}</Text>
+                  <Text style={!inProgress ? styles.crossOver : styles.text}>{title}</Text>
               </TouchableOpacity>
           </View>
       ) : (
@@ -58,7 +58,7 @@ const ListElement = (props: Props) => {
                   <TouchableOpacity style={styles.content}
                                     onPress={() => {onEdit(_id)}}
                   >
-                      <Text style={[!inProgress ? styles.crossOver : styles.text]}>{title}</Text>
+                      <Text style={!inProgress ? styles.crossOver : styles.text}>{title}</Text>
                   </TouchableOpacity>
               </View>
           </Swipeable>
@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
     text:{
 
     },
-    leftSwipeContener: {
+    leftSwipeContainer: {
         height: 50,
         alignItems: 'flex-end',
         justifyContent: 'center',
