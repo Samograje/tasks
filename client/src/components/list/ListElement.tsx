@@ -23,7 +23,7 @@ const ListElement = (props: Props) => {
   } = props;
 
     const leftContent = [
-        <View style={styles.leftSwipeContener}>
+        <View style={styles.leftSwipeContener} key={_id}>
             <Text style={styles.leftSwipeItemText}>Delete</Text>
         </View>
     ];
