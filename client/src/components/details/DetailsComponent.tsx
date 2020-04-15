@@ -4,6 +4,7 @@ import {ActivityIndicator, TextInput, Text, RadioButton, Snackbar} from 'react-n
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {timeConverter, dateConverter} from '../../utils/dateTimeConverter';
+import {fonts} from "../../styles/common";
 
 interface Props {
     handleConfirm: (data: Date)=> void,
@@ -189,6 +190,7 @@ const styles = StyleSheet.create({
     },
     textInput: {
         margin: 10,
+        fontFamily: fonts.primary,
     },
 });
 

@@ -1,5 +1,6 @@
 import React from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import {padding} from "../../styles/common";
 
 interface Props {
   themeMode: 'light' | 'dark',

@@ -2,6 +2,7 @@ import React from 'react';
 import {FlatList, ScrollView, StyleSheet, View} from 'react-native';
 import {IconButton, List, FAB, ActivityIndicator, Snackbar} from 'react-native-paper';
 import ListElement from './ListElement';
+import {padding} from "../../styles/common";
 
 interface Props {
   onCreate: () => {},
@@ -130,7 +131,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    paddingTop: 10,
+    paddingTop: padding.sm,
   },
   settingsBtn: {
     marginRight: 10,
