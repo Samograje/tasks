@@ -2,9 +2,8 @@ import React, {Component} from 'react';
 import DetailsComponent from './DetailsComponent';
 
 interface Props {
-    mode: string,
     navigation,
-    taskId: string,
+    route,
 }
 
 interface State {
@@ -42,16 +41,20 @@ class DetailsContainer extends Component<Props, State> {
     }
 
     componentDidMount(): void {
-        if (this.props.mode === 'edit') {
+        const {mode} = this.props.route.params;
+
+        if (mode === 'edit') {
             this.loadTask();
         }
     }
 
     loadTask = () => {
+        const {_id} = this.props.route.params;
+
         this.setState({
             isLoading: true,
         });
-        fetch(`http://172.31.44.202:5000/api/devices/bartek'sDeviceId/tasks/5e90c2c0dd65763ac422b6fe`)
+        fetch(`http://172.31.44.202:5000/api/devices/ProszeMiPoRazKolejnyTegoNieUsuwac/tasks/${_id}`)
             .then((response) => response.json())
             .then((response) => {
                 this.setState({
@@ -65,7 +68,6 @@ class DetailsContainer extends Component<Props, State> {
                 });
             })
             .catch((error) => {
-                console.log(error);
                 this.showSnackbar('Error while fetching task.');
             })
             .finally(() => this.setState({
@@ -74,16 +76,16 @@ class DetailsContainer extends Component<Props, State> {
     };
 
     saveTask = () => {
-        const {taskId, mode} = this.props;
+        const {_id, mode} = this.props.route.params;
 
         let url;
         let method;
         if (mode === 'create') {
-            url = `http://172.31.44.202:5000/api/devices/bartek'sDeviceId/tasks`;
+            url = `http://172.31.44.202:5000/api/devices/ProszeMiPoRazKolejnyTegoNieUsuwac/tasks`;
             method = 'POST';
         }
         if (mode === 'edit') {
-            url = `http://172.31.44.202:5000/api/devices/bartek'sDeviceId/tasks/${taskId}`;
+            url = `http://172.31.44.202:5000/api/devices/ProszeMiPoRazKolejnyTegoNieUsuwac/tasks/${_id}`;
             method = 'PATCH';
         }
 
@@ -99,7 +101,6 @@ class DetailsContainer extends Component<Props, State> {
             body: JSON.stringify(this.state.task),
         })
             .then((response) => {
-                console.log(response);
                 response ?
                     this.showSnackbar('Saved task!') :
                     this.showSnackbar('Error while saving task');
