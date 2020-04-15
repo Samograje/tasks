@@ -71,7 +71,7 @@ class ListContainer extends Component<Props, State> {
     this.setState({
       isLoading: true,
     });
-    fetch(`http://192.168.1.105:5000/api/devices/ProszeMiPoRazKolejnyTegoNieUsuwac/tasks/`)
+    fetch(`http://172.31.44.202:5000/api/devices/ProszeMiPoRazKolejnyTegoNieUsuwac/tasks/`)
         .then((response) => response.json())
         .then((response) => {
           this.separateTasksAndSetState(response);
@@ -103,7 +103,7 @@ class ListContainer extends Component<Props, State> {
   };
 
   onDelete = (_id: number) => {
-    fetch(`http://192.168.1.105:5000/api/devices/ProszeMiPoRazKolejnyTegoNieUsuwac/tasks/${_id}`, ({
+    fetch(`http://172.31.44.202:5000/api/devices/ProszeMiPoRazKolejnyTegoNieUsuwac/tasks/${_id}`, ({
       method: 'DELETE',
     }))
         .then((response) => {
@@ -123,7 +123,7 @@ class ListContainer extends Component<Props, State> {
   };
 
   changeProgress = (_id: number, inProgress: boolean) => {
-    fetch(`http://192.168.1.105:5000/api/devices/ProszeMiPoRazKolejnyTegoNieUsuwac/tasks/${_id}/finished`, ({
+    fetch(`http://172.31.44.202:5000/api/devices/ProszeMiPoRazKolejnyTegoNieUsuwac/tasks/${_id}/finished`, ({
       method: 'PATCH',
       body: JSON.stringify({inProgress: !inProgress}),
       headers:{
