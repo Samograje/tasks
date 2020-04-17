@@ -2,9 +2,11 @@
   "scripts": {
     "android": "react-native run-android",
     "ios": "react-native run-ios",
-    "start": "react-native start"
+    "start": "react-native start",
+    "clean-gradle": "cd android & gradlew clean & cd .."
   },
   "dependencies": {
+    "@react-native-community/datetimepicker": "^2.3.1",
     "@react-native-community/masked-view": "^0.1.7",
     "@react-navigation/native": "^5.0.10",
     "@react-navigation/stack": "^5.2.0",
@@ -13,10 +15,14 @@
     "react-native": "~0.61.4",
     "react-native-device-info": "^5.5.4",
     "react-native-gesture-handler": "~1.5.0",
+    "react-native-modal-datetime-picker": "^8.5.2",
+    "react-native-paper": "^3.8.0",
     "react-native-reanimated": "~1.4.0",
     "react-native-safe-area-context": "^0.7.3",
     "react-native-screens": "2.0.0-alpha.12",
-    "react-native-unimodules": "~0.7.0"
+    "react-native-swipeable-row": "^0.8.1",
+    "react-native-unimodules": "~0.7.0",
+    "react-native-vector-icons": "^6.6.0"
   },
   "devDependencies": {
     "@babel/core": "~7.6.0",
