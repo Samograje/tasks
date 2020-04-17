@@ -2,6 +2,7 @@ import React from 'react';
 import {FlatList, ScrollView, StyleSheet, View} from 'react-native';
 import {IconButton, List, FAB, ActivityIndicator, Snackbar} from 'react-native-paper';
 import ListElement from './ListElement';
+import {colors} from "../../styles/common";
 
 interface Props {
   onCreate: () => {},
@@ -11,20 +12,20 @@ interface Props {
   onDismissSnackbar,
   changeProgress: (taskId: number, inProgress: boolean) => any,
   navigation,
-  tasks:{
-    toDo:{
+  tasks: {
+    toDo: {
       _id: number,
       title: string,
       inProgress: boolean,
     }[],
-    done:{
+    done: {
       _id: number,
       title: string,
       inProgress: boolean,
     }[]
   },
   isLoading,
-  snackbar:{
+  snackbar: {
     isVisible: false,
     message: "",
   }
@@ -48,45 +49,45 @@ const ListComponent = (props: Props) => {
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-          <IconButton
-              icon="settings-outline"
-              size={30}
-              onPress={onSettings}
-              style={styles.settingsBtn}
-          />
-          ),
+        <IconButton
+          icon="settings-outline"
+          size={30}
+          onPress={onSettings}
+          style={styles.settingsBtn}
+        />
+      ),
     });
   }, [navigation]);
 
   return (
-    isLoading ? ( <ActivityIndicator size='large' style={styles.activityIndicator}/>) :
-    (
-      <View style={styles.rootView}>
-        <ScrollView style={styles.scrollView}>
-          <View style={styles.container}>
-            <FlatList
-              data={tasks.toDo}
-              renderItem={({ item, index}) => (
-                <ListElement _id={item._id}
-                             title={item.title}
-                             inProgress={item.inProgress}
-                             onEdit={() => onEdit(item._id)}
-                             onDelete={() => onDelete(item._id)}
-                             changeProgress={() => changeProgress(item._id, item.inProgress)}
-                />
+    isLoading ? (<ActivityIndicator size='large' style={styles.activityIndicator}/>) :
+      (
+        <View style={styles.rootView}>
+          <ScrollView style={styles.scrollView}>
+            <View style={styles.container}>
+              <FlatList
+                data={tasks.toDo}
+                renderItem={({item, index}) => (
+                  <ListElement _id={item._id}
+                               title={item.title}
+                               inProgress={item.inProgress}
+                               onEdit={() => onEdit(item._id)}
+                               onDelete={() => onDelete(item._id)}
+                               changeProgress={() => changeProgress(item._id, item.inProgress)}
+                  />
                 )}
-              keyExtractor={(item, index) => index.toString()}
-            />
-            {tasks.done.length > 0 &&
-            (
-              <List.Section>
-                <List.Accordion
+                keyExtractor={(item, index) => index.toString()}
+              />
+              {tasks.done.length > 0 &&
+              (
+                <List.Section>
+                  <List.Accordion
                     title={`Done (${tasks.done.length})`}
-                >
-                  <FlatList
-                    data={tasks.done}
-                    refreshing={true}
-                    renderItem={({ item, index}) => (
+                  >
+                    <FlatList
+                      data={tasks.done}
+                      refreshing={true}
+                      renderItem={({item, index}) => (
                         <ListElement _id={item._id}
                                      title={item.title}
                                      inProgress={item.inProgress}
@@ -95,39 +96,37 @@ const ListComponent = (props: Props) => {
                                      onDelete={() => onDelete(item._id)}
                         />
                       )}
-                    keyExtractor={(item, index) => index.toString()}
+                      keyExtractor={(item, index) => index.toString()}
                     />
-                </List.Accordion>
-              </List.Section>
-            )}
-          </View>
-        </ScrollView>
-        <Snackbar
+                  </List.Accordion>
+                </List.Section>
+              )}
+            </View>
+          </ScrollView>
+          <Snackbar
             style={styles.snackbar}
             visible={snackbar.isVisible}
             onDismiss={onDismissSnackbar}
-        >
-          {snackbar.message}
-        </Snackbar>
-        <View style={styles.fixedView}>
-          <FAB
+          >
+            {snackbar.message}
+          </Snackbar>
+          <View style={styles.fixedView}>
+            <FAB
               style={styles.fab}
               icon="plus"
               onPress={onCreate}
-          />
+            />
+          </View>
         </View>
-      </View>
-    )
+      )
   );
 };
 
 const styles = StyleSheet.create({
-  rootView:{
+  rootView: {
     flex: 1,
   },
-  scrollView:{
-
-  },
+  scrollView: {},
   container: {
     flex: 1,
     paddingTop: 10,
@@ -138,7 +137,7 @@ const styles = StyleSheet.create({
   fab: {
     zIndex: 200
   },
-  fixedView:{
+  fixedView: {
     position: 'absolute',
     right: 30,
     bottom: 35,

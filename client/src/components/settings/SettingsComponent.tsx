@@ -1,14 +1,12 @@
 import React from 'react';
-import { ScrollView, StyleSheet, Text, View } from 'react-native';
+import {ScrollView, StyleSheet, Text, View} from 'react-native';
 
 interface Props {
   themeMode: 'light' | 'dark',
 }
 
 const SettingsComponent = (props: Props) => {
-  const {
-
-  } = props;
+  const {} = props;
 
   return (
     <ScrollView>
