@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import ListComponent from './ListComponent';
 
 interface Props {
@@ -9,20 +9,20 @@ interface Props {
 }
 
 interface State {
-  tasks:{
-    toDo:{
+  tasks: {
+    toDo: {
       _id: number,
       title: string,
       inProgress: boolean,
     }[],
-    done:{
+    done: {
       _id: number,
       title: string,
       inProgress: boolean,
     }[]
   },
   isLoading,
-  snackbar:{
+  snackbar: {
     isVisible,
     message,
   }
@@ -37,7 +37,7 @@ class ListContainer extends Component<Props, State> {
         done: [],
       },
       isLoading: false,
-      snackbar:{
+      snackbar: {
         isVisible: false,
         message: "",
       }
@@ -48,7 +48,7 @@ class ListContainer extends Component<Props, State> {
     this.loadTasks();
   }
 
-  onCreate = () => this.props.navigation.navigate('Details', { mode: 'create' });
+  onCreate = () => this.props.navigation.navigate('Details', {mode: 'create'});
 
   onEdit = (_id: number) => this.props.navigation.navigate('Details', {
     _id,
@@ -59,12 +59,12 @@ class ListContainer extends Component<Props, State> {
 
   showSnackbar = (text) => {
     this.setState({
-      snackbar: { ...this.state.snackbar, isVisible: true, message: text}
+      snackbar: {...this.state.snackbar, isVisible: true, message: text}
     });
   };
 
   onDismissSnackbar = () => this.setState({
-    snackbar: { ...this.state.snackbar, isVisible: false, message: ""}
+    snackbar: {...this.state.snackbar, isVisible: false, message: ""}
   });
 
   loadTasks = () => {
@@ -72,17 +72,17 @@ class ListContainer extends Component<Props, State> {
       isLoading: true,
     });
     fetch(`http://172.31.44.202:5000/api/devices/ProszeMiPoRazKolejnyTegoNieUsuwac/tasks/`)
-        .then((response) => response.json())
-        .then((response) => {
-          this.separateTasksAndSetState(response);
-        })
-        .catch((error) => {
-          console.log(error);
-          this.showSnackbar('Error while fetching tasks.');
-        })
-        .finally(() => this.setState({
-          isLoading: false,
-        }));
+      .then((response) => response.json())
+      .then((response) => {
+        this.separateTasksAndSetState(response);
+      })
+      .catch((error) => {
+        console.log(error);
+        this.showSnackbar('Error while fetching tasks.');
+      })
+      .finally(() => this.setState({
+        isLoading: false,
+      }));
   };
 
   separateTasksAndSetState = (response) => {
@@ -90,14 +90,14 @@ class ListContainer extends Component<Props, State> {
     const tasksDone = [];
 
     response.forEach((item) => {
-      if(item.inProgress){
+      if (item.inProgress) {
         tasksToDo.push(item);
-      } else{
+      } else {
         tasksDone.push(item);
       }
     });
     this.setState({
-      tasks: { ...this.state.tasks, toDo: tasksToDo, done: tasksDone}
+      tasks: {...this.state.tasks, toDo: tasksToDo, done: tasksDone}
     });
 
   };
@@ -106,73 +106,75 @@ class ListContainer extends Component<Props, State> {
     fetch(`http://172.31.44.202:5000/api/devices/ProszeMiPoRazKolejnyTegoNieUsuwac/tasks/${_id}`, ({
       method: 'DELETE',
     }))
-        .then((response) => {
-          if(response.status === 200){
-            let tasksDone = [...this.state.tasks.done];
-            let newTasksDone = tasksDone.filter((value) => {return value._id != _id});
-            this.showSnackbar('Task deleted.');
-            this.setState({ tasks: { ...this.state.tasks, done: newTasksDone} });
-          } else {
-            this.showSnackbar('Error while deleting task.');
-          }
-        })
-        .catch((error) => {
-          console.log(error);
+      .then((response) => {
+        if (response.status === 200) {
+          let tasksDone = [...this.state.tasks.done];
+          let newTasksDone = tasksDone.filter((value) => {
+            return value._id != _id
+          });
+          this.showSnackbar('Task deleted.');
+          this.setState({tasks: {...this.state.tasks, done: newTasksDone}});
+        } else {
           this.showSnackbar('Error while deleting task.');
-        })
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        this.showSnackbar('Error while deleting task.');
+      })
   };
 
   changeProgress = (_id: number, inProgress: boolean) => {
     fetch(`http://172.31.44.202:5000/api/devices/ProszeMiPoRazKolejnyTegoNieUsuwac/tasks/${_id}/finished`, ({
       method: 'PATCH',
       body: JSON.stringify({inProgress: !inProgress}),
-      headers:{
+      headers: {
         "Content-type": "application/json"
       }
     }))
-        .then((response) => {
-          if(response.status === 200){
-            this.changeStatusLogic(_id, inProgress);
-          } else {
-            this.showSnackbar('Error while changing status.');
-          }
-        })
-        .catch((error) => {
-          console.log(error);
+      .then((response) => {
+        if (response.status === 200) {
+          this.changeStatusLogic(_id, inProgress);
+        } else {
           this.showSnackbar('Error while changing status.');
-        })
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        this.showSnackbar('Error while changing status.');
+      })
   };
 
   changeStatusLogic = (_id: number, inProgress) => {
     let tasksToDo = [...this.state.tasks.toDo];
     let tasksDone = [...this.state.tasks.done];
-    if(inProgress){ //To_do -> Done
+    if (inProgress) { //To_do -> Done
       let newTasksToDo = [];
-      tasksToDo.forEach(function(item){
-        if(item._id != _id){
+      tasksToDo.forEach(function (item) {
+        if (item._id != _id) {
           newTasksToDo.push(item);
-        } else{
+        } else {
           item.inProgress = !inProgress;
           tasksDone.unshift(item);
         }
       });
-      this.setState({ tasks: { ...this.state.tasks, toDo: newTasksToDo, done: tasksDone}});
-    } else{ //Done -> to_do
+      this.setState({tasks: {...this.state.tasks, toDo: newTasksToDo, done: tasksDone}});
+    } else { //Done -> to_do
       let newTasksDone = [];
       tasksDone.forEach((item) => {
-        if(item._id != _id){
+        if (item._id != _id) {
           newTasksDone.push(item);
-        } else{
+        } else {
           item.inProgress = !inProgress;
           tasksToDo.push(item);
         }
       });
-      this.setState({ tasks: { ...this.state.tasks, toDo: tasksToDo, done: newTasksDone}});
+      this.setState({tasks: {...this.state.tasks, toDo: tasksToDo, done: newTasksDone}});
     }
   };
 
   render() {
-    const{
+    const {
       onCreate,
       onEdit,
       onSettings,
@@ -181,13 +183,13 @@ class ListContainer extends Component<Props, State> {
       changeProgress,
     } = this;
 
-    const{
+    const {
       tasks,
       isLoading,
       snackbar,
     } = this.state;
 
-    const{
+    const {
       navigation
     } = this.props;
 

@@ -1,9 +1,10 @@
 import React from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
+import {NavigationContainer} from '@react-navigation/native';
+import {createStackNavigator} from '@react-navigation/stack';
 import ListContainer from './components/list/ListContainer';
 import DetailsContainer from './components/details/DetailsContainer';
 import SettingsContainer from './components/settings/SettingsContainer';
+import {colors} from "./styles/common";
 
 const Stack = createStackNavigator();
 
@@ -13,24 +14,25 @@ const App = () => (
       initialRouteName="List"
       screenOptions={{
         headerStyle: {
-          backgroundColor: '2E8B57',
+          backgroundColor: colors.primary,
         },
+        headerTintColor: colors.tintColor,
       }}
     >
       <Stack.Screen
         name="List"
         component={ListContainer}
-        options={{ title: 'Tasks list' }}
+        options={{title: 'Tasks list'}}
       />
       <Stack.Screen
         name="Details"
         component={DetailsContainer}
-        options={{ title: 'Task details' }}
+        options={{title: 'Task details'}}
       />
       <Stack.Screen
         name="Settings"
         component={SettingsContainer}
-        options={{ title: 'Settings' }}
+        options={{title: 'Settings'}}
       />
     </Stack.Navigator>
   </NavigationContainer>
