@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import ListComponent from './ListComponent';
+import DeviceInfo from 'react-native-device-info';
 
 interface Props {
   navigation: {
@@ -169,6 +170,10 @@ class ListContainer extends Component<Props, State> {
       });
       this.setState({ tasks: { ...this.state.tasks, toDo: tasksToDo, done: newTasksDone}});
     }
+  };
+
+  getDeviceId() {
+    return DeviceInfo.getUniqueId();
   };
 
   render() {
