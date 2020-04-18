@@ -94,9 +94,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: colors.white,
     padding: 10,
+    paddingLeft: 15,
   },
   labelThemeMode: {
     flex: 1,
+    alignSelf: 'center',
     fontSize: 16,
   },
   sortDirectionSelection: {
