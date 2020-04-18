@@ -2,10 +2,9 @@ import mongoose, {Schema, Document} from "mongoose";
 
 export interface TaskInterface extends Document {
     title: string;
-    contents: string;
+    details: string;
     inProgress: boolean;
     priority: string;
-    category: string;
     creationDate: Date;
     deadlineDate: Date;
 }

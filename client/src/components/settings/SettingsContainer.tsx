@@ -5,15 +5,22 @@ interface Props {
 
 }
 
-interface State {
+class SettingsContainer extends Component<Props> {
+  onChangeSortOrder(newValue: 'title' | 'creationDate' | 'deadlineDate' | 'category' | 'priority') {
+    // TODO: change sort order
+  }
 
-}
+  onEnableDarkMode() {
+    // TODO: enable / diasble dark mode
+  }
 
-class SettingsContainer extends Component<Props, State> {
   render() {
     return (
       <SettingsComponent
-        themeMode="dark"
+        idDarkModeEnabled={false}
+        sortBy="title"
+        changeSortOrder={this.onChangeSortOrder}
+        enableDarkMode={this.onEnableDarkMode}
       />
     );
   }
