@@ -83,7 +83,6 @@ class ListContainer extends Component<Props, State> {
     fetch(`http://192.168.0.149:5000/api/devices/ProszeMiPoRazKolejnyTegoNieUsuwac/tasks/`)
       .then((response) => response.json())
       .then((response) => {
-        console.log(response);
         this.separateTasksAndSetState(response);
       })
       .catch((error) => {
