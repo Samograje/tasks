@@ -26,7 +26,8 @@ interface State {
   snackbar: {
     isVisible,
     message,
-  }
+  },
+  isRefreshing: boolean,
 }
 
 class ListContainer extends Component<Props, State> {
@@ -41,7 +42,8 @@ class ListContainer extends Component<Props, State> {
       snackbar: {
         isVisible: false,
         message: "",
-      }
+      },
+      isRefreshing: false,
     };
   }
 
@@ -56,6 +58,10 @@ class ListContainer extends Component<Props, State> {
     mode: 'edit'
   });
 
+  setRefreshing = () => {
+    this.setState({isRefreshing: true}, () => {this.loadTasks()});
+  };
+
   onSettings = () => this.props.navigation.navigate('Settings');
 
   showSnackbar = (text) => {
@@ -69,10 +75,12 @@ class ListContainer extends Component<Props, State> {
   });
 
   loadTasks = () => {
-    this.setState({
-      isLoading: true,
-    });
-    fetch(`http://172.31.44.202:5000/api/devices/ProszeMiPoRazKolejnyTegoNieUsuwac/tasks/`)
+    if(!this.state.isRefreshing){
+      this.setState({
+        isLoading: true,
+      });
+    }
+    fetch(`http://192.168.0.149:5000/api/devices/ProszeMiPoRazKolejnyTegoNieUsuwac/tasks/`)
       .then((response) => response.json())
       .then((response) => {
         this.separateTasksAndSetState(response);
@@ -98,13 +106,13 @@ class ListContainer extends Component<Props, State> {
       }
     });
     this.setState({
-      tasks: {...this.state.tasks, toDo: tasksToDo, done: tasksDone}
+      tasks: {...this.state.tasks, toDo: tasksToDo, done: tasksDone},
+      isRefreshing: false,
     });
-
   };
 
   onDelete = (_id: number) => {
-    fetch(`http://172.31.44.202:5000/api/devices/ProszeMiPoRazKolejnyTegoNieUsuwac/tasks/${_id}`, ({
+    fetch(`http://192.168.0.149:5000/api/devices/ProszeMiPoRazKolejnyTegoNieUsuwac/tasks/${_id}`, ({
       method: 'DELETE',
     }))
       .then((response) => {
@@ -126,7 +134,7 @@ class ListContainer extends Component<Props, State> {
   };
 
   changeProgress = (_id: number, inProgress: boolean) => {
-    fetch(`http://172.31.44.202:5000/api/devices/ProszeMiPoRazKolejnyTegoNieUsuwac/tasks/${_id}/finished`, ({
+    fetch(`http://192.168.0.149:5000/api/devices/ProszeMiPoRazKolejnyTegoNieUsuwac/tasks/${_id}/finished`, ({
       method: 'PATCH',
       body: JSON.stringify({inProgress: !inProgress}),
       headers: {
@@ -186,12 +194,14 @@ class ListContainer extends Component<Props, State> {
       onDelete,
       onDismissSnackbar,
       changeProgress,
+      setRefreshing,
     } = this;
 
     const {
       tasks,
       isLoading,
       snackbar,
+      isRefreshing,
     } = this.state;
 
     const {
@@ -206,10 +216,12 @@ class ListContainer extends Component<Props, State> {
         onDelete={onDelete}
         changeProgress={changeProgress}
         onDismissSnackbar={onDismissSnackbar}
+        setRefreshing={setRefreshing}
         navigation={navigation}
         tasks={tasks}
         isLoading={isLoading}
         snackbar={snackbar}
+        isRefreshing={isRefreshing}
       />
     );
   }
