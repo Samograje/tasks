@@ -5,30 +5,31 @@ import ListContainer from './components/list/ListContainer';
 import DetailsContainer from './components/details/DetailsContainer';
 import SettingsContainer from './components/settings/SettingsContainer';
 import { colors, darkTheme, lightTheme } from './styles/common';
+import { Theme } from '@react-navigation/native/src/types';
 
 const Stack = createStackNavigator();
 
 interface State {
-  isDarkThemeEnabled: boolean,
+  currentTheme: Theme,
 }
 
 class App extends React.Component<null, State> {
   constructor(props) {
     super(props);
     this.state = {
-      isDarkThemeEnabled: false,
+      currentTheme: lightTheme,
     };
   }
 
   changeTheme = () => {
     this.setState((prevState: State) => ({
-      isDarkThemeEnabled: !prevState.isDarkThemeEnabled,
+      currentTheme: prevState.currentTheme.dark ? lightTheme : darkTheme,
     }));
   };
 
   render() {
-    const currentTheme = this.state.isDarkThemeEnabled ? darkTheme : lightTheme;
-    const actionBarBackgroundColor = this.state.isDarkThemeEnabled ? currentTheme.colors.card : currentTheme.colors.primary;
+    const currentTheme = this.state.currentTheme;
+    const actionBarBackgroundColor = currentTheme.dark ? currentTheme.colors.card : currentTheme.colors.primary;
 
     return (
       <NavigationContainer theme={currentTheme}>
@@ -57,7 +58,6 @@ class App extends React.Component<null, State> {
               // TODO: find an other way to pass changeTheme() function to the screen
               <SettingsContainer
                 {...props}
-                isDarkThemeEnabled={this.state.isDarkThemeEnabled}
                 changeTheme={this.changeTheme}
               />
             )}

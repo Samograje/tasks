@@ -6,7 +6,6 @@ import { colors } from '../../styles/common';
 import { useTheme } from '@react-navigation/native';
 
 interface Props {
-  isDarkThemeEnabled: boolean,
   changeTheme: () => void,
   sortBy: 'title' | 'creationDate' | 'deadlineDate' | 'category' | 'priority',
   changeSortOrder: (newValue: 'title' | 'creationDate' | 'deadlineDate' | 'category' | 'priority') => void,
@@ -14,7 +13,6 @@ interface Props {
 
 const SettingsComponent = (props: Props) => {
   const {
-    isDarkThemeEnabled,
     changeTheme,
     sortBy,
     changeSortOrder,
@@ -28,7 +26,7 @@ const SettingsComponent = (props: Props) => {
       <Switch
         // TODO: ios_backgroundColor={}
 
-        value={isDarkThemeEnabled}
+        value={currentTheme.dark}
         onValueChange={changeTheme}
       />
     </View>

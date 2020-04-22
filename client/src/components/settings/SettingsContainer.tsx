@@ -2,7 +2,6 @@ import React from 'react';
 import SettingsComponent from './SettingsComponent';
 
 interface Props {
-  isDarkThemeEnabled: boolean,
   changeTheme: () => {},
 }
 
@@ -15,7 +14,6 @@ const SettingsContainer = (props: Props) => {
 
   return (
     <SettingsComponent
-      isDarkThemeEnabled={props.isDarkThemeEnabled}
       sortBy="title"
       changeSortOrder={onChangeSortOrder}
       changeTheme={props.changeTheme}
