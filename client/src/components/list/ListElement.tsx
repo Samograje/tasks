@@ -2,7 +2,7 @@ import React from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {IconButton} from 'react-native-paper';
 import Swipeable from 'react-native-swipeable-row';
-import {colors} from "../../styles/common";
+import {colors, fonts, padding, margin} from "../../styles/common";
 
 interface Props {
   _id: number,
@@ -79,8 +79,9 @@ const styles = StyleSheet.create({
   rowContainer: {
     flexDirection: 'row',
     height: 50,
-    marginBottom: 5,
+    marginBottom: margin.vsm,
     alignItems: 'center',
+    backgroundColor: colors.white,
   },
   content: {
     height: '100%',
@@ -89,16 +90,26 @@ const styles = StyleSheet.create({
   },
   crossOver: {
     textDecorationLine: 'line-through',
+    fontFamily: fonts.primary,
+    fontSize: fonts.md,
+    color: colors.blackLighter,
   },
-  text: {},
+  text: {
+    fontFamily: fonts.primary,
+    fontSize: fonts.md,
+    color: colors.blackLighter,
+  },
   leftSwipeContainer: {
     height: 50,
     alignItems: 'flex-end',
     justifyContent: 'center',
     backgroundColor: colors.callCancelColor,
+    borderRadius: 8,
   },
   leftSwipeItemText: {
-    paddingRight: 20,
+    paddingRight: padding.md,
+    fontSize: fonts.lg,
+    fontWeight: '900',
   },
 });
 

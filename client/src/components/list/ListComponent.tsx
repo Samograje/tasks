@@ -2,7 +2,7 @@ import React from 'react';
 import {FlatList, RefreshControl, ScrollView, StyleSheet, View} from 'react-native';
 import {IconButton, List, FAB, ActivityIndicator, Snackbar} from 'react-native-paper';
 import ListElement from './ListElement';
-import {colors} from "../../styles/common";
+import {colors, margin, padding} from "../../styles/common";
 
 interface Props {
   onCreate: () => {},
@@ -58,6 +58,7 @@ const ListComponent = (props: Props) => {
               size={30}
               onPress={onSettings}
               style={styles.settingsBtn}
+              color={colors.tintColor}
           />
       ),
     });
@@ -137,10 +138,10 @@ const styles = StyleSheet.create({
   scrollView: {},
   container: {
     flex: 1,
-    paddingTop: 10,
+    paddingTop: padding.sm,
   },
   settingsBtn: {
-    marginRight: 10,
+    marginRight: margin.sm,
   },
   fab: {
     zIndex: 200
