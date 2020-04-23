@@ -1,5 +1,5 @@
 import { Dimensions } from 'react-native';
-import { DarkTheme, DefaultTheme } from '@react-navigation/native';
+import { DarkTheme, DefaultTheme } from 'react-native-paper';
 import { Theme } from '@react-navigation/native/src/types'
 
 export const dimensions = {
@@ -45,8 +45,12 @@ export const lightTheme: Theme = {
   colors: {
     ...DefaultTheme.colors,
     primary: colors.primary,
+    card: colors.primary,
+    border: '#FFF',
   },
 };
+
+//TODO: card w lightTheme do ustalenia oraz border do ustalenia
 
 export const darkTheme: Theme = {
   ...DarkTheme,
@@ -54,5 +58,7 @@ export const darkTheme: Theme = {
     ...DarkTheme.colors,
     primary: colors.primary,
     card: colors.blackLighter,
+    background: colors.blackDeep,
+    border: '#FFF',
   },
 };

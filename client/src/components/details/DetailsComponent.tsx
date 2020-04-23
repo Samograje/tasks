@@ -5,6 +5,7 @@ import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {timeConverter, dateConverter} from '../../utils/dateTimeConverter';
 import {colors, fonts} from "../../styles/common";
+import {useTheme} from "@react-navigation/native";
 
 interface Props {
   handleConfirm: (data: Date) => void,
@@ -51,6 +52,8 @@ const DetailsComponent = (props: Props) => {
     task,
   } = props;
 
+  const theme = useTheme();
+
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
@@ -59,7 +62,7 @@ const DetailsComponent = (props: Props) => {
           style={styles.saveButtonContainer}
           onPress={saveTask}
         >
-          <Text>SAVE</Text>
+          <Text style={styles.saveButton}>SAVE</Text>
         </TouchableOpacity>
       ),
     });
@@ -71,6 +74,7 @@ const DetailsComponent = (props: Props) => {
           <ScrollView>
             <View style={styles.container}>
               <TextInput
+                theme={theme}
                 onChangeText={onTitleChange}
                 style={styles.textInput}
                 mode='outlined'
@@ -78,6 +82,7 @@ const DetailsComponent = (props: Props) => {
                 label='Title'
               />
               <TextInput
+                theme={theme}
                 onChangeText={onDetailsChange}
                 style={styles.textInput}
                 mode='outlined'
@@ -87,6 +92,7 @@ const DetailsComponent = (props: Props) => {
               />
             </View>
             <TextInput
+              theme={theme}
               disabled={true}
               label='Deadline date'
               mode='outlined'
@@ -98,14 +104,14 @@ const DetailsComponent = (props: Props) => {
                 <MaterialCommunityIcons
                   size={36}
                   name={'timetable'}
-                  color={'#000000'}
+                  color={theme.colors.primary}
                 />
               </TouchableOpacity>
               <TouchableOpacity onPress={onClearIconClick}>
                 <MaterialCommunityIcons
                   size={36}
                   name={'close-box-outline'}
-                  color={'#000000'}
+                  color={theme.colors.primary}
                 />
               </TouchableOpacity>
             </View>
@@ -123,22 +129,23 @@ const DetailsComponent = (props: Props) => {
                 value={task.priority}
               >
                 <View style={styles.radioButtonLabel}>
-                  <Text>Low</Text>
-                  <RadioButton value="low"/>
+                  <Text theme={theme}>Low</Text>
+                  <RadioButton theme={theme} color={theme.colors.primary} value="low"/>
                 </View>
                 <View style={styles.radioButtonLabel}>
-                  <Text>Normal</Text>
-                  <RadioButton value="normal"/>
+                  <Text theme={theme}>Normal</Text>
+                  <RadioButton theme={theme} color={theme.colors.primary} value="normal"/>
                 </View>
                 <View style={styles.radioButtonLabel}>
-                  <Text>High</Text>
-                  <RadioButton value="high"/>
+                  <Text theme={theme}>High</Text>
+                  <RadioButton theme={theme} color={theme.colors.primary} value="high"/>
                 </View>
               </RadioButton.Group>
             </View>
 
           </ScrollView>
           <Snackbar
+              theme={theme}
             style={styles.snackbar}
             visible={isSnackbarVisible}
             onDismiss={onDismissSnackbar}
@@ -147,7 +154,7 @@ const DetailsComponent = (props: Props) => {
           </Snackbar>
         </>
       ) :
-      <ActivityIndicator size='large' style={styles.activityIndicator}/>
+      <ActivityIndicator theme={theme} size='large' style={styles.activityIndicator}/>
   )
 };
 
@@ -180,6 +187,9 @@ const styles = StyleSheet.create({
     alignContent: 'space-around',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  saveButton: {
+    color: colors.white,
   },
   saveButtonContainer: {
     margin: 20,
