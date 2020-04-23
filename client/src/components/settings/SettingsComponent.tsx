@@ -1,31 +1,33 @@
 import React from 'react';
-import { ScrollView, StyleSheet, Switch, Text, View} from 'react-native';
+import { ScrollView, StyleSheet, Switch, Text, View } from 'react-native';
 import SectionHeader from './SectionHeader';
 import { RadioButton } from 'react-native-paper';
-import { colors } from "../../styles/common";
+import { colors } from '../../styles/common';
+import { useTheme } from '@react-navigation/native';
 
 interface Props {
-  idDarkModeEnabled: boolean,
-  enableDarkMode: () => void,
+  changeTheme: () => void,
   sortBy: 'title' | 'creationDate' | 'deadlineDate' | 'category' | 'priority',
   changeSortOrder: (newValue: 'title' | 'creationDate' | 'deadlineDate' | 'category' | 'priority') => void,
 }
 
 const SettingsComponent = (props: Props) => {
   const {
-    idDarkModeEnabled,
-    enableDarkMode,
+    changeTheme,
     sortBy,
     changeSortOrder,
   } = props;
+
+  const currentTheme = useTheme();
 
   const themeModeSelection = (
     <View style={styles.themeModeSelection}>
       <Text style={styles.labelThemeMode}>Dark mode</Text>
       <Switch
         // TODO: ios_backgroundColor={}
-        value={idDarkModeEnabled}
-        onValueChange={enableDarkMode}
+
+        value={currentTheme.dark}
+        onValueChange={changeTheme}
       />
     </View>
   );

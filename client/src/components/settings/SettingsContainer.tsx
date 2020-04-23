@@ -1,29 +1,24 @@
-import React, {Component} from 'react';
-import SettingsComponent from "./SettingsComponent";
+import React from 'react';
+import SettingsComponent from './SettingsComponent';
 
 interface Props {
-
+  changeTheme: () => {},
 }
 
-class SettingsContainer extends Component<Props> {
-  onChangeSortOrder(newValue: 'title' | 'creationDate' | 'deadlineDate' | 'category' | 'priority') {
+// TODO: component cannot keep a state due to the changeTheme() method being passed in an unconventional way in App.tsx.
+//  Then, if the onChangeSortOrder would be passed by props, the SettingsContainer is useless and may be removed
+const SettingsContainer = (props: Props) => {
+  const onChangeSortOrder = (newValue: 'title' | 'creationDate' | 'deadlineDate' | 'category' | 'priority') => {
     // TODO: change sort order
-  }
+  };
 
-  onEnableDarkMode() {
-    // TODO: enable / diasble dark mode
-  }
-
-  render() {
-    return (
-      <SettingsComponent
-        idDarkModeEnabled={false}
-        sortBy="title"
-        changeSortOrder={this.onChangeSortOrder}
-        enableDarkMode={this.onEnableDarkMode}
-      />
-    );
-  }
-}
+  return (
+    <SettingsComponent
+      sortBy="title"
+      changeSortOrder={onChangeSortOrder}
+      changeTheme={props.changeTheme}
+    />
+  );
+};
 
 export default SettingsContainer;
