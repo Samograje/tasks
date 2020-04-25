@@ -1,8 +1,8 @@
 import React from 'react';
 import {FlatList, RefreshControl, ScrollView, StyleSheet, View} from 'react-native';
-import {IconButton, List, FAB, ActivityIndicator, Snackbar} from 'react-native-paper';
+import {ActivityIndicator, FAB, IconButton, List, Snackbar, Text} from 'react-native-paper';
 import ListElement from './ListElement';
-import {colors, margin, padding} from "../../styles/common";
+import {colors, fonts, margin, padding} from "../../styles/common";
 import {useTheme} from "@react-navigation/native";
 
 interface Props {
@@ -11,6 +11,7 @@ interface Props {
   onSettings: () => {},
   onDelete: (taskId: number) => any,
   onDismissSnackbar,
+  loadTasks: any,
   changeProgress: (taskId: number, inProgress: boolean) => any,
   navigation,
   tasks: {
@@ -42,6 +43,7 @@ const ListComponent = (props: Props) => {
     onSettings,
     onDelete,
     onDismissSnackbar,
+    loadTasks,
     changeProgress,
     navigation,
     tasks,
@@ -67,6 +69,12 @@ const ListComponent = (props: Props) => {
     });
   }, [navigation]);
 
+  React.useEffect(() => {
+    return navigation.addListener('focus', () => {
+      loadTasks();
+    });
+  }, [navigation]);
+
   return (
     isLoading ? (<ActivityIndicator theme={theme}
                                     size='large'
@@ -82,6 +90,7 @@ const ListComponent = (props: Props) => {
                       }
           >
             <View style={styles.container}>
+              <Text style={[styles.toDoText, {color: theme.colors.primary}]}>To do</Text>
                 <FlatList
                     data={tasks.toDo}
                     renderItem={({item, index}) => (
@@ -101,6 +110,7 @@ const ListComponent = (props: Props) => {
                       <List.Accordion
                           title={`Done (${tasks.done.length})`}
                           theme={theme}
+                          titleStyle={{fontSize: fonts.md}}
                       >
                         <FlatList
                             data={tasks.done}
@@ -145,6 +155,10 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   scrollView: {},
+  toDoText:{
+    fontSize: fonts.md,
+    padding: padding.sm,
+  },
   container: {
     flex: 1,
     paddingTop: padding.sm,

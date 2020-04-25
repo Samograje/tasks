@@ -195,6 +195,7 @@ class ListContainer extends Component<Props, State> {
       onDismissSnackbar,
       changeProgress,
       setRefreshing,
+      loadTasks,
     } = this;
 
     const {
@@ -216,6 +217,7 @@ class ListContainer extends Component<Props, State> {
         onDelete={onDelete}
         changeProgress={changeProgress}
         onDismissSnackbar={onDismissSnackbar}
+        loadTasks={loadTasks}
         setRefreshing={setRefreshing}
         navigation={navigation}
         tasks={tasks}
