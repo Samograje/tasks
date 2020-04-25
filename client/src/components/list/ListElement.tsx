@@ -24,18 +24,17 @@ const ListElement = (props: Props) => {
     changeProgress,
   } = props;
 
+  const theme = useTheme();
+
   const leftContent = [
     <View style={styles.leftSwipeContainer} key={_id}>
       <Text style={styles.leftSwipeItemText}>Delete</Text>
     </View>
   ];
 
-  const theme = useTheme();
-
-  return (
-    inProgress ? (
-      <View style={[styles.rowContainer, theme == lightTheme ? {backgroundColor: colors.white} : {backgroundColor: colors.blackLighter}]}>
-        <IconButton
+  const listElement = (
+    <View style={[styles.rowContainer, theme == lightTheme ? {backgroundColor: colors.white} : {backgroundColor: colors.blackLighter}]}>
+      <IconButton
           theme={theme}
           color={theme.colors.primary}
           icon={inProgress ? "circle-outline" : "check"}
@@ -43,40 +42,27 @@ const ListElement = (props: Props) => {
           onPress={() => {
             changeProgress(_id, inProgress)
           }}
-        />
+      />
 
-        <TouchableOpacity style={styles.content}
-                          onPress={() => {
-                            onEdit(_id)
-                          }}
-        >
-          <Text theme={theme} style={!inProgress ? styles.crossOver : styles.text}>{title}</Text>
-        </TouchableOpacity>
-      </View>
+      <TouchableOpacity style={styles.content}
+                        onPress={() => {
+                          onEdit(_id)
+                        }}
+      >
+        <Text theme={theme} style={!inProgress ? styles.crossOver : styles.text}>{title}</Text>
+      </TouchableOpacity>
+    </View>
+  );
+
+  return (
+    inProgress ? (
+      listElement
     ) : (
       <Swipeable leftContent={leftContent}
                  leftActionActivationDistance={200}
                  onLeftActionComplete={() => onDelete(_id)}
       >
-        <View  style={[styles.rowContainer, theme == lightTheme ? {backgroundColor: colors.white} : {backgroundColor: colors.blackLighter}]}>
-          <IconButton
-            theme={theme}
-            color={theme.colors.primary}
-            icon={inProgress ? "circle-outline" : "check"}
-            size={30}
-            onPress={() => {
-              changeProgress(_id, inProgress)
-            }}
-          />
-
-          <TouchableOpacity style={styles.content}
-                            onPress={() => {
-                              onEdit(_id)
-                            }}
-          >
-            <Text theme={theme} style={!inProgress ? styles.crossOver : styles.text}>{title}</Text>
-          </TouchableOpacity>
-        </View>
+        {listElement}
       </Swipeable>
     )
   );
