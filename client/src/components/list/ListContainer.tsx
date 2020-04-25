@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import ListComponent from './ListComponent';
-import DeviceInfo from 'react-native-device-info';
 
 interface Props {
   navigation: {
@@ -183,7 +182,9 @@ class ListContainer extends Component<Props, State> {
   };
 
   getDeviceId() {
-    return DeviceInfo.getUniqueId();
+    // TODO
+    // return Expo.Constants.deviceId;
+    // return DeviceInfo.getUniqueId();
   };
 
   render() {
