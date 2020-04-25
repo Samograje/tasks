@@ -76,10 +76,12 @@ const ListComponent = (props: Props) => {
   }, [navigation]);
 
   return (
-    isLoading ? (<ActivityIndicator theme={theme}
-                                    size='large'
-                                    style={styles.activityIndicator}
-        />) :
+    isLoading ? (
+        <ActivityIndicator theme={theme}
+                           size='large'
+                           style={styles.activityIndicator}
+        />
+                  ) :
       (
         <View style={[styles.rootView, {backgroundColor: theme.colors.background}]}>
           <ScrollView style={styles.scrollView}
@@ -92,42 +94,42 @@ const ListComponent = (props: Props) => {
             <View style={styles.container}>
               <Text style={[styles.toDoText, {color: theme.colors.primary}]}>To do</Text>
                 <FlatList
-                    data={tasks.toDo}
-                    renderItem={({item, index}) => (
-                        <ListElement _id={item._id}
-                                     title={item.title}
-                                     inProgress={item.inProgress}
-                                     onEdit={() => onEdit(item._id)}
-                                     onDelete={() => onDelete(item._id)}
-                                     changeProgress={() => changeProgress(item._id, item.inProgress)}
-                        />
-                    )}
-                    keyExtractor={(item, index) => index.toString()}
+                  data={tasks.toDo}
+                  renderItem={({item, index}) => (
+                    <ListElement _id={item._id}
+                                 title={item.title}
+                                 inProgress={item.inProgress}
+                                 onEdit={() => onEdit(item._id)}
+                                 onDelete={() => onDelete(item._id)}
+                                 changeProgress={() => changeProgress(item._id, item.inProgress)}
+                    />
+                  )}
+                  keyExtractor={(item, index) => index.toString()}
                 />
                 {tasks.done.length > 0 &&
                 (
-                    <List.Section>
-                      <List.Accordion
-                          title={`Done (${tasks.done.length})`}
-                          theme={theme}
-                          titleStyle={{fontSize: fonts.md}}
-                      >
-                        <FlatList
-                            data={tasks.done}
-                            refreshing={true}
-                            renderItem={({item, index}) => (
-                                <ListElement _id={item._id}
-                                             title={item.title}
-                                             inProgress={item.inProgress}
-                                             onEdit={() => onEdit(item._id)}
-                                             changeProgress={() => changeProgress(item._id, item.inProgress)}
-                                             onDelete={() => onDelete(item._id)}
-                                />
-                            )}
-                            keyExtractor={(item, index) => index.toString()}
-                        />
-                      </List.Accordion>
-                    </List.Section>
+                  <List.Section>
+                    <List.Accordion
+                      title={`Done (${tasks.done.length})`}
+                      theme={theme}
+                      titleStyle={{fontSize: fonts.md}}
+                    >
+                      <FlatList
+                        data={tasks.done}
+                        refreshing={true}
+                        renderItem={({item, index}) => (
+                          <ListElement _id={item._id}
+                                       title={item.title}
+                                       inProgress={item.inProgress}
+                                       onEdit={() => onEdit(item._id)}
+                                       changeProgress={() => changeProgress(item._id, item.inProgress)}
+                                       onDelete={() => onDelete(item._id)}
+                          />
+                        )}
+                        keyExtractor={(item, index) => index.toString()}
+                      />
+                    </List.Accordion>
+                  </List.Section>
                 )}
               </View>
           </ScrollView>
