@@ -3,6 +3,7 @@ import {FlatList, RefreshControl, ScrollView, StyleSheet, View} from 'react-nati
 import {IconButton, List, FAB, ActivityIndicator, Snackbar} from 'react-native-paper';
 import ListElement from './ListElement';
 import {colors, margin, padding} from "../../styles/common";
+import {useTheme} from "@react-navigation/native";
 
 interface Props {
   onCreate: () => {},
@@ -50,6 +51,8 @@ const ListComponent = (props: Props) => {
     setRefreshing,
   } = props;
 
+  const theme = useTheme();
+
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
@@ -65,9 +68,12 @@ const ListComponent = (props: Props) => {
   }, [navigation]);
 
   return (
-    isLoading ? (<ActivityIndicator size='large' style={styles.activityIndicator}/>) :
+    isLoading ? (<ActivityIndicator theme={theme}
+                                    size='large'
+                                    style={styles.activityIndicator}
+        />) :
       (
-        <View style={styles.rootView}>
+        <View style={[styles.rootView, {backgroundColor: theme.colors.background}]}>
           <ScrollView style={styles.scrollView}
                       refreshControl={
                         <RefreshControl refreshing={isRefreshing}
@@ -94,6 +100,7 @@ const ListComponent = (props: Props) => {
                     <List.Section>
                       <List.Accordion
                           title={`Done (${tasks.done.length})`}
+                          theme={theme}
                       >
                         <FlatList
                             data={tasks.done}
@@ -114,14 +121,16 @@ const ListComponent = (props: Props) => {
                 )}
               </View>
           </ScrollView>
-            <Snackbar style={styles.snackbar}
+            <Snackbar theme={theme}
+                      style={styles.snackbar}
                       visible={snackbar.isVisible}
                       onDismiss={onDismissSnackbar}
             >
               {snackbar.message}
             </Snackbar>
             <View style={styles.fixedView}>
-              <FAB style={styles.fab}
+              <FAB theme={theme}
+                   style={styles.fab}
                    icon="plus"
                    onPress={onCreate}
               />

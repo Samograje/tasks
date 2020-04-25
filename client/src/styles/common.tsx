@@ -14,6 +14,7 @@ export const colors = {
   tintColor: '#E8EAF6',
   callCancelColor: '#F44336',
   white: '#FFFFFF',
+  whiteSmoke: '#F0F0F0',
   blackLighter: '#1E1E1E',
   blackDeep: '#000000',
 };
@@ -46,6 +47,7 @@ export const lightTheme: Theme = {
     ...DefaultTheme.colors,
     primary: colors.primary,
     card: colors.primary,
+    background: colors.whiteSmoke,
     border: '#FFF',
   },
 };

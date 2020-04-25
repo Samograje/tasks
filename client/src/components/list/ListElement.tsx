@@ -1,8 +1,9 @@
 import React from 'react';
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import {IconButton} from 'react-native-paper';
+import {StyleSheet, TouchableOpacity, View} from 'react-native';
+import {IconButton, Text} from 'react-native-paper';
 import Swipeable from 'react-native-swipeable-row';
-import {colors, fonts, padding, margin} from "../../styles/common";
+import {colors, fonts, padding, margin, lightTheme} from "../../styles/common";
+import {useTheme} from "@react-navigation/native";
 
 interface Props {
   _id: number,
@@ -29,10 +30,14 @@ const ListElement = (props: Props) => {
     </View>
   ];
 
+  const theme = useTheme();
+
   return (
     inProgress ? (
-      <View style={styles.rowContainer}>
+      <View style={[styles.rowContainer, theme == lightTheme ? {backgroundColor: colors.white} : {backgroundColor: colors.blackLighter}]}>
         <IconButton
+          theme={theme}
+          color={theme.colors.primary}
           icon={inProgress ? "circle-outline" : "check"}
           size={30}
           onPress={() => {
@@ -45,7 +50,7 @@ const ListElement = (props: Props) => {
                             onEdit(_id)
                           }}
         >
-          <Text style={!inProgress ? styles.crossOver : styles.text}>{title}</Text>
+          <Text theme={theme} style={!inProgress ? styles.crossOver : styles.text}>{title}</Text>
         </TouchableOpacity>
       </View>
     ) : (
@@ -53,8 +58,10 @@ const ListElement = (props: Props) => {
                  leftActionActivationDistance={200}
                  onLeftActionComplete={() => onDelete(_id)}
       >
-        <View style={styles.rowContainer}>
+        <View  style={[styles.rowContainer, theme == lightTheme ? {backgroundColor: colors.white} : {backgroundColor: colors.blackLighter}]}>
           <IconButton
+            theme={theme}
+            color={theme.colors.primary}
             icon={inProgress ? "circle-outline" : "check"}
             size={30}
             onPress={() => {
@@ -67,7 +74,7 @@ const ListElement = (props: Props) => {
                               onEdit(_id)
                             }}
           >
-            <Text style={!inProgress ? styles.crossOver : styles.text}>{title}</Text>
+            <Text theme={theme} style={!inProgress ? styles.crossOver : styles.text}>{title}</Text>
           </TouchableOpacity>
         </View>
       </Swipeable>
@@ -81,7 +88,6 @@ const styles = StyleSheet.create({
     height: 50,
     marginBottom: margin.vsm,
     alignItems: 'center',
-    backgroundColor: colors.white,
   },
   content: {
     height: '100%',
@@ -92,23 +98,21 @@ const styles = StyleSheet.create({
     textDecorationLine: 'line-through',
     fontFamily: fonts.primary,
     fontSize: fonts.md,
-    color: colors.blackLighter,
   },
   text: {
     fontFamily: fonts.primary,
     fontSize: fonts.md,
-    color: colors.blackLighter,
   },
   leftSwipeContainer: {
     height: 50,
     alignItems: 'flex-end',
     justifyContent: 'center',
     backgroundColor: colors.callCancelColor,
-    borderRadius: 8,
+    borderRadius: 25,
   },
   leftSwipeItemText: {
     paddingRight: padding.md,
-    fontSize: fonts.lg,
+    fontSize: fonts.md,
     fontWeight: '900',
   },
 });
