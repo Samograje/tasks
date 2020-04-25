@@ -1,10 +1,10 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import ListContainer from './components/list/ListContainer';
-import DetailsContainer from './components/details/DetailsContainer';
-import SettingsContainer from './components/settings/SettingsContainer';
-import { colors, darkTheme, lightTheme } from './styles/common';
+import ListContainer from './src/components/list/ListContainer';
+import DetailsContainer from './src/components/details/DetailsContainer';
+import SettingsContainer from './src/components/settings/SettingsContainer';
+import { colors, darkTheme, lightTheme } from './src/styles/common';
 import { Theme } from '@react-navigation/native/src/types';
 
 const Stack = createStackNavigator();
@@ -14,8 +14,8 @@ interface State {
 }
 
 class App extends React.Component<null, State> {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super(null);
     this.state = {
       currentTheme: lightTheme,
     };
