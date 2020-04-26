@@ -1,8 +1,9 @@
 import React from 'react';
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import {IconButton} from 'react-native-paper';
+import {StyleSheet, TouchableOpacity, View} from 'react-native';
+import {IconButton, Text} from 'react-native-paper';
 import Swipeable from 'react-native-swipeable-row';
-import {colors} from "../../styles/common";
+import {colors, fonts, padding, margin, lightTheme} from "../../styles/common";
+import {useTheme} from "@react-navigation/native";
 
 interface Props {
   _id: number,
@@ -23,53 +24,45 @@ const ListElement = (props: Props) => {
     changeProgress,
   } = props;
 
+  const theme = useTheme();
+
   const leftContent = [
     <View style={styles.leftSwipeContainer} key={_id}>
       <Text style={styles.leftSwipeItemText}>Delete</Text>
     </View>
   ];
 
-  return (
-    inProgress ? (
-      <View style={styles.rowContainer}>
-        <IconButton
+  const listElement = (
+    <View style={[styles.rowContainer, theme == lightTheme ? {backgroundColor: colors.white} : {backgroundColor: colors.blackLighter}]}>
+      <IconButton
+          theme={theme}
+          color={theme.colors.primary}
           icon={inProgress ? "circle-outline" : "check"}
           size={30}
           onPress={() => {
             changeProgress(_id, inProgress)
           }}
-        />
+      />
 
-        <TouchableOpacity style={styles.content}
-                          onPress={() => {
-                            onEdit(_id)
-                          }}
-        >
-          <Text style={!inProgress ? styles.crossOver : styles.text}>{title}</Text>
-        </TouchableOpacity>
-      </View>
+      <TouchableOpacity style={styles.content}
+                        onPress={() => {
+                          onEdit(_id)
+                        }}
+      >
+        <Text theme={theme} style={!inProgress ? styles.crossOver : styles.text}>{title}</Text>
+      </TouchableOpacity>
+    </View>
+  );
+
+  return (
+    inProgress ? (
+      listElement
     ) : (
       <Swipeable leftContent={leftContent}
                  leftActionActivationDistance={200}
                  onLeftActionComplete={() => onDelete(_id)}
       >
-        <View style={styles.rowContainer}>
-          <IconButton
-            icon={inProgress ? "circle-outline" : "check"}
-            size={30}
-            onPress={() => {
-              changeProgress(_id, inProgress)
-            }}
-          />
-
-          <TouchableOpacity style={styles.content}
-                            onPress={() => {
-                              onEdit(_id)
-                            }}
-          >
-            <Text style={!inProgress ? styles.crossOver : styles.text}>{title}</Text>
-          </TouchableOpacity>
-        </View>
+        {listElement}
       </Swipeable>
     )
   );
@@ -79,7 +72,7 @@ const styles = StyleSheet.create({
   rowContainer: {
     flexDirection: 'row',
     height: 50,
-    marginBottom: 5,
+    marginBottom: margin.vsm,
     alignItems: 'center',
   },
   content: {
@@ -89,16 +82,24 @@ const styles = StyleSheet.create({
   },
   crossOver: {
     textDecorationLine: 'line-through',
+    fontFamily: fonts.primary,
+    fontSize: fonts.md,
   },
-  text: {},
+  text: {
+    fontFamily: fonts.primary,
+    fontSize: fonts.md,
+  },
   leftSwipeContainer: {
     height: 50,
     alignItems: 'flex-end',
     justifyContent: 'center',
     backgroundColor: colors.callCancelColor,
+    borderRadius: 25,
   },
   leftSwipeItemText: {
-    paddingRight: 20,
+    paddingRight: padding.md,
+    fontSize: fonts.md,
+    fontWeight: '900',
   },
 });
 
