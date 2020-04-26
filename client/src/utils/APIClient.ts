@@ -5,4 +5,5 @@ const getDeviceId = (): string => {
   return Expo.Constants.deviceId;
 };
 
+
 export const urlTasks = `${baseUrl}/api/devices/${getDeviceId()}/tasks/`;
