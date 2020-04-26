@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import DetailsComponent from './DetailsComponent';
+import { urlTasks } from '../../utils/APIClient';
 
 interface Props {
   navigation,
@@ -54,7 +55,7 @@ class DetailsContainer extends Component<Props, State> {
     this.setState({
       isLoading: true,
     });
-    fetch(`http://3.88.167.229:5000/api/devices/ProszeMiPoRazKolejnyTegoNieUsuwac/tasks/${_id}`)
+    fetch(`${urlTasks}${_id}`)
       .then((response) => response.json())
       .then((response) => {
         this.setState({
@@ -81,11 +82,11 @@ class DetailsContainer extends Component<Props, State> {
     let url;
     let method;
     if (mode === 'create') {
-      url = `http://3.88.167.229:5000/api/devices/ProszeMiPoRazKolejnyTegoNieUsuwac/tasks`;
+      url = urlTasks;
       method = 'POST';
     }
     if (mode === 'edit') {
-      url = `http://3.88.167.229:5000/api/devices/ProszeMiPoRazKolejnyTegoNieUsuwac/tasks/${_id}`;
+      url = `${urlTasks}${_id}`;
       method = 'PATCH';
     }
 
