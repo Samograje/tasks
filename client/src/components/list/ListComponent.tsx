@@ -142,7 +142,7 @@ const ListComponent = (props: Props) => {
             </Snackbar>
             <View style={styles.fixedView}>
               <FAB theme={theme}
-                   style={styles.fab}
+                   style={[styles.fab, {backgroundColor: theme.colors.primary}]}
                    icon="plus"
                    onPress={onCreate}
               />
