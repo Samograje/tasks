@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import ListComponent from './ListComponent';
+import { urlTasks } from '../../utils/APIClient';
 
 interface Props {
   navigation: {
@@ -79,7 +80,7 @@ class ListContainer extends Component<Props, State> {
         isLoading: true,
       });
     }
-    fetch(`http://3.88.167.229:5000/api/devices/ProszeMiPoRazKolejnyTegoNieUsuwac/tasks/`)
+    fetch(urlTasks)
       .then((response) => response.json())
       .then((response) => {
         this.separateTasksAndSetState(response);
@@ -111,7 +112,7 @@ class ListContainer extends Component<Props, State> {
   };
 
   onDelete = (_id: number) => {
-    fetch(`http://3.88.167.229:5000/api/devices/ProszeMiPoRazKolejnyTegoNieUsuwac/tasks/${_id}`, ({
+    fetch(`${urlTasks}${_id}`, ({
       method: 'DELETE',
     }))
       .then((response) => {
@@ -133,7 +134,7 @@ class ListContainer extends Component<Props, State> {
   };
 
   changeProgress = (_id: number, inProgress: boolean) => {
-    fetch(`http://3.88.167.229:5000/api/devices/ProszeMiPoRazKolejnyTegoNieUsuwac/tasks/${_id}/finished`, ({
+    fetch(`${urlTasks}${_id}/finished`, ({
       method: 'PATCH',
       body: JSON.stringify({inProgress: !inProgress}),
       headers: {
@@ -179,12 +180,6 @@ class ListContainer extends Component<Props, State> {
       });
       this.setState({tasks: {...this.state.tasks, toDo: tasksToDo, done: newTasksDone}});
     }
-  };
-
-  getDeviceId() {
-    // TODO
-    // return Expo.Constants.deviceId;
-    // return DeviceInfo.getUniqueId();
   };
 
   render() {
