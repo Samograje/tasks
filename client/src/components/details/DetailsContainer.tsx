@@ -54,7 +54,7 @@ class DetailsContainer extends Component<Props, State> {
     this.setState({
       isLoading: true,
     });
-    fetch(`http://172.31.44.202:5000/api/devices/ProszeMiPoRazKolejnyTegoNieUsuwac/tasks/${_id}`)
+    fetch(`http://3.88.167.229:5000/api/devices/ProszeMiPoRazKolejnyTegoNieUsuwac/tasks/${_id}`)
       .then((response) => response.json())
       .then((response) => {
         this.setState({
@@ -81,11 +81,11 @@ class DetailsContainer extends Component<Props, State> {
     let url;
     let method;
     if (mode === 'create') {
-      url = `http://172.31.44.202:5000/api/devices/ProszeMiPoRazKolejnyTegoNieUsuwac/tasks`;
+      url = `http://3.88.167.229:5000/api/devices/ProszeMiPoRazKolejnyTegoNieUsuwac/tasks`;
       method = 'POST';
     }
     if (mode === 'edit') {
-      url = `http://172.31.44.202:5000/api/devices/ProszeMiPoRazKolejnyTegoNieUsuwac/tasks/${_id}`;
+      url = `http://3.88.167.229:5000/api/devices/ProszeMiPoRazKolejnyTegoNieUsuwac/tasks/${_id}`;
       method = 'PATCH';
     }
 
