@@ -192,7 +192,7 @@ const styles = StyleSheet.create({
     color: colors.white,
   },
   saveButtonContainer: {
-    margin: 20,
+    marginRight: 20,
   },
   snackbar: {
     position: 'absolute',
