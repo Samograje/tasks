@@ -4,7 +4,7 @@ import {ActivityIndicator, TextInput, Text, RadioButton, Snackbar} from 'react-n
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {timeConverter, dateConverter} from '../../utils/dateTimeConverter';
-import {colors, fonts} from "../../styles/common";
+import {colors, fonts, margin} from "../../styles/common";
 import {useTheme} from "@react-navigation/native";
 
 interface Props {
@@ -145,8 +145,8 @@ const DetailsComponent = (props: Props) => {
 
           </ScrollView>
           <Snackbar
-              theme={theme}
-            style={styles.snackbar}
+            theme={theme}
+            style={[styles.snackbar, {backgroundColor: theme.colors.card}]}
             visible={isSnackbarVisible}
             onDismiss={onDismissSnackbar}
           >
@@ -172,14 +172,14 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    margin: 10,
+    margin: margin.sm,
   },
   radioButtonLabel: {
     alignContent: 'space-around',
     alignItems: 'center',
     justifyContent: 'center',
-    marginRight: 10,
-    marginLeft: 10,
+    marginRight: margin.sm,
+    marginLeft: margin.sm,
   },
   row: {
     display: 'flex',
@@ -192,14 +192,15 @@ const styles = StyleSheet.create({
     color: colors.white,
   },
   saveButtonContainer: {
-    marginRight: 20,
+    marginRight: margin.md,
   },
   snackbar: {
     position: 'absolute',
     bottom: 0,
+    fontFamily: fonts.primary,
   },
   textInput: {
-    margin: 10,
+    margin: margin.sm,
     fontFamily: fonts.primary,
   },
 });
