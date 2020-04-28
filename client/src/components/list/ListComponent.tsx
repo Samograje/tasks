@@ -88,6 +88,17 @@ const ListComponent = (props: Props) => {
   });
   unsubscribe();
 
+  const externalConnections = isInternetConnection && isDatabaseConnection;
+  const tasksEmpty = isToDoEmpty && isDoneEmpty;
+  const headerMessage = (
+      <>
+        {!isInternetConnection && (<Text style={[styles.toDoText, {color: theme.colors.primary, alignSelf: 'center'}]}>Internet connection failed.</Text>)}
+        {!isDatabaseConnection && <Text style={[styles.toDoText, {color: theme.colors.primary, alignSelf: 'center'}]}>Database connection failed.</Text>}
+        {(tasksEmpty && externalConnections) && <Text style={[styles.toDoText, {color: theme.colors.primary, alignSelf: 'center'}]}>Your tasks list is empty!</Text>}
+        {(!isToDoEmpty && externalConnections) && (<Text style={[styles.toDoText, {color: theme.colors.primary}]}>To do </Text>)}
+      </>
+  );
+
   return (
     isLoading ? (
       <ActivityIndicator theme={theme}
@@ -105,12 +116,8 @@ const ListComponent = (props: Props) => {
                       }
           >
             <View style={styles.container}>
-              {console.log(isDatabaseConnection)}
-              {!isInternetConnection && (<Text style={[styles.toDoText, {color: theme.colors.primary, alignSelf: 'center'}]}>Internet connection failed.</Text>)}
-              {!isDatabaseConnection && <Text style={[styles.toDoText, {color: theme.colors.primary, alignSelf: 'center'}]}>Database connection failed.</Text>}
-              {(isToDoEmpty && isDoneEmpty && isInternetConnection && isDatabaseConnection) && <Text style={[styles.toDoText, {color: theme.colors.primary, alignSelf: 'center'}]}>Your tasks list is empty!</Text>}
-              {(!isToDoEmpty && isInternetConnection && isDatabaseConnection) && (<Text style={[styles.toDoText, {color: theme.colors.primary}]}>To do </Text>)}
-              {(isDatabaseConnection && isInternetConnection)&& (
+              {headerMessage}
+              {(externalConnections)&& (
                 <FlatList
                   data={tasks.toDo}
                   renderItem={({item, index}) => (
@@ -125,7 +132,7 @@ const ListComponent = (props: Props) => {
                   keyExtractor={(item, index) => index.toString()}
                 />
               )}
-              {(!isDoneEmpty && isDatabaseConnection && isInternetConnection) && (
+              {(!isDoneEmpty && externalConnections) && (
                 <List.Section>
                   <List.Accordion
                   title={`Done (${tasks.done.length})`}
@@ -152,7 +159,7 @@ const ListComponent = (props: Props) => {
               </View>
           </ScrollView>
             <View style={styles.fixedView}>
-              {(isDatabaseConnection && isInternetConnection) && (
+              {(externalConnections) && (
                 <FAB theme={theme}
                      style={[styles.fab, {backgroundColor: theme.colors.primary}]}
                      icon="plus"

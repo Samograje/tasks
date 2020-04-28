@@ -87,7 +87,6 @@ class ListContainer extends Component<Props, State> {
     fetch(urlTasks)
       .then((response) => response.json())
       .then((response) => {
-        console.log(response);
         this.separateTasksAndSetState(response);
       })
       .catch((error) => {
