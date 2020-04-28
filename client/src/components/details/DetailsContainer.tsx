@@ -64,7 +64,7 @@ class DetailsContainer extends Component<Props, State> {
             details: response.details ? response.details : '',
             inProgress: response.inProgress,
             priority: response.priority,
-            deadlineDate: response.deadlineDate ? response.deadlineDate : '',
+            deadlineDate: response.deadlineDate && new Date(Date.parse(response.deadlineDate)),
           }
         });
       })

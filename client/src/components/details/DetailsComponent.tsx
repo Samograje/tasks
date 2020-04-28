@@ -61,8 +61,8 @@ const DetailsComponent = (props: Props) => {
       value: 'low',
     },
     {
-      label: 'Medium',
-      value: 'medium',
+      label: 'Normal',
+      value: 'normal',
     },
     {
       label: 'High',
