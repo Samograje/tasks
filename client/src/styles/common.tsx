@@ -18,7 +18,6 @@ export const colors = {
   whiteSmoke: '#F0F0F0',
   blackLighter: '#1E1E1E',
   blackDeep: '#000000',
-  gray: '#767577',
 };
 
 export const padding = {

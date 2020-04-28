@@ -25,7 +25,7 @@ const SettingsComponent = (props: Props) => {
     <View style={[styles.themeModeSelection, cardStyle]}>
       <Text theme={currentTheme} style={styles.labelThemeMode}>Dark mode</Text>
       <Switch
-        trackColor={{ false: colors.gray, true: colors.primaryDark }}
+        trackColor={{ false: null, true: colors.primaryDark }}
         thumbColor={currentTheme.dark? currentTheme.colors.primary : colors.white}
         ios_backgroundColor={currentTheme.colors.primary}
         value={currentTheme.dark}
