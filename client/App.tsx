@@ -45,7 +45,7 @@ class App extends React.Component<null, State> {
           <Stack.Screen
             name="List"
             component={ListContainer}
-            options={{ title: 'Tasks list' }}
+            options={{ title: 'Back' }}
           />
           <Stack.Screen
             name="Details"
