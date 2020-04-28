@@ -28,6 +28,7 @@ interface State {
     message,
   },
   isRefreshing: boolean,
+  isDatabaseConnection: boolean,
 }
 
 class ListContainer extends Component<Props, State> {
@@ -44,6 +45,7 @@ class ListContainer extends Component<Props, State> {
         message: "",
       },
       isRefreshing: false,
+      isDatabaseConnection: false,
     };
   }
 
@@ -74,6 +76,8 @@ class ListContainer extends Component<Props, State> {
     snackbar: {...this.state.snackbar, isVisible: false, message: ""}
   });
 
+
+
   loadTasks = () => {
     if(!this.state.isRefreshing){
       this.setState({
@@ -88,6 +92,7 @@ class ListContainer extends Component<Props, State> {
       .catch((error) => {
         console.log(error);
         this.showSnackbar('Error while fetching tasks.');
+        this.setState({isDatabaseConnection: false})
       })
       .finally(() => this.setState({
         isLoading: false,
@@ -108,6 +113,7 @@ class ListContainer extends Component<Props, State> {
     this.setState({
       tasks: {...this.state.tasks, toDo: tasksToDo, done: tasksDone},
       isRefreshing: false,
+      isDatabaseConnection: true,
     });
   };
 
@@ -182,6 +188,7 @@ class ListContainer extends Component<Props, State> {
     }
   };
 
+
   render() {
     const {
       onCreate,
@@ -199,6 +206,7 @@ class ListContainer extends Component<Props, State> {
       isLoading,
       snackbar,
       isRefreshing,
+      isDatabaseConnection,
     } = this.state;
 
     const {
@@ -220,6 +228,9 @@ class ListContainer extends Component<Props, State> {
         isLoading={isLoading}
         snackbar={snackbar}
         isRefreshing={isRefreshing}
+        isDatabaseConnection={isDatabaseConnection}
+        isToDoEmpty={tasks.toDo.length <= 0}
+        isDoneEmpty={tasks.done.length <= 0}
       />
     );
   }

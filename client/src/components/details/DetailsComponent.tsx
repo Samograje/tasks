@@ -224,7 +224,6 @@ const styles = StyleSheet.create({
   },
   textInput: {
     margin: margin.sm,
-    fontFamily: fonts.primary,
     fontSize: fonts.md,
   },
 });
