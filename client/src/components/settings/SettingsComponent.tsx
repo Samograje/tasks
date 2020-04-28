@@ -1,9 +1,9 @@
 import React from 'react';
-import { ScrollView, StyleSheet, Switch, Text, View } from 'react-native';
-import SectionHeader from '../_components/SectionHeader';
-import { RadioButton } from 'react-native-paper';
-import { colors } from '../../styles/common';
+import { ScrollView, StyleSheet, Switch, View } from 'react-native';
+import { RadioButton, Text } from 'react-native-paper';
 import { useTheme } from '@react-navigation/native';
+import SectionHeader from '../_components/SectionHeader';
+import { colors, fonts } from '../../styles/common';
 
 interface Props {
   changeTheme: () => void,
@@ -19,10 +19,11 @@ const SettingsComponent = (props: Props) => {
   } = props;
 
   const currentTheme = useTheme();
+  const cardStyle = currentTheme.dark ? styles.cardDark : styles.cardLight;
 
   const themeModeSelection = (
-    <View style={styles.themeModeSelection}>
-      <Text style={styles.labelThemeMode}>Dark mode</Text>
+    <View style={[styles.themeModeSelection, cardStyle]}>
+      <Text theme={currentTheme} style={styles.labelThemeMode}>Dark mode</Text>
       <Switch
         // TODO: ios_backgroundColor={}
 
@@ -52,14 +53,14 @@ const SettingsComponent = (props: Props) => {
   ];
 
   const sortDirectionSelection = (
-    <View style={styles.sortDirectionSelection}>
+    <View style={[styles.sortDirectionSelection, cardStyle]}>
       <RadioButton.Group
         onValueChange={changeSortOrder}
         value={sortBy}
       >
         {radioOptions.map(({ label, value }, key) => (
           <View style={styles.radioButtonWithLabel} key={key}>
-            <Text style={styles.radioOptionText}>{label}</Text>
+            <Text theme={currentTheme} style={styles.radioOptionText}>{label}</Text>
             <RadioButton value={value} color={colors.primary}/>
           </View>
         ))}
@@ -87,6 +88,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  cardLight: {
+    backgroundColor: colors.white,
+  },
+  cardDark: {
+    backgroundColor: colors.blackLighter,
+  },
   section: {
     marginTop: 5,
     marginBottom: 10,
@@ -94,7 +101,6 @@ const styles = StyleSheet.create({
   themeModeSelection: {
     flex: 1,
     flexDirection: 'row',
-    backgroundColor: colors.white,
     padding: 10,
     paddingLeft: 15,
   },
@@ -102,6 +108,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignSelf: 'center',
     fontSize: 16,
+    fontFamily: fonts.primary,
   },
   sortDirectionSelection: {
     flex: 1,
@@ -109,7 +116,6 @@ const styles = StyleSheet.create({
   radioButtonWithLabel: {
     flex: 1,
     flexDirection: 'row',
-    backgroundColor: colors.white,
     padding: 5,
     paddingLeft: 15,
     paddingRight: 15,
@@ -119,6 +125,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignSelf: 'center',
     fontSize: 16,
+    fontFamily: fonts.primary,
   },
 });
 
