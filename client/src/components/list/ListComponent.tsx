@@ -4,6 +4,7 @@ import {ActivityIndicator, FAB, IconButton, List, Snackbar, Text} from 'react-na
 import ListElement from './ListElement';
 import {colors, fonts, margin, padding} from "../../styles/common";
 import {useTheme} from "@react-navigation/native";
+import NetInfo from "@react-native-community/netinfo";
 
 interface Props {
   onCreate: () => {},
@@ -33,8 +34,10 @@ interface Props {
   }
   isRefreshing: boolean,
   setRefreshing: any,
+  isDatabaseConnection: boolean,
+  isToDoEmpty: boolean,
+  isDoneEmpty: boolean,
 }
-
 
 const ListComponent = (props: Props) => {
   const {
@@ -51,20 +54,25 @@ const ListComponent = (props: Props) => {
     snackbar,
     isRefreshing,
     setRefreshing,
+    isDatabaseConnection,
+    isToDoEmpty,
+    isDoneEmpty,
   } = props;
+
+  let isInternetConnection = false;
 
   const theme = useTheme();
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
-          <IconButton
-              icon="settings-outline"
-              size={30}
-              onPress={onSettings}
-              style={styles.settingsBtn}
-              color={colors.tintColor}
-          />
+        <IconButton
+          icon="settings-outline"
+          size={30}
+          onPress={onSettings}
+          style={styles.settingsBtn}
+          color={colors.tintColor}
+        />
       ),
     });
   }, [navigation]);
@@ -75,13 +83,18 @@ const ListComponent = (props: Props) => {
     });
   }, [navigation]);
 
+  const unsubscribe = NetInfo.addEventListener(state => {
+    isInternetConnection = state.isConnected;
+  });
+  unsubscribe();
+
   return (
     isLoading ? (
-        <ActivityIndicator theme={theme}
-                           size='large'
-                           style={styles.activityIndicator}
-        />
-                  ) :
+      <ActivityIndicator theme={theme}
+                         size='large'
+                         style={styles.activityIndicator}
+      />
+                ) :
       (
         <View style={[styles.rootView, {backgroundColor: theme.colors.background}]}>
           <ScrollView style={styles.scrollView}
@@ -92,7 +105,12 @@ const ListComponent = (props: Props) => {
                       }
           >
             <View style={styles.container}>
-              <Text style={[styles.toDoText, {color: theme.colors.primary}]}>To do</Text>
+              {console.log(isDatabaseConnection)}
+              {!isInternetConnection && (<Text style={[styles.toDoText, {color: theme.colors.primary, alignSelf: 'center'}]}>Internet connection failed.</Text>)}
+              {!isDatabaseConnection && <Text style={[styles.toDoText, {color: theme.colors.primary, alignSelf: 'center'}]}>Database connection failed.</Text>}
+              {(isToDoEmpty && isDoneEmpty && isInternetConnection && isDatabaseConnection) && <Text style={[styles.toDoText, {color: theme.colors.primary, alignSelf: 'center'}]}>Your tasks list is empty!</Text>}
+              {(!isToDoEmpty && isInternetConnection && isDatabaseConnection) && (<Text style={[styles.toDoText, {color: theme.colors.primary}]}>To do </Text>)}
+              {(isDatabaseConnection && isInternetConnection)&& (
                 <FlatList
                   data={tasks.toDo}
                   renderItem={({item, index}) => (
@@ -106,47 +124,49 @@ const ListComponent = (props: Props) => {
                   )}
                   keyExtractor={(item, index) => index.toString()}
                 />
-                {tasks.done.length > 0 &&
-                (
-                  <List.Section>
-                    <List.Accordion
-                      title={`Done (${tasks.done.length})`}
-                      theme={theme}
-                      titleStyle={{fontSize: fonts.md}}
-                    >
-                      <FlatList
-                        data={tasks.done}
-                        refreshing={true}
-                        renderItem={({item, index}) => (
-                          <ListElement _id={item._id}
-                                       title={item.title}
-                                       inProgress={item.inProgress}
-                                       onEdit={() => onEdit(item._id)}
-                                       changeProgress={() => changeProgress(item._id, item.inProgress)}
-                                       onDelete={() => onDelete(item._id)}
-                          />
-                        )}
-                        keyExtractor={(item, index) => index.toString()}
-                      />
-                    </List.Accordion>
-                  </List.Section>
+              )}
+              {(!isDoneEmpty && isDatabaseConnection && isInternetConnection) && (
+                <List.Section>
+                  <List.Accordion
+                  title={`Done (${tasks.done.length})`}
+                  theme={theme}
+                  titleStyle={{fontSize: fonts.md, color: theme.colors.primary}}
+                  >
+                  <FlatList
+                  data={tasks.done}
+                  refreshing={true}
+                  renderItem={({item, index}) => (
+                    <ListElement _id={item._id}
+                                 title={item.title}
+                                 inProgress={item.inProgress}
+                                 onEdit={() => onEdit(item._id)}
+                                 changeProgress={() => changeProgress(item._id, item.inProgress)}
+                                 onDelete={() => onDelete(item._id)}
+                    />
+                  )}
+                  keyExtractor={(item, index) => index.toString()}
+                  />
+                  </List.Accordion>
+                </List.Section>
                 )}
               </View>
           </ScrollView>
-            <Snackbar theme={theme}
-                      style={styles.snackbar}
-                      visible={snackbar.isVisible}
-                      onDismiss={onDismissSnackbar}
-            >
-              {snackbar.message}
-            </Snackbar>
             <View style={styles.fixedView}>
-              <FAB theme={theme}
-                   style={[styles.fab, {backgroundColor: theme.colors.primary}]}
-                   icon="plus"
-                   onPress={onCreate}
-              />
+              {(isDatabaseConnection && isInternetConnection) && (
+                <FAB theme={theme}
+                     style={[styles.fab, {backgroundColor: theme.colors.primary}]}
+                     icon="plus"
+                     onPress={onCreate}
+                />
+              )}
             </View>
+          <Snackbar theme={theme}
+                    style={styles.snackbar}
+                    visible={snackbar.isVisible}
+                    onDismiss={onDismissSnackbar}
+          >
+            {snackbar.message}
+          </Snackbar>
           </View>
       )
   );

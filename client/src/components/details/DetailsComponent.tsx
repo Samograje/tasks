@@ -200,7 +200,6 @@ const styles = StyleSheet.create({
   },
   textInput: {
     margin: 10,
-    fontFamily: fonts.primary,
   },
 });
 

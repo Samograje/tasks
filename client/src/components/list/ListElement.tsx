@@ -82,11 +82,9 @@ const styles = StyleSheet.create({
   },
   crossOver: {
     textDecorationLine: 'line-through',
-    fontFamily: fonts.primary,
     fontSize: fonts.md,
   },
   text: {
-    fontFamily: fonts.primary,
     fontSize: fonts.md,
   },
   leftSwipeContainer: {
