@@ -104,7 +104,7 @@ class DetailsContainer extends Component<Props, State> {
       .then((response) => {
         if(response) {
           this.showSnackbar('Saved task!');
-          this.props.navigation.goBack();
+          setTimeout(this.props.navigation.goBack, 2000);
         } else {
           this.showSnackbar('Error while saving task');
         }
