@@ -102,9 +102,12 @@ class DetailsContainer extends Component<Props, State> {
       body: JSON.stringify(this.state.task),
     })
       .then((response) => {
-        response ?
-          this.showSnackbar('Saved task!') :
+        if(response) {
+          this.showSnackbar('Saved task!');
+          this.props.navigation.goBack();
+        } else {
           this.showSnackbar('Error while saving task');
+        }
       })
       .catch((error) => {
         this.showSnackbar('Something went wrong.');
