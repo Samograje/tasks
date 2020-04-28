@@ -1,5 +1,5 @@
 import React from 'react';
-import { ScrollView, StyleSheet, Switch, View } from 'react-native';
+import { ScrollView, StyleSheet, Switch, TouchableOpacity, View } from 'react-native';
 import { RadioButton, Text } from 'react-native-paper';
 import { useTheme } from '@react-navigation/native';
 import SectionHeader from '../ui/SectionHeader';
@@ -7,8 +7,8 @@ import { colors, fonts } from '../../styles/common';
 
 interface Props {
   changeTheme: () => void,
-  sortBy: 'title' | 'creationDate' | 'deadlineDate' | 'category' | 'priority',
-  changeSortOrder: (newValue: 'title' | 'creationDate' | 'deadlineDate' | 'category' | 'priority') => void,
+  sortBy: string,
+  changeSortOrder: (newValue: string) => void,
 }
 
 const SettingsComponent = (props: Props) => {
@@ -60,10 +60,14 @@ const SettingsComponent = (props: Props) => {
         value={sortBy}
       >
         {radioOptions.map(({ label, value }, key) => (
-          <View style={styles.radioButtonWithLabel} key={key}>
+          <TouchableOpacity
+            onPress={() => changeSortOrder(value)}
+            style={styles.radioButtonWithLabel}
+            key={key}
+          >
             <Text theme={currentTheme} style={styles.radioOptionText}>{label}</Text>
             <RadioButton value={value} color={currentTheme.colors.primary}/>
-          </View>
+          </TouchableOpacity>
         ))}
       </RadioButton.Group>
     </View>
