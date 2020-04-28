@@ -6,7 +6,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import {timeConverter, dateConverter} from '../../utils/dateTimeConverter';
 import {colors, fonts, margin, padding} from "../../styles/common";
 import {useTheme} from "@react-navigation/native";
-import SectionHeader from "../_components/SectionHeader";
+import SectionHeader from "../ui/SectionHeader";
 
 interface Props {
   handleConfirm: (data: Date) => void,

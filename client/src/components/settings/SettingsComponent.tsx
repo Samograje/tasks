@@ -2,7 +2,7 @@ import React from 'react';
 import { ScrollView, StyleSheet, Switch, View } from 'react-native';
 import { RadioButton, Text } from 'react-native-paper';
 import { useTheme } from '@react-navigation/native';
-import SectionHeader from '../_components/SectionHeader';
+import SectionHeader from '../ui/SectionHeader';
 import { colors, fonts } from '../../styles/common';
 
 interface Props {
