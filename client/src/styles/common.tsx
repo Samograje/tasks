@@ -9,6 +9,7 @@ export const dimensions = {
 
 export const colors = {
   primary: '#3F51B5',
+  primaryLight: '#757de8',
   primaryDark: '#283593',
   tertiary: '#9FA8DA',
   tintColor: '#E8EAF6',
@@ -17,6 +18,7 @@ export const colors = {
   whiteSmoke: '#F0F0F0',
   blackLighter: '#1E1E1E',
   blackDeep: '#000000',
+  gray: '#767577',
 };
 
 export const padding = {
@@ -58,7 +60,7 @@ export const darkTheme: Theme = {
   ...DarkTheme,
   colors: {
     ...DarkTheme.colors,
-    primary: colors.primary,
+    primary: colors.primaryLight,
     card: colors.blackLighter,
     background: colors.blackDeep,
     border: '#FFF',

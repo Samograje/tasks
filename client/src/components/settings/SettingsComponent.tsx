@@ -25,8 +25,9 @@ const SettingsComponent = (props: Props) => {
     <View style={[styles.themeModeSelection, cardStyle]}>
       <Text theme={currentTheme} style={styles.labelThemeMode}>Dark mode</Text>
       <Switch
-        // TODO: ios_backgroundColor={}
-
+        trackColor={{ false: colors.gray, true: colors.primaryDark }}
+        thumbColor={currentTheme.dark? currentTheme.colors.primary : colors.white}
+        ios_backgroundColor={currentTheme.colors.primary}
         value={currentTheme.dark}
         onValueChange={changeTheme}
       />
@@ -61,7 +62,7 @@ const SettingsComponent = (props: Props) => {
         {radioOptions.map(({ label, value }, key) => (
           <View style={styles.radioButtonWithLabel} key={key}>
             <Text theme={currentTheme} style={styles.radioOptionText}>{label}</Text>
-            <RadioButton value={value} color={colors.primary}/>
+            <RadioButton value={value} color={currentTheme.colors.primary}/>
           </View>
         ))}
       </RadioButton.Group>
