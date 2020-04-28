@@ -64,7 +64,7 @@ class DetailsContainer extends Component<Props, State> {
             details: response.details ? response.details : '',
             inProgress: response.inProgress,
             priority: response.priority,
-            deadlineDate: response.deadlineDate ? response.deadlineDate : '',
+            deadlineDate: response.deadlineDate && new Date(Date.parse(response.deadlineDate)),
           }
         });
       })
@@ -102,9 +102,12 @@ class DetailsContainer extends Component<Props, State> {
       body: JSON.stringify(this.state.task),
     })
       .then((response) => {
-        response ?
-          this.showSnackbar('Saved task!') :
+        if(response) {
+          this.showSnackbar('Saved task!');
+          setTimeout(this.props.navigation.goBack, 2000);
+        } else {
           this.showSnackbar('Error while saving task');
+        }
       })
       .catch((error) => {
         this.showSnackbar('Something went wrong.');
