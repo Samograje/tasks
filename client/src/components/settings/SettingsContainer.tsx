@@ -8,7 +8,7 @@ interface Props {
 // TODO: component cannot keep a state due to the changeTheme() method being passed in an unconventional way in App.tsx.
 //  Then, if the onChangeSortOrder would be passed by props, the SettingsContainer is useless and may be removed
 const SettingsContainer = (props: Props) => {
-  const onChangeSortOrder = (newValue: 'title' | 'creationDate' | 'deadlineDate' | 'category' | 'priority') => {
+  const onChangeSortOrder = (newValue: string) => {
     // TODO: change sort order
   };
 

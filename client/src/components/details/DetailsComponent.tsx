@@ -6,7 +6,7 @@ import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityI
 import {timeConverter, dateConverter} from '../../utils/dateTimeConverter';
 import {colors, fonts, margin, padding} from "../../styles/common";
 import {useTheme} from "@react-navigation/native";
-import SectionHeader from "../_components/SectionHeader";
+import SectionHeader from "../ui/SectionHeader";
 
 interface Props {
   handleConfirm: (data: Date) => void,
@@ -91,10 +91,14 @@ const DetailsComponent = (props: Props) => {
             value={task.priority}
         >
           {radioOptions.map(({ label, value }, key) => (
-              <View style={styles.radioButtonWithLabel} key={key}>
+              <TouchableOpacity
+                onPress={() => onRadioButtonClick(value)}
+                style={styles.radioButtonWithLabel}
+                key={key}
+              >
                 <Text theme={theme} style={styles.radioOptionText}>{label}</Text>
                 <RadioButton theme={theme} value={value} color={colors.primary}/>
-              </View>
+              </TouchableOpacity>
           ))}
         </RadioButton.Group>
       </View>
