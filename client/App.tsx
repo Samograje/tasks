@@ -40,6 +40,7 @@ class App extends React.Component<null, State> {
               backgroundColor: actionBarBackgroundColor,
             },
             headerTintColor: colors.tintColor,
+            headerBackTitleVisible: false,
           }}
         >
           <Stack.Screen
