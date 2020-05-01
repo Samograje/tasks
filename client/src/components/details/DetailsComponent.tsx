@@ -30,7 +30,7 @@ interface Props {
     details: string,
     inProgress: boolean,
     priority: string,
-    deadlineDate: Date,
+    deadlineDate: Date | null,
   },
 }
 
@@ -134,7 +134,7 @@ const DetailsComponent = (props: Props) => {
               label='Deadline date'
               mode='outlined'
               style={styles.textInput}
-              value={task.deadlineDate.toString() !== (new Date(0)).toString() ? `${dateConverter(task.deadlineDate)} ${timeConverter(task.deadlineDate)}` : 'Choose below'}
+              value={task.deadlineDate ? `${dateConverter(task.deadlineDate)} ${timeConverter(task.deadlineDate)}` : 'Choose below'}
             />
             <View style={styles.row}>
               <TouchableOpacity onPress={onIconClick}>
@@ -153,7 +153,7 @@ const DetailsComponent = (props: Props) => {
               </TouchableOpacity>
             </View>
             <DateTimePickerModal
-              date={task.deadlineDate.toString() !== (new Date(0)).toString() ? task.deadlineDate : new Date()}
+              date={task.deadlineDate ? task.deadlineDate : new Date()}
               isVisible={isModalVisible}
               mode={'datetime'}
               onConfirm={(data) => handleConfirm(data)}

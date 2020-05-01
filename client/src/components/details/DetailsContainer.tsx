@@ -18,7 +18,7 @@ interface State {
     details: string,
     inProgress: boolean,
     priority: string,
-    deadlineDate: Date,
+    deadlineDate: Date | null,
   },
 }
 
@@ -31,7 +31,7 @@ class DetailsContainer extends Component<Props, State> {
         details: '',
         inProgress: true,
         priority: 'low',
-        deadlineDate: new Date(0),
+        deadlineDate: null,
       },
       isLoading: false,
       isModalVisible: false,
@@ -136,7 +136,7 @@ class DetailsContainer extends Component<Props, State> {
 
   onClearIconClick = () => {
     this.setState({
-      task: {...this.state.task, deadlineDate: new Date(0)}
+      task: {...this.state.task, deadlineDate: null}
     });
   };
 
