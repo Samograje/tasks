@@ -2,6 +2,7 @@ import React from 'react';
 import {ScrollView, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {ActivityIndicator, TextInput, Text, RadioButton, Snackbar} from 'react-native-paper';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
+// @ts-ignore
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {timeConverter, dateConverter} from '../../utils/dateTimeConverter';
 import {colors, fonts, margin, padding} from "../../styles/common";
@@ -21,7 +22,7 @@ interface Props {
   onIconClick: () => void,
   onRadioButtonClick: (value: string) => void,
   onTitleChange: (text: string) => void,
-  navigation,
+  navigation: any,
   saveTask: () => void,
   snackbarText: string,
   task: {
@@ -133,7 +134,7 @@ const DetailsComponent = (props: Props) => {
               label='Deadline date'
               mode='outlined'
               style={styles.textInput}
-              value={task.deadlineDate ? `${dateConverter(task.deadlineDate)} ${timeConverter(task.deadlineDate)}` : 'Choose below'}
+              value={task.deadlineDate.toString() !== (new Date(0)).toString() ? `${dateConverter(task.deadlineDate)} ${timeConverter(task.deadlineDate)}` : 'Choose below'}
             />
             <View style={styles.row}>
               <TouchableOpacity onPress={onIconClick}>
@@ -152,7 +153,7 @@ const DetailsComponent = (props: Props) => {
               </TouchableOpacity>
             </View>
             <DateTimePickerModal
-              date={task.deadlineDate ? task.deadlineDate : new Date()}
+              date={task.deadlineDate.toString() !== (new Date(0)).toString() ? task.deadlineDate : new Date()}
               isVisible={isModalVisible}
               mode={'datetime'}
               onConfirm={(data) => handleConfirm(data)}
