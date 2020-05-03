@@ -22,17 +22,17 @@ interface State {
       inProgress: boolean,
     }[]
   },
-  isLoading,
+  isLoading: boolean,
   snackbar: {
-    isVisible,
-    message,
+    isVisible: boolean,
+    message: string,
   },
   isRefreshing: boolean,
   isDatabaseConnection: boolean,
 }
 
 class ListContainer extends Component<Props, State> {
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     this.state = {
       tasks: {
@@ -42,7 +42,7 @@ class ListContainer extends Component<Props, State> {
       isLoading: false,
       snackbar: {
         isVisible: false,
-        message: "",
+        message: '',
       },
       isRefreshing: false,
       isDatabaseConnection: false,
@@ -66,7 +66,7 @@ class ListContainer extends Component<Props, State> {
 
   onSettings = () => this.props.navigation.navigate('Settings');
 
-  showSnackbar = (text) => {
+  showSnackbar = (text: string) => {
     this.setState({
       snackbar: {...this.state.snackbar, isVisible: true, message: text}
     });
@@ -99,9 +99,9 @@ class ListContainer extends Component<Props, State> {
       }));
   };
 
-  separateTasksAndSetState = (response) => {
-    const tasksToDo = [];
-    const tasksDone = [];
+  separateTasksAndSetState = (response:  { _id: number, title: string, inProgress: boolean}[]) => {
+    const tasksToDo: { _id: number, title: string, inProgress: boolean}[] = [];
+    const tasksDone: { _id: number, title: string, inProgress: boolean}[] = [];
 
     response.forEach((item) => {
       if (item.inProgress) {
@@ -160,11 +160,11 @@ class ListContainer extends Component<Props, State> {
       })
   };
 
-  changeStatusLogic = (_id: number, inProgress) => {
+  changeStatusLogic = (_id: number, inProgress: boolean) => {
     let tasksToDo = [...this.state.tasks.toDo];
     let tasksDone = [...this.state.tasks.done];
     if (inProgress) { //To_do -> Done
-      let newTasksToDo = [];
+      let newTasksToDo: { _id: number, title: string, inProgress: boolean}[] = [];
       tasksToDo.forEach(function (item) {
         if (item._id != _id) {
           newTasksToDo.push(item);
@@ -175,7 +175,7 @@ class ListContainer extends Component<Props, State> {
       });
       this.setState({tasks: {...this.state.tasks, toDo: newTasksToDo, done: tasksDone}});
     } else { //Done -> to_do
-      let newTasksDone = [];
+      let newTasksDone: { _id: number, title: string, inProgress: boolean}[] = [];
       tasksDone.forEach((item) => {
         if (item._id != _id) {
           newTasksDone.push(item);

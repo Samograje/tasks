@@ -1,6 +1,7 @@
 import React from 'react';
 import {StyleSheet, TouchableOpacity, View} from 'react-native';
 import {IconButton, Text} from 'react-native-paper';
+// @ts-ignore
 import Swipeable from 'react-native-swipeable-row';
 import {colors, fonts, padding, margin, lightTheme} from "../../styles/common";
 import {useTheme} from "@react-navigation/native";
