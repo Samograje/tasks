@@ -2,6 +2,7 @@ import React from 'react';
 import {ScrollView, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {ActivityIndicator, TextInput, Text, RadioButton, Snackbar} from 'react-native-paper';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
+// @ts-ignore
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {timeConverter, dateConverter} from '../../utils/dateTimeConverter';
 import {colors, fonts, margin, padding} from "../../styles/common";
@@ -21,7 +22,7 @@ interface Props {
   onIconClick: () => void,
   onRadioButtonClick: (value: string) => void,
   onTitleChange: (text: string) => void,
-  navigation,
+  navigation: any,
   saveTask: () => void,
   snackbarText: string,
   task: {
@@ -29,7 +30,7 @@ interface Props {
     details: string,
     inProgress: boolean,
     priority: string,
-    deadlineDate: Date,
+    deadlineDate: Date | null,
   },
 }
 

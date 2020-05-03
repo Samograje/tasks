@@ -3,8 +3,8 @@ import DetailsComponent from './DetailsComponent';
 import { urlTasks } from '../../utils/APIClient';
 
 interface Props {
-  navigation,
-  route,
+  navigation: any,
+  route: any,
 }
 
 interface State {
@@ -18,12 +18,12 @@ interface State {
     details: string,
     inProgress: boolean,
     priority: string,
-    deadlineDate: Date,
+    deadlineDate: Date | null,
   },
 }
 
 class DetailsContainer extends Component<Props, State> {
-  constructor(props) {
+  constructor(props: Props) {
     super(props);
     this.state = {
       task: {
@@ -79,12 +79,9 @@ class DetailsContainer extends Component<Props, State> {
   saveTask = () => {
     const {_id, mode} = this.props.route.params;
 
-    let url;
-    let method;
-    if (mode === 'create') {
-      url = urlTasks;
-      method = 'POST';
-    }
+    let url: string = urlTasks;
+    let method: string = 'POST';
+
     if (mode === 'edit') {
       url = `${urlTasks}${_id}`;
       method = 'PATCH';
@@ -101,7 +98,7 @@ class DetailsContainer extends Component<Props, State> {
       },
       body: JSON.stringify(this.state.task),
     })
-      .then((response) => {
+      .then((response: any) => {
         if(response) {
           this.showSnackbar('Saved task!');
           setTimeout(this.props.navigation.goBack, 2000);
@@ -109,7 +106,7 @@ class DetailsContainer extends Component<Props, State> {
           this.showSnackbar('Error while saving task');
         }
       })
-      .catch((error) => {
+      .catch((error: Error) => {
         this.showSnackbar('Something went wrong.');
       }).finally(() => {
       this.setState({
