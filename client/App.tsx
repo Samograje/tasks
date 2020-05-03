@@ -14,8 +14,8 @@ interface State {
 }
 
 class App extends React.Component<null, State> {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super(null);
     this.state = {
       currentTheme: lightTheme,
     };
