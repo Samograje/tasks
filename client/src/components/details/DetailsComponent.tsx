@@ -83,7 +83,7 @@ const DetailsComponent = (props: Props) => {
         </TouchableOpacity>
       ),
     });
-  }, [navigation]);
+  }, [navigation, isSubmitting, isLoading]);
 
   const prioritySelection = (
       <View style={styles.container}>
