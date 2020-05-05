@@ -104,15 +104,17 @@ class DetailsContainer extends Component<Props, State> {
           setTimeout(this.props.navigation.goBack, 2000);
         } else {
           this.showSnackbar('Error while saving task');
+          this.setState({
+            isSubmitting: false,
+          });
         }
       })
       .catch((error: Error) => {
+        this.setState({
+          isSubmitting: false,
+        });
         this.showSnackbar('Something went wrong.');
-      }).finally(() => {
-      this.setState({
-        isSubmitting: false,
       });
-    });
   };
 
   showSnackbar = (text: string) => {
