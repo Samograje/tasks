@@ -1,5 +1,5 @@
 import React from 'react';
-import {FlatList, RefreshControl, ScrollView, StyleSheet, View} from 'react-native';
+import {FlatList, GestureResponderEvent, RefreshControl, ScrollView, StyleSheet, View} from 'react-native';
 import {ActivityIndicator, FAB, IconButton, List, Snackbar, Text} from 'react-native-paper';
 import ListElement from './ListElement';
 import {colors, fonts, margin, padding} from "../../styles/common";
@@ -9,12 +9,12 @@ import NetInfo from "@react-native-community/netinfo";
 interface Props {
   onCreate: () => {},
   onEdit: (taskId: number) => {},
-  onSettings: () => {},
-  onDelete: (taskId: number) => any,
-  onDismissSnackbar,
-  loadTasks: any,
+  onSettings: () => void,
+  onDelete: (taskId: number) => void,
+  onDismissSnackbar: () => void,
+  loadTasks: () => void,
   changeProgress: (taskId: number, inProgress: boolean) => any,
-  navigation,
+  navigation: any,
   tasks: {
     toDo: {
       _id: number,
@@ -27,13 +27,13 @@ interface Props {
       inProgress: boolean,
     }[]
   },
-  isLoading,
+  isLoading: boolean,
   snackbar: {
-    isVisible: false,
-    message: "",
+    isVisible: boolean,
+    message: string,
   }
   isRefreshing: boolean,
-  setRefreshing: any,
+  setRefreshing: () => void,
   isDatabaseConnection: boolean,
   isToDoEmpty: boolean,
   isDoneEmpty: boolean,
