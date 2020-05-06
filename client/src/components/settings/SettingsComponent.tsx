@@ -1,32 +1,33 @@
 import React from 'react';
 import { ScrollView, StyleSheet, Switch, TouchableOpacity, View } from 'react-native';
+import { Theme } from '@react-navigation/native/src/types';
 import { RadioButton, Text } from 'react-native-paper';
-import { useTheme } from '@react-navigation/native';
 import SectionHeader from '../ui/SectionHeader';
 import { colors, fonts } from '../../styles/common';
 
 interface Props {
+  currentSorting: string,
+  currentTheme: Theme,
+  changeSorting: (newValue: string) => void,
   changeTheme: () => void,
-  sortBy: string,
-  changeSortOrder: (newValue: string) => void,
 }
 
 const SettingsComponent = (props: Props) => {
   const {
+    currentSorting,
+    currentTheme,
+    changeSorting,
     changeTheme,
-    sortBy,
-    changeSortOrder,
   } = props;
 
-  const currentTheme = useTheme();
   const cardStyle = currentTheme.dark ? styles.cardDark : styles.cardLight;
 
   const themeModeSelection = (
     <View style={[styles.themeModeSelection, cardStyle]}>
       <Text theme={currentTheme} style={styles.labelThemeMode}>Dark mode</Text>
       <Switch
-        trackColor={{ false: "null", true: colors.primaryDark }}
-        thumbColor={currentTheme.dark? currentTheme.colors.primary : colors.white}
+        trackColor={{ false: 'null', true: colors.primaryDark }}
+        thumbColor={currentTheme.dark ? currentTheme.colors.primary : colors.white}
         ios_backgroundColor={currentTheme.colors.primary}
         value={currentTheme.dark}
         onValueChange={changeTheme}
@@ -56,17 +57,17 @@ const SettingsComponent = (props: Props) => {
   const sortDirectionSelection = (
     <View style={[styles.sortDirectionSelection, cardStyle]}>
       <RadioButton.Group
-        onValueChange={changeSortOrder}
-        value={sortBy}
+        onValueChange={changeSorting}
+        value={currentSorting}
       >
         {radioOptions.map(({ label, value }, key) => (
           <TouchableOpacity
-            onPress={() => changeSortOrder(value)}
+            onPress={() => changeSorting(value)}
             style={styles.radioButtonWithLabel}
             key={key}
           >
             <Text theme={currentTheme} style={styles.radioOptionText}>{label}</Text>
-            <RadioButton value={value} color={currentTheme.colors.primary}/>
+            <RadioButton value={value} color={currentTheme.colors.primary} />
           </TouchableOpacity>
         ))}
       </RadioButton.Group>
@@ -77,11 +78,11 @@ const SettingsComponent = (props: Props) => {
     <ScrollView>
       <View style={styles.container}>
         <View style={styles.section}>
-          <SectionHeader text="COLOR THEME"/>
+          <SectionHeader text="COLOR THEME" />
           {themeModeSelection}
         </View>
         <View style={styles.section}>
-          <SectionHeader text="SORT TASKS BY"/>
+          <SectionHeader text="SORT TASKS BY" />
           {sortDirectionSelection}
         </View>
       </View>

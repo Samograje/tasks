@@ -11,13 +11,25 @@ const Stack = createStackNavigator();
 
 interface State {
   currentTheme: Theme,
+  currentSorting: string,
 }
+
+export const ThemeContext = React.createContext({
+  currentTheme: lightTheme,
+  changeTheme: () => {},
+})
+
+export const SortingContext = React.createContext({
+  currentSorting: 'creationDate',
+  changeSorting: (_: string) => {},
+});
 
 class App extends React.Component<null, State> {
   constructor() {
     super(null);
     this.state = {
       currentTheme: lightTheme,
+      currentSorting: 'creationDate',
     };
   }
 
@@ -27,45 +39,59 @@ class App extends React.Component<null, State> {
     }));
   };
 
+  changeSorting = (sorting: string) => {
+    this.setState({
+      currentSorting: sorting,
+    });
+  }
+
   render() {
-    const currentTheme = this.state.currentTheme;
+    const { currentTheme, currentSorting } = this.state;
+    const sortingContextProviderValue = {
+      currentSorting,
+      changeSorting: this.changeSorting,
+    };
+    const themeContextProviderValue = {
+      currentTheme,
+      changeTheme: this.changeTheme,
+    };
+
     const actionBarBackgroundColor = currentTheme.dark ? currentTheme.colors.card : currentTheme.colors.primary;
+    const defaultScreenOptions = {
+      headerStyle: {
+        backgroundColor: actionBarBackgroundColor,
+      },
+      headerTintColor: colors.tintColor,
+      headerBackTitleVisible: false,
+    };
 
     return (
-      <NavigationContainer theme={currentTheme}>
-        <Stack.Navigator
-          initialRouteName="List"
-          screenOptions={{
-            headerStyle: {
-              backgroundColor: actionBarBackgroundColor,
-            },
-            headerTintColor: colors.tintColor,
-            headerBackTitleVisible: false,
-          }}
-        >
-          <Stack.Screen
-            name="List"
-            component={ListContainer}
-            options={{ title: 'Tasks list' }}
-          />
-          <Stack.Screen
-            name="Details"
-            component={DetailsContainer}
-            options={{ title: 'Task details' }}
-          />
-          <Stack.Screen
-            name="Settings"
-            component={(props) => (
-              // TODO: find an other way to pass changeTheme() function to the screen
-              <SettingsContainer
-                {...props}
-                changeTheme={this.changeTheme}
+      <SortingContext.Provider value={sortingContextProviderValue}>
+        <ThemeContext.Provider value={themeContextProviderValue}>
+          <NavigationContainer theme={currentTheme}>
+            <Stack.Navigator
+              initialRouteName="List"
+              screenOptions={defaultScreenOptions}
+            >
+              <Stack.Screen
+                name="List"
+                component={ListContainer}
+                options={{ title: 'Tasks list' }}
               />
-            )}
-            options={{ title: 'Settings' }}
-          />
-        </Stack.Navigator>
-      </NavigationContainer>
+              <Stack.Screen
+                name="Details"
+                component={DetailsContainer}
+                options={{ title: 'Task details' }}
+              />
+              <Stack.Screen
+                name="Settings"
+                component={SettingsContainer}
+                options={{ title: 'Settings' }}
+              />
+            </Stack.Navigator>
+          </NavigationContainer>
+        </ThemeContext.Provider>
+      </SortingContext.Provider>
     );
   }
 }

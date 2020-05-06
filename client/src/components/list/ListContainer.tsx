@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import ListComponent from './ListComponent';
 import { urlTasks } from '../../utils/APIClient';
+import { SortingContext } from '../../../App';
 
 interface Props {
   navigation: {
@@ -9,18 +10,16 @@ interface Props {
   },
 }
 
+interface TaskListItem  {
+    _id: number;
+    title: string;
+    inProgress: boolean;
+}
+
 interface State {
   tasks: {
-    toDo: {
-      _id: number,
-      title: string,
-      inProgress: boolean,
-    }[],
-    done: {
-      _id: number,
-      title: string,
-      inProgress: boolean,
-    }[]
+    toDo: TaskListItem[];
+    done: TaskListItem[];
   },
   isLoading: boolean,
   snackbar: {
@@ -32,6 +31,8 @@ interface State {
 }
 
 class ListContainer extends Component<Props, State> {
+  static contextType = SortingContext;
+
   constructor(props: Props) {
     super(props);
     this.state = {
@@ -99,11 +100,11 @@ class ListContainer extends Component<Props, State> {
       }));
   };
 
-  separateTasksAndSetState = (response:  { _id: number, title: string, inProgress: boolean}[]) => {
-    const tasksToDo: { _id: number, title: string, inProgress: boolean}[] = [];
-    const tasksDone: { _id: number, title: string, inProgress: boolean}[] = [];
+  separateTasksAndSetState = (response: TaskListItem[]) => {
+    const tasksToDo: TaskListItem[] = [];
+    const tasksDone: TaskListItem[] = [];
 
-    response.forEach((item) => {
+    response.forEach((item: TaskListItem) => {
       if (item.inProgress) {
         tasksToDo.push(item);
       } else {
@@ -122,6 +123,7 @@ class ListContainer extends Component<Props, State> {
       method: 'DELETE',
     }))
       .then((response) => {
+        // TODO: nie trzeba tutaj sprawdzać statusu - gdyby to nie był 200, to by to poszło w blok catch
         if (response.status === 200) {
           let tasksDone = [...this.state.tasks.done];
           let newTasksDone = tasksDone.filter((value) => {
@@ -164,7 +166,7 @@ class ListContainer extends Component<Props, State> {
     let tasksToDo = [...this.state.tasks.toDo];
     let tasksDone = [...this.state.tasks.done];
     if (inProgress) { //To_do -> Done
-      let newTasksToDo: { _id: number, title: string, inProgress: boolean}[] = [];
+      let newTasksToDo: TaskListItem[] = [];
       tasksToDo.forEach(function (item) {
         if (item._id != _id) {
           newTasksToDo.push(item);
@@ -175,7 +177,7 @@ class ListContainer extends Component<Props, State> {
       });
       this.setState({tasks: {...this.state.tasks, toDo: newTasksToDo, done: tasksDone}});
     } else { //Done -> to_do
-      let newTasksDone: { _id: number, title: string, inProgress: boolean}[] = [];
+      let newTasksDone: TaskListItem[] = [];
       tasksDone.forEach((item) => {
         if (item._id != _id) {
           newTasksDone.push(item);
@@ -188,6 +190,18 @@ class ListContainer extends Component<Props, State> {
     }
   };
 
+  compareFunction = (a: TaskListItem, b: TaskListItem): number => {
+    const sortBy = this.context.currentSorting;
+    // @ts-ignore
+    if (a[sortBy] < b[sortBy]) {
+      return -1;
+    }
+    // @ts-ignore
+    if (a[sortBy] > b[sortBy]) {
+      return 1;
+    }
+    return 0;
+  };
 
   render() {
     const {
@@ -212,6 +226,9 @@ class ListContainer extends Component<Props, State> {
     const {
       navigation
     } = this.props;
+
+    tasks.toDo.sort(this.compareFunction);
+    tasks.done.sort(this.compareFunction);
 
     return (
       <ListComponent
