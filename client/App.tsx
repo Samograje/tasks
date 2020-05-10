@@ -1,11 +1,12 @@
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import { Theme } from '@react-navigation/native/src/types';
 import ListContainer from './src/components/list/ListContainer';
 import DetailsContainer from './src/components/details/DetailsContainer';
 import SettingsContainer from './src/components/settings/SettingsContainer';
 import { colors, darkTheme, lightTheme } from './src/styles/common';
-import { Theme } from '@react-navigation/native/src/types';
+import { SortingContext, ThemeContext } from './src/utils/context';
 
 const Stack = createStackNavigator();
 
@@ -14,36 +15,26 @@ interface State {
   currentSorting: string,
 }
 
-export const ThemeContext = React.createContext({
-  currentTheme: lightTheme,
-  changeTheme: () => {},
-})
-
-export const SortingContext = React.createContext({
-  currentSorting: 'creationDate',
-  changeSorting: (_: string) => {},
-});
-
 class App extends React.Component<null, State> {
-  constructor() {
-    super(null);
+  constructor(_: any) {
+    super(_);
     this.state = {
       currentTheme: lightTheme,
       currentSorting: 'creationDate',
     };
   }
 
-  changeTheme = () => {
+  changeTheme = (): void => {
     this.setState((prevState: State) => ({
       currentTheme: prevState.currentTheme.dark ? lightTheme : darkTheme,
     }));
   };
 
-  changeSorting = (sorting: string) => {
+  changeSorting = (sorting: string): void => {
     this.setState({
       currentSorting: sorting,
     });
-  }
+  };
 
   render() {
     const { currentTheme, currentSorting } = this.state;

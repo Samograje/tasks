@@ -1,15 +1,12 @@
 import React from 'react';
 import SettingsComponent from './SettingsComponent';
-import { SortingContext, ThemeContext } from '../../../App';
+import { SortingContext, SortingContextInterface, ThemeContext, ThemeContextInterface } from '../../utils/context';
 
-interface Props {
-}
-
-const SettingsContainer = (_: Props) => (
+const SettingsContainer = (_: any) => (
   <SortingContext.Consumer>
-    {sorting => (
+    {(sorting: SortingContextInterface) => (
       <ThemeContext.Consumer>
-        {theme => (
+        {(theme: ThemeContextInterface) => (
           <SettingsComponent
             currentSorting={sorting.currentSorting}
             currentTheme={theme.currentTheme}

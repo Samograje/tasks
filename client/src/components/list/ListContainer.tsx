@@ -1,7 +1,7 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import ListComponent from './ListComponent';
 import { urlTasks } from '../../utils/APIClient';
-import { SortingContext } from '../../../App';
+import { SortingContext } from '../../utils/context';
 
 interface Props {
   navigation: {
