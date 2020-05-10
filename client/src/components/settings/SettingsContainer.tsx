@@ -1,24 +1,22 @@
 import React from 'react';
 import SettingsComponent from './SettingsComponent';
+import { SortingContext, SortingContextInterface, ThemeContext, ThemeContextInterface } from '../../utils/context';
 
-interface Props {
-  changeTheme: () => {},
-}
-
-// TODO: component cannot keep a state due to the changeTheme() method being passed in an unconventional way in App.tsx.
-//  Then, if the onChangeSortOrder would be passed by props, the SettingsContainer is useless and may be removed
-const SettingsContainer = (props: Props) => {
-  const onChangeSortOrder = (newValue: string) => {
-    // TODO: change sort order
-  };
-
-  return (
-    <SettingsComponent
-      sortBy="title"
-      changeSortOrder={onChangeSortOrder}
-      changeTheme={props.changeTheme}
-    />
-  );
-};
+const SettingsContainer = (_: any) => (
+  <SortingContext.Consumer>
+    {(sorting: SortingContextInterface) => (
+      <ThemeContext.Consumer>
+        {(theme: ThemeContextInterface) => (
+          <SettingsComponent
+            currentSorting={sorting.currentSorting}
+            currentTheme={theme.currentTheme}
+            changeSorting={sorting.changeSorting}
+            changeTheme={theme.changeTheme}
+          />
+        )}
+      </ThemeContext.Consumer>
+    )}
+  </SortingContext.Consumer>
+);
 
 export default SettingsContainer;
