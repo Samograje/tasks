@@ -14,6 +14,7 @@ interface TaskListItem  {
     _id: number;
     title: string;
     inProgress: boolean;
+    priority: 'low' | 'normal' | 'high';
 }
 
 interface State {
@@ -192,6 +193,10 @@ class ListContainer extends Component<Props, State> {
 
   compareFunction = (a: TaskListItem, b: TaskListItem): number => {
     const sortBy = this.context.currentSorting;
+    if (sortBy === 'priority') {
+      return this.compareFunctionByPriority(a, b);
+    }
+
     // @ts-ignore
     if (a[sortBy] < b[sortBy]) {
       return -1;
@@ -202,6 +207,21 @@ class ListContainer extends Component<Props, State> {
     }
     return 0;
   };
+
+  compareFunctionByPriority = (a: TaskListItem, b: TaskListItem): number => {
+    const weights = {
+      low: 2,
+      normal: 1,
+      high: 0,
+    };
+    if (weights[a.priority] < weights[b.priority]) {
+      return -1;
+    }
+    if (weights[a.priority] > weights[b.priority]) {
+      return 1;
+    }
+    return 0;
+  }
 
   render() {
     const {
