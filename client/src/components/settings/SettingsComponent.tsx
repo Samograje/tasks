@@ -3,7 +3,7 @@ import { ScrollView, StyleSheet, Switch, TouchableOpacity, View } from 'react-na
 import { Theme } from '@react-navigation/native/src/types';
 import { RadioButton, Text } from 'react-native-paper';
 import SectionHeader from '../ui/SectionHeader';
-import { colors, fonts } from '../../styles/common';
+import { colors } from '../../styles/common';
 
 interface Props {
   currentSorting: string,
@@ -114,7 +114,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignSelf: 'center',
     fontSize: 16,
-    fontFamily: fonts.primary,
   },
   sortDirectionSelection: {
     flex: 1,
@@ -131,7 +130,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignSelf: 'center',
     fontSize: 16,
-    fontFamily: fonts.primary,
   },
 });
 

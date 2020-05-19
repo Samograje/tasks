@@ -196,13 +196,11 @@ const styles = StyleSheet.create({
     paddingLeft: padding.md,
     paddingRight: padding.md,
     marginBottom: 2,
-    fontFamily: fonts.primary,
   },
   radioOptionText: {
     flex: 1,
     alignSelf: 'center',
     fontSize: fonts.md,
-    fontFamily: fonts.primary,
   },
   row: {
     display: 'flex',
@@ -225,7 +223,6 @@ const styles = StyleSheet.create({
   snackbar: {
     position: 'absolute',
     bottom: 0,
-    fontFamily: fonts.primary,
   },
   textInput: {
     margin: margin.sm,
