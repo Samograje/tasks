@@ -114,7 +114,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignSelf: 'center',
     fontSize: 16,
-    fontFamily: fonts.primary,
   },
   sortDirectionSelection: {
     flex: 1,
@@ -131,7 +130,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignSelf: 'center',
     fontSize: 16,
-    fontFamily: fonts.primary,
   },
 });
 
