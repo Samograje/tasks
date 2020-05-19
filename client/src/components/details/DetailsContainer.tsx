@@ -76,7 +76,15 @@ class DetailsContainer extends Component<Props, State> {
       }));
   };
 
+  isTaskValid = () => {
+    if(!!this.state.task.title) return true;
+    this.showSnackbar('Title cannot be empty!');
+    return false;
+  };
+
   saveTask = () => {
+    if(!this.isTaskValid()) return;
+
     const {_id, mode} = this.props.route.params;
 
     let url: string = urlTasks;
