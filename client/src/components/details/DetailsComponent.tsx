@@ -1,30 +1,27 @@
 import React from 'react';
-import {ScrollView, StyleSheet, TouchableOpacity, View} from 'react-native';
-import {ActivityIndicator, TextInput, Text, RadioButton, Snackbar} from 'react-native-paper';
+import { ScrollView, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { ActivityIndicator, RadioButton, Text, TextInput } from 'react-native-paper';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 // @ts-ignore
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import {timeConverter, dateConverter} from '../../utils/dateTimeConverter';
-import {colors, fonts, margin, padding} from "../../styles/common";
-import {useTheme} from "@react-navigation/native";
-import SectionHeader from "../ui/SectionHeader";
+import { dateConverter, timeConverter } from '../../utils/dateTimeConverter';
+import { colors, fonts, margin, padding } from '../../styles/common';
+import { useTheme } from '@react-navigation/native';
+import SectionHeader from '../ui/SectionHeader';
 
 interface Props {
   handleConfirm: (data: Date) => void,
   isLoading: boolean,
   isModalVisible: boolean,
-  isSnackbarVisible: boolean,
   isSubmitting: boolean,
   onCancelClick: () => void,
   onClearIconClick: () => void,
   onDetailsChange: (text: string) => void,
-  onDismissSnackbar: () => void,
   onIconClick: () => void,
   onRadioButtonClick: (value: string) => void,
   onTitleChange: (text: string) => void,
   navigation: any,
   saveTask: () => void,
-  snackbarText: string,
   task: {
     title: string,
     details: string,
@@ -39,18 +36,15 @@ const DetailsComponent = (props: Props) => {
     handleConfirm,
     isLoading,
     isModalVisible,
-    isSnackbarVisible,
     isSubmitting,
     onCancelClick,
     onClearIconClick,
     onDetailsChange,
-    onDismissSnackbar,
     onIconClick,
     onRadioButtonClick,
     onTitleChange,
     navigation,
     saveTask,
-    snackbarText,
     task,
   } = props;
 
@@ -166,14 +160,6 @@ const DetailsComponent = (props: Props) => {
             </View>
 
           </ScrollView>
-          <Snackbar
-            theme={theme}
-            style={[styles.snackbar, {backgroundColor: theme.colors.card}]}
-            visible={isSnackbarVisible}
-            onDismiss={onDismissSnackbar}
-          >
-            {snackbarText}
-          </Snackbar>
         </>
       ) :
       <ActivityIndicator theme={theme} size='large' style={styles.activityIndicator}/>
@@ -219,10 +205,6 @@ const styles = StyleSheet.create({
   section: {
     marginTop: margin.vsm,
     marginBottom: margin.sm,
-  },
-  snackbar: {
-    position: 'absolute',
-    bottom: 0,
   },
   textInput: {
     margin: margin.sm,

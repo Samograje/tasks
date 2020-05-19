@@ -12,6 +12,11 @@ interface SortingContextInterface {
   changeSorting: (newSorting: string) => void;
 }
 
+interface SnackbarContextInterface {
+  isSnackbarVisible: boolean;
+  showSnackbar: (message: string) => void;
+}
+
 const ThemeContext: React.Context<ThemeContextInterface> = React.createContext({
   currentTheme: lightTheme,
   changeTheme: () => {
@@ -24,9 +29,18 @@ const SortingContext: React.Context<SortingContextInterface> = React.createConte
   },
 });
 
+// @ts-ignore
+const SnackbarContext: React.Context<SnackbarContextInterface> = React.createContext({
+  isSnackbarVisible: false,
+  showSnackbar: (_: string) => {
+  },
+});
+
 export {
   ThemeContextInterface,
   SortingContextInterface,
+  SnackbarContextInterface,
   ThemeContext,
   SortingContext,
+  SnackbarContext,
 };

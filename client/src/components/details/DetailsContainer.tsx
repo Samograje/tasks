@@ -1,10 +1,12 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import DetailsComponent from './DetailsComponent';
 import { urlTasks } from '../../utils/APIClient';
+import { SnackbarContext } from '../../utils/context';
 
 interface Props {
   navigation: any,
   route: any,
+  showSnackbar: (message: string) => void;
 }
 
 interface State {
@@ -23,6 +25,8 @@ interface State {
 }
 
 class DetailsContainer extends Component<Props, State> {
+  static contextType = SnackbarContext;
+
   constructor(props: Props) {
     super(props);
     this.state = {
@@ -69,7 +73,7 @@ class DetailsContainer extends Component<Props, State> {
         });
       })
       .catch((error) => {
-        this.showSnackbar('Error while fetching task.');
+        this.context.showSnackbar('Error while fetching task.');
       })
       .finally(() => this.setState({
         isLoading: false,
@@ -78,7 +82,7 @@ class DetailsContainer extends Component<Props, State> {
 
   isTaskValid = () => {
     if(!!this.state.task.title) return true;
-    this.showSnackbar('Title cannot be empty!');
+    this.context.showSnackbar('Title cannot be empty!');
     return false;
   };
 
@@ -108,10 +112,10 @@ class DetailsContainer extends Component<Props, State> {
     })
       .then((response: any) => {
         if(response) {
-          this.showSnackbar('Saved task!');
-          setTimeout(this.props.navigation.goBack, 2000);
+          this.context.showSnackbar('Saved task!');
+          this.props.navigation.goBack();
         } else {
-          this.showSnackbar('Error while saving task');
+          this.context.showSnackbar('Error while saving task');
           this.setState({
             isSubmitting: false,
           });
@@ -121,21 +125,8 @@ class DetailsContainer extends Component<Props, State> {
         this.setState({
           isSubmitting: false,
         });
-        this.showSnackbar('Something went wrong.');
+        this.context.showSnackbar('Something went wrong.');
       });
-  };
-
-  showSnackbar = (text: string) => {
-    this.setState({
-      snackbarText: text,
-      isSnackbarVisible: true,
-    });
-  };
-
-  onDismissSnackbar = () => {
-    this.setState({
-      isSnackbarVisible: false,
-    });
   };
 
   onIconClick = () => {
@@ -185,18 +176,15 @@ class DetailsContainer extends Component<Props, State> {
         handleConfirm={this.handleConfirm}
         isLoading={this.state.isLoading}
         isModalVisible={this.state.isModalVisible}
-        isSnackbarVisible={this.state.isSnackbarVisible}
         isSubmitting={this.state.isSubmitting}
         onCancelClick={this.onCancelClick}
         onClearIconClick={this.onClearIconClick}
         onDetailsChange={this.onDetailsChange}
-        onDismissSnackbar={this.onDismissSnackbar}
         onIconClick={this.onIconClick}
         onRadioButtonClick={this.onRadioButtonClick}
         onTitleChange={this.onTitleChange}
         navigation={this.props.navigation}
         saveTask={this.saveTask}
-        snackbarText={this.state.snackbarText}
         task={this.state.task}
       />
     );
