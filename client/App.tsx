@@ -52,6 +52,11 @@ class App extends React.Component<null, State> {
   };
 
   render() {
+    // TODO: show warnings again
+    console.disableYellowBox = true;
+    // @ts-ignore
+    console.reportErrorsAsExceptions = false;
+
     const { currentTheme, currentSorting, snackbarMessage } = this.state;
     const sortingContextProviderValue = {
       currentSorting,
