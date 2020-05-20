@@ -5,14 +5,16 @@ import { Theme } from '@react-navigation/native/src/types';
 import ListContainer from './src/components/list/ListContainer';
 import DetailsContainer from './src/components/details/DetailsContainer';
 import SettingsContainer from './src/components/settings/SettingsContainer';
+import StyledSnackbar from './src/components/ui/StyledSnackbar';
 import { colors, darkTheme, lightTheme } from './src/styles/common';
-import { SortingContext, ThemeContext } from './src/utils/context';
+import { SnackbarContext, SortingContext, ThemeContext } from './src/utils/context';
 
 const Stack = createStackNavigator();
 
 interface State {
   currentTheme: Theme,
   currentSorting: string,
+  snackbarMessage: string | null,
 }
 
 class App extends React.Component<null, State> {
@@ -21,6 +23,7 @@ class App extends React.Component<null, State> {
     this.state = {
       currentTheme: lightTheme,
       currentSorting: 'creationDate',
+      snackbarMessage: null,
     };
   }
 
@@ -36,8 +39,20 @@ class App extends React.Component<null, State> {
     });
   };
 
+  showSnackbar = (message: string): void => {
+    this.setState({
+      snackbarMessage: message,
+    });
+  };
+
+  hideSnackbar = (): void => {
+    this.setState({
+      snackbarMessage: null,
+    });
+  };
+
   render() {
-    const { currentTheme, currentSorting } = this.state;
+    const { currentTheme, currentSorting, snackbarMessage } = this.state;
     const sortingContextProviderValue = {
       currentSorting,
       changeSorting: this.changeSorting,
@@ -45,6 +60,10 @@ class App extends React.Component<null, State> {
     const themeContextProviderValue = {
       currentTheme,
       changeTheme: this.changeTheme,
+    };
+    const snackbarContextProviderValue = {
+      isSnackbarVisible: !!snackbarMessage,
+      showSnackbar: this.showSnackbar,
     };
 
     const actionBarBackgroundColor = currentTheme.dark ? currentTheme.colors.card : currentTheme.colors.primary;
@@ -59,28 +78,36 @@ class App extends React.Component<null, State> {
     return (
       <SortingContext.Provider value={sortingContextProviderValue}>
         <ThemeContext.Provider value={themeContextProviderValue}>
-          <NavigationContainer theme={currentTheme}>
-            <Stack.Navigator
-              initialRouteName="List"
-              screenOptions={defaultScreenOptions}
-            >
-              <Stack.Screen
-                name="List"
-                component={ListContainer}
-                options={{ title: 'Tasks list' }}
-              />
-              <Stack.Screen
-                name="Details"
-                component={DetailsContainer}
-                options={{ title: 'Task details' }}
-              />
-              <Stack.Screen
-                name="Settings"
-                component={SettingsContainer}
-                options={{ title: 'Settings' }}
-              />
-            </Stack.Navigator>
-          </NavigationContainer>
+          <SnackbarContext.Provider value={snackbarContextProviderValue}>
+            <NavigationContainer theme={currentTheme}>
+              <Stack.Navigator
+                initialRouteName="List"
+                screenOptions={defaultScreenOptions}
+              >
+                <Stack.Screen
+                  name="List"
+                  component={ListContainer}
+                  options={{ title: 'Tasks list' }}
+                />
+                <Stack.Screen
+                  name="Details"
+                  component={DetailsContainer}
+                  options={{ title: 'Task details' }}
+                />
+                <Stack.Screen
+                  name="Settings"
+                  component={SettingsContainer}
+                  options={{ title: 'Settings' }}
+                />
+              </Stack.Navigator>
+            </NavigationContainer>
+
+            <StyledSnackbar
+              theme={this.state.currentTheme}
+              snackbarMessage={this.state.snackbarMessage}
+              onDismissSnackbar={this.hideSnackbar}
+            />
+          </SnackbarContext.Provider>
         </ThemeContext.Provider>
       </SortingContext.Provider>
     );
